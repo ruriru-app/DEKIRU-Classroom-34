@@ -105,7 +105,8 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
 
 
 /* Dynamic textbook vocabulary */
-.unit-layout,.pron-layout{grid-template-columns:minmax(190px,1fr) minmax(0,4fr);gap:22px}
+.page#lt1unit,.page#pronunciation{width:min(1680px,calc(100vw - 32px));margin-left:50%;transform:translateX(-50%)}
+.unit-layout,.pron-layout{grid-template-columns:minmax(250px,1fr) minmax(0,3fr);gap:22px}
 .unit-sidebar,.pron-menu{top:100px;max-height:calc(100vh - 116px);overflow-y:auto;scrollbar-gutter:stable}
 .unit-context{padding:2px 2px 12px;border-bottom:1px solid #e7e4e0;margin-bottom:14px}
 .unit-course{font-size:14px;font-weight:700;color:var(--brown);letter-spacing:.01em}
@@ -115,18 +116,39 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
 .unit-main-toolbar .unit-main-title{margin:0}
 .unit-data-note{margin:0 0 18px;color:var(--brown);font-size:13px;line-height:1.65}
 .vocabulary-groups{min-width:0}
+.vocab-toggle{font-size:14px;line-height:1.4;text-align:left;gap:5px}
+.word-select-head strong{font-size:15px}
 .vocab-group.advanced{border-top-color:#d8e4f2}
 .vocab-group.advanced .vocab-toggle{color:#54779e}
 .vocab-group.disabled .word-chip{opacity:.58}
 .pron-settings{border-top:2px solid #eee9e4;margin-top:16px;padding-top:8px}
 .pron-settings-title{font-size:15px;margin:4px 0 6px;color:var(--brown)}
 .pron-workspace-title{font-size:20px;margin:0 auto 0 0}
+.pron-word-accordion{border-top:1px solid #e7e4e0;border-bottom:1px solid #e7e4e0;margin:0 0 14px}
+.pron-word-accordion-button{width:100%;border:0;background:transparent;padding:12px 0;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;color:var(--ink);cursor:pointer;text-align:left}
+.pron-word-accordion-button strong{font-size:15px}.pron-word-accordion-button .accordion-arrow{font-size:13px;transition:transform .18s ease}
+.pron-word-accordion.closed .pron-word-accordion-body{display:none}.pron-word-accordion:not(.closed) .accordion-arrow{transform:rotate(180deg)}
+.pron-word-accordion-body{padding-bottom:10px}
+.pron-mode-choice{display:flex;flex-direction:column;gap:7px;padding:5px 0 10px}
+.pron-mode-choice .option-row{font-weight:700}
+.pron-mode-panel{display:none;border-top:1px solid #e7e4e0;padding-top:12px}.pron-mode-panel.active{display:block}
+.pron-card{position:relative;cursor:pointer;color:var(--ink);font:inherit;padding:0}
+.pron-card:hover{border-color:#aac9eb;box-shadow:0 4px 12px rgba(78,66,58,.12)}
+.pron-card:focus-visible,.focus-card:focus-visible{outline:3px solid #6d9fd8;outline-offset:2px}
+.pron-card.speaking,.focus-card.speaking{outline:3px solid var(--pink);outline-offset:2px}
+.focus-card{cursor:pointer}
+.auto-focus{display:none;height:calc(100vh - 188px);min-height:470px;background:#fff;border-radius:18px;padding:20px;align-items:center;justify-content:center}
+.auto-focus.active{display:flex}
+.auto-grid{width:100%;display:grid;gap:18px;grid-template-columns:repeat(var(--auto-columns,1),minmax(0,1fr));align-items:center}
+.auto-grid .pron-card{width:min(100%,420px);justify-self:center}
+body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-height:0}
 .card-picture,.focus-picture{display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}
 .card-picture img,.focus-picture img{width:100%;height:100%;object-fit:contain;display:block}
 .card-picture.no-image::after,.focus-picture.no-image::after{content:'No image';color:#aaa;font-size:12px}
 .unit-empty{background:#fff;border-radius:18px;padding:20px;color:var(--brown)}
 @media(max-width:860px){
   .unit-layout,.pron-layout{grid-template-columns:1fr}
+  .page#lt1unit,.page#pronunciation{width:100%;margin-left:0;transform:none}
   .unit-sidebar,.pron-menu{position:static;max-height:none}
 }
 
@@ -189,8 +211,12 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
         <h1 class="unit-title" data-unit-title>Hello!</h1>
         <button class="today-button">Today is ...</button>
       </div>
-      <div class="word-select-head"><strong>使う単語を選ぶ</strong><span class="total-count">使用 0語</span></div>
-      <div id="pronVocabularyGroups" class="vocabulary-groups"></div>
+      <div class="pron-word-accordion closed" id="pronWordAccordion">
+        <button class="pron-word-accordion-button" id="pronWordAccordionButton" type="button" aria-expanded="false">
+          <strong>使う単語を選ぶ</strong><span class="total-count">使用 0語</span><span class="accordion-arrow">▼</span>
+        </button>
+        <div class="pron-word-accordion-body"><div id="pronVocabularyGroups" class="vocabulary-groups"></div></div>
+      </div>
 
       <div class="pron-settings">
         <h2 class="pron-settings-title">発音練習の設定</h2>
@@ -206,7 +232,16 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
         </div>
 
         <div class="menu-block">
-          <h3>一覧表示</h3>
+          <h3>表示方法</h3>
+          <div class="pron-mode-choice" role="radiogroup" aria-label="表示方法">
+            <label class="option-row"><input type="radio" name="pronMode" value="list" checked>一覧表示</label>
+            <label class="option-row"><input type="radio" name="pronMode" value="single">1枚ずつ表示</label>
+            <label class="option-row"><input type="radio" name="pronMode" value="auto">自動表示再生</label>
+          </div>
+        </div>
+
+        <div class="pron-mode-panel active" data-mode-panel="list">
+          <h3>一覧の大きさ</h3>
           <div class="option-list" data-exclusive="listSize">
             <label class="option-row"><input type="checkbox" value="large">大（1行3枚）</label>
             <label class="option-row"><input type="checkbox" value="medium" checked>中（1行5枚）</label>
@@ -214,22 +249,22 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
           </div>
         </div>
 
-        <div class="menu-block">
-          <h3>1枚ずつ表示</h3>
+        <div class="pron-mode-panel" data-mode-panel="single">
+          <h3>表示する順番</h3>
           <div class="option-list" data-exclusive="singleMode">
-            <label class="option-row"><input type="checkbox" value="order">順番通り</label>
+            <label class="option-row"><input type="checkbox" value="order" checked>順番通り</label>
             <label class="option-row"><input type="checkbox" value="random">ランダム</label>
           </div>
         </div>
 
-        <div class="menu-block">
-          <h3>自動表示再生</h3>
+        <div class="pron-mode-panel" data-mode-panel="auto">
+          <h3>表示する順番</h3>
           <div class="option-list" data-exclusive="autoMode">
-            <label class="option-row"><input type="checkbox" value="order">順番通り</label>
+            <label class="option-row"><input type="checkbox" value="order" checked>順番通り</label>
             <label class="option-row"><input type="checkbox" value="random">ランダム</label>
           </div>
           <div class="indent" style="margin-top:9px">
-            <h3>に</h3>
+            <h3>表示する枚数</h3>
             <div class="option-list" data-exclusive="autoCount">
               <label class="option-row"><input type="checkbox" value="1" checked>1枚ずつ</label>
               <label class="option-row"><input type="checkbox" value="3">3枚ずつ</label>
@@ -248,7 +283,7 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
       </div>
       <div class="pron-scroll"><div id="pronCards" class="cards-grid size-medium"></div></div>
       <div id="pronFocus" class="pron-focus">
-        <div class="focus-card">
+        <div class="focus-card" id="focusCard" role="button" tabindex="0" aria-label="英語の音声を再生">
           <div class="focus-picture"></div>
           <div class="focus-label" id="focusLabel"></div>
         </div>
@@ -257,6 +292,7 @@ body.pron-fullscreen #pronunciation .pron-toolbar{margin-bottom:8px}
           <button id="focusNext" type="button">次へ →</button>
         </div>
       </div>
+      <div id="pronAuto" class="auto-focus"><div id="autoGrid" class="auto-grid"></div></div>
     </section>
   </div>
 </section>
@@ -272,8 +308,20 @@ let currentUnitItems=[];
 let vocabularyState={groups:new Map(),items:new Map(),open:new Set()};
 let focusIndex=0;
 let focusOrder=[];
+let pronunciationMode='list';
+let autoTimer=null;
+let autoIndex=0;
+let autoOrder=[];
+let speakingElement=null;
 
-function show(id){pages.forEach(page=>page.classList.toggle('active',page.id===id));window.scrollTo(0,0)}
+function show(id){
+  if(id!=='pronunciation'){
+    stopAuto();
+    window.speechSynthesis?.cancel();
+  }
+  pages.forEach(page=>page.classList.toggle('active',page.id===id));
+  window.scrollTo(0,0);
+}
 document.querySelectorAll('.nav').forEach(button=>button.addEventListener('click',()=>show(button.dataset.to)));
 document.querySelectorAll('[data-back="home"]').forEach(button=>button.addEventListener('click',()=>show('home')));
 document.querySelectorAll('.back:not(#backToLt1)').forEach(button=>button.addEventListener('click',()=>show(button.dataset.back||'home')));
@@ -446,17 +494,57 @@ document.querySelectorAll('[data-lt1-unit]').forEach(button=>button.addEventList
 const pronCards=document.getElementById('pronCards');
 function cardMarkup(item){
   const image=item.image?'<img src="'+escapeHtml(item.image)+'" alt="" onerror="this.parentElement.classList.add(&quot;no-image&quot;);this.remove()">':'';
-  return '<article class="pron-card" data-key="'+escapeHtml(item.key)+'" data-en="'+escapeHtml(item.english)+'" data-jp="'+escapeHtml(item.japanese)+'"><div class="card-picture '+(item.image?'':'no-image')+'">'+image+'</div><div class="card-label"><div><span class="en-text">'+escapeHtml(item.english)+'</span><span class="jp-label">'+escapeHtml(item.japanese)+'</span></div></div></article>';
+  return '<button class="pron-card" type="button" data-speech="'+escapeHtml(item.speech||item.english)+'" aria-label="'+escapeHtml(item.english)+' の音声を再生"><div class="card-picture '+(item.image?'':'no-image')+'">'+image+'</div><div class="card-label"><div><span class="en-text">'+escapeHtml(item.english)+'</span><span class="jp-label">'+escapeHtml(item.japanese)+'</span></div></div></button>';
 }
+
+function speakText(text,element){
+  if(!text||!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window))return;
+  window.speechSynthesis.cancel();
+  speakingElement?.classList.remove('speaking');
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang='en-US';
+  utterance.rate=.86;
+  const voices=window.speechSynthesis.getVoices();
+  utterance.voice=voices.find(voice=>voice.lang==='en-US')||voices.find(voice=>voice.lang?.startsWith('en'))||null;
+  speakingElement=element||null;
+  speakingElement?.classList.add('speaking');
+  utterance.onend=utterance.onerror=()=>{
+    speakingElement?.classList.remove('speaking');
+    speakingElement=null;
+  };
+  window.speechSynthesis.speak(utterance);
+}
+
+function bindCardSpeech(container){
+  container.querySelectorAll('.pron-card').forEach(card=>card.addEventListener('click',()=>speakText(card.dataset.speech,card)));
+}
+
 function buildPronunciation(){
   const items=selectedItems();
   pronCards.innerHTML=items.map(cardMarkup).join('');
+  bindCardSpeech(pronCards);
   focusOrder=[...items];
   focusIndex=Math.min(focusIndex,Math.max(0,focusOrder.length-1));
-  if(document.getElementById('pronFocus').classList.contains('active'))renderFocus();
+  if(pronunciationMode==='single')prepareSingleOrder();
+  if(pronunciationMode==='auto')startAuto();
   applyDisplay();
 }
-document.getElementById('openPronunciation')?.addEventListener('click',()=>{buildPronunciation();show('pronunciation')});
+document.getElementById('openPronunciation')?.addEventListener('click',()=>{
+  const accordion=document.getElementById('pronWordAccordion');
+  accordion.classList.add('closed');
+  document.getElementById('pronWordAccordionButton').setAttribute('aria-expanded','false');
+  const listMode=document.querySelector('input[name="pronMode"][value="list"]');
+  if(listMode)listMode.checked=true;
+  buildPronunciation();
+  setPronunciationMode('list');
+  show('pronunciation');
+});
+
+document.getElementById('pronWordAccordionButton')?.addEventListener('click',()=>{
+  const accordion=document.getElementById('pronWordAccordion');
+  const closed=accordion.classList.toggle('closed');
+  document.getElementById('pronWordAccordionButton').setAttribute('aria-expanded',String(!closed));
+});
 
 const pronExpand=document.getElementById('pronExpand');
 function exitPronFullscreen(){document.body.classList.remove('pron-fullscreen');pronExpand.textContent='⛶ 全画面表示'}
@@ -482,37 +570,96 @@ function makeExclusive(name,callback){
   const inputs=[...box.querySelectorAll('input')];
   inputs.forEach(input=>input.addEventListener('change',()=>{
     if(input.checked)inputs.forEach(other=>{if(other!==input)other.checked=false});
+    else if(!inputs.some(other=>other.checked))input.checked=true;
     callback?.(input);
   }));
 }
 makeExclusive('listSize',input=>{if(!input.checked)return;pronCards.classList.remove('size-large','size-medium','size-small');pronCards.classList.add('size-'+input.value)});
 
+function checkedValue(name,fallback){
+  return document.querySelector('[data-exclusive="'+name+'"] input:checked')?.value||fallback;
+}
+function shuffled(items){return [...items].sort(()=>Math.random()-.5)}
+
 function renderFocus(){
   const item=focusOrder[focusIndex];
-  if(!item)return;
   const picture=document.querySelector('#pronFocus .focus-picture');
+  const label=document.getElementById('focusLabel');
+  const focusCard=document.getElementById('focusCard');
+  if(!item){
+    picture.classList.add('no-image');
+    picture.innerHTML='';
+    label.textContent='単語が選択されていません';
+    focusCard.dataset.speech='';
+    return;
+  }
   picture.classList.toggle('no-image',!item.image);
   picture.innerHTML=item.image?'<img src="'+escapeHtml(item.image)+'" alt="" onerror="this.parentElement.classList.add(&quot;no-image&quot;);this.remove()">':'';
-  document.getElementById('focusLabel').textContent=item.english;
+  label.textContent=item.english;
+  focusCard.dataset.speech=item.speech||item.english;
 }
-function openSingle(random){
+function prepareSingleOrder(){
   focusOrder=selectedItems();
-  if(random)focusOrder.sort(()=>Math.random()-.5);
+  if(checkedValue('singleMode','order')==='random')focusOrder=shuffled(focusOrder);
   focusIndex=0;
   renderFocus();
-  document.querySelector('#pronunciation .pron-scroll').classList.add('hidden');
-  document.getElementById('pronFocus').classList.add('active');
 }
-makeExclusive('singleMode',input=>{
-  if(input.checked)openSingle(input.value==='random');
-  else{
-    document.querySelector('#pronunciation .pron-scroll').classList.remove('hidden');
-    document.getElementById('pronFocus').classList.remove('active');
+
+function stopAuto(){
+  if(autoTimer){
+    clearInterval(autoTimer);
+    autoTimer=null;
   }
-});
+}
+function renderAutoBatch(){
+  const autoGrid=document.getElementById('autoGrid');
+  if(!autoOrder.length){
+    autoGrid.innerHTML='<div class="auto-empty">単語が選択されていません</div>';
+    return;
+  }
+  const count=Math.min(Number(checkedValue('autoCount','1')),autoOrder.length);
+  const batch=Array.from({length:count},(_,index)=>autoOrder[(autoIndex+index)%autoOrder.length]);
+  autoGrid.style.setProperty('--auto-columns',String(count));
+  autoGrid.innerHTML=batch.map(cardMarkup).join('');
+  bindCardSpeech(autoGrid);
+  autoIndex=(autoIndex+count)%autoOrder.length;
+  applyDisplay();
+}
+function startAuto(){
+  stopAuto();
+  autoOrder=selectedItems();
+  if(checkedValue('autoMode','order')==='random')autoOrder=shuffled(autoOrder);
+  autoIndex=0;
+  renderAutoBatch();
+  if(autoOrder.length>1)autoTimer=setInterval(renderAutoBatch,3500);
+}
+
+function setPronunciationMode(mode){
+  pronunciationMode=mode;
+  document.querySelectorAll('[data-mode-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.modePanel===mode));
+  document.querySelector('#pronunciation .pron-scroll').classList.toggle('hidden',mode!=='list');
+  document.getElementById('pronFocus').classList.toggle('active',mode==='single');
+  document.getElementById('pronAuto').classList.toggle('active',mode==='auto');
+  stopAuto();
+  if(mode==='single')prepareSingleOrder();
+  if(mode==='auto')startAuto();
+}
+
+document.querySelectorAll('input[name="pronMode"]').forEach(input=>input.addEventListener('change',()=>{
+  if(input.checked)setPronunciationMode(input.value);
+}));
+makeExclusive('singleMode',input=>{if(pronunciationMode==='single'&&input.checked)prepareSingleOrder()});
+makeExclusive('autoMode',input=>{if(pronunciationMode==='auto'&&input.checked)startAuto()});
+makeExclusive('autoCount',input=>{if(pronunciationMode==='auto'&&input.checked)startAuto()});
+
 document.getElementById('focusPrev')?.addEventListener('click',()=>{if(!focusOrder.length)return;focusIndex=(focusIndex-1+focusOrder.length)%focusOrder.length;renderFocus()});
 document.getElementById('focusNext')?.addEventListener('click',()=>{if(!focusOrder.length)return;focusIndex=(focusIndex+1)%focusOrder.length;renderFocus()});
-makeExclusive('autoMode',()=>{});
-makeExclusive('autoCount',()=>{});
+document.getElementById('focusCard')?.addEventListener('click',event=>speakText(event.currentTarget.dataset.speech,event.currentTarget));
+document.getElementById('focusCard')?.addEventListener('keydown',event=>{
+  if(event.key==='Enter'||event.key===' '){
+    event.preventDefault();
+    event.currentTarget.click();
+  }
+});
 applyDisplay();
 </script></body></html>
