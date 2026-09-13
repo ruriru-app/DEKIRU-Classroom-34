@@ -156,19 +156,18 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .card-picture img,.focus-picture img{width:100%;height:100%;object-fit:contain;display:block}
 .card-picture.no-image::after,.focus-picture.no-image::after{content:'No image';color:#aaa;font-size:12px}
 .unit-empty{background:#fff;border-radius:18px;padding:20px;color:var(--brown)}
-.talk-entry-button{width:100%;margin-top:10px;border:2px solid #edbfd0;border-radius:14px;background:#fff7fa;color:#755563;padding:11px 14px;font:700 16px/1.25 inherit;cursor:pointer;box-shadow:0 2px 7px rgba(87,65,54,.06)}
-.talk-entry-button:hover{background:#fdebf2;border-color:#dfa8bc}.talk-entry-button[hidden]{display:none}
 .activity-accordion{margin:0!important;border-top:1px solid #e9e2dc;scroll-margin-top:110px}.activity-accordion:last-child{border-bottom:1px solid #e9e2dc}
 .activity-accordion-toggle{width:100%;border:0;background:transparent;padding:16px 4px;display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--ink);text-align:left;font:inherit;cursor:pointer}
 .activity-accordion-toggle:hover{color:#765b4c}.activity-section-title{font-size:18px;font-weight:700}.activity-arrow{font-size:15px;transition:transform .18s ease}.activity-accordion.open .activity-arrow{transform:rotate(180deg)}
 .activity-accordion-body{display:none;padding:0 0 20px}.activity-accordion.open .activity-accordion-body{display:block}.activity-accordion .activity-grid{margin-top:0}
 .activity-accordion[hidden]{display:none}
 .talk-activity-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.talk-activity-choice{min-height:180px;border:2px solid #eadbd3;border-radius:22px;background:#fff;padding:24px;text-align:left;color:var(--ink);cursor:pointer;box-shadow:0 6px 18px rgba(77,60,50,.08);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.talk-activity-choice{min-height:166px;border:2px solid #eadbd3;border-radius:22px;background:#fff;padding:20px;text-align:left;color:var(--ink);cursor:pointer;box-shadow:0 6px 18px rgba(77,60,50,.08);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
 .talk-activity-choice:hover{transform:translateY(-2px);border-color:#dda9bd;box-shadow:0 9px 22px rgba(77,60,50,.12)}
-.talk-activity-choice .activity-number{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#f9e4ec;color:#875b6d;font-weight:700;margin-bottom:18px}
-.talk-activity-choice strong{display:block;font-family:'RuRiRu Font','DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(25px,2.4vw,36px);font-weight:400;line-height:1.2}
-.talk-activity-choice span:last-child{display:block;margin-top:12px;color:var(--brown);font-size:14px;line-height:1.5}
+.talk-activity-heading{display:flex;align-items:center;gap:9px;color:var(--brown);font-size:14px;font-weight:700;line-height:1.35}
+.talk-activity-choice .activity-number{display:inline-grid;place-items:center;flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:#f9e4ec;color:#875b6d;font-weight:700}
+.talk-activity-choice strong{display:block;margin:15px 0 0 39px;font-family:'RuRiRu Font','DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(19px,1.55vw,26px);font-weight:400;line-height:1.32}
+.talk-activity-choice strong span{display:block}
 .talk-player-mode{overflow-x:hidden}.talk-player-mode header{display:none}.talk-player-mode main{width:100%;max-width:none;min-width:0;margin:0;padding:0;overflow-x:hidden}
 .page#talkSentences{width:calc(100vw - 16px);max-width:calc(100vw - 16px);min-width:0;margin:0 8px;padding:8px 0;overflow-x:hidden}
 .talk-shell{width:100%;max-width:100%;min-width:0;height:calc(100vh - 16px);min-height:620px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;overflow:hidden}
@@ -233,7 +232,6 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
         <div class="unit-course" data-unit-course>Let's Try 1 Unit 1</div>
         <h1 class="unit-title" data-unit-title>Hello!</h1>
         <button class="today-button">Today is ...</button>
-        <button class="talk-entry-button" id="openTalkSentences" type="button" hidden>文で話そう</button>
       </div>
       <div class="word-select-head"><strong>使う単語を選ぶ</strong><span class="total-count">使用 0語</span></div>
       <div id="unitVocabularyGroups" class="vocabulary-groups"></div>
@@ -251,12 +249,12 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
       <div class="activity-section activity-accordion" data-activity-section="talk" hidden>
         <button class="activity-accordion-toggle" type="button" aria-expanded="false"><span class="activity-section-title">文で話そう</span><span class="activity-arrow" aria-hidden="true">▼</span></button>
         <div class="activity-accordion-body"><div class="talk-activity-list">
-          <button class="talk-activity-choice" type="button" data-talk-activity="like"><span class="activity-number">1</span><strong>I like red.</strong><span>好きな色を伝える</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="dont"><span class="activity-number">2</span><strong>I don't like red.</strong><span>好きではない色を伝える</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="like_dont"><span class="activity-number">3</span><strong>I like red. I don't like black.</strong><span>好きな色と好きではない色を伝える</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="question"><span class="activity-number">4</span><strong>Do you like red?</strong><span>質問し、Yes / No で答える</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="like_question"><span class="activity-number">5</span><strong>I like red. Do you like red?</strong><span>自分の好みを伝えてから質問する</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="dont_question"><span class="activity-number">6</span><strong>I don't like black. Do you like black?</strong><span>好きではない色を伝えてから質問する</span></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="like"><span class="talk-activity-heading"><span class="activity-number">1</span><span>好きな色を伝える</span></span><strong><span>I like red.</span></strong></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="dont"><span class="talk-activity-heading"><span class="activity-number">2</span><span>好きではない色を伝える</span></span><strong><span>I don't like red.</span></strong></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="like_dont"><span class="talk-activity-heading"><span class="activity-number">3</span><span>好きな色と好きではない色を伝える</span></span><strong><span>I like red.</span><span>I don't like black.</span></strong></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="question"><span class="talk-activity-heading"><span class="activity-number">4</span><span>質問し、Yes / No で答える</span></span><strong><span>Do you like red?</span></strong></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="like_question"><span class="talk-activity-heading"><span class="activity-number">5</span><span>自分の好みを伝えてから質問する</span></span><strong><span>I like red.</span><span>Do you like red?</span></strong></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="dont_question"><span class="talk-activity-heading"><span class="activity-number">6</span><span>好きではない色を伝えてから質問する</span></span><strong><span>I don't like black.</span><span>Do you like black?</span></strong></button>
         </div></div>
       </div>
       <div class="activity-section activity-accordion" data-activity-section="class">
@@ -638,8 +636,6 @@ function openUnit(unit){
   document.querySelectorAll('[data-unit-course]').forEach(target=>target.textContent="Let's Try 1 Unit "+unit);
   document.querySelectorAll('[data-unit-title]').forEach(target=>target.textContent=APP_DATA.unitTitles[unit]);
   renderVocabulary(unit);
-  const talkEntry=document.getElementById('openTalkSentences');
-  if(talkEntry)talkEntry.hidden=unit!==4;
   const talkSection=document.querySelector('#lt1unit [data-activity-section="talk"]');
   if(talkSection)talkSection.hidden=unit!==4;
   openActivityAccordion('practice',false);
@@ -909,7 +905,6 @@ function openTalkActivity(activity){
   updateTalkStageZoomButton();
   show('talkSentences');
 }
-document.getElementById('openTalkSentences')?.addEventListener('click',()=>openActivityAccordion('talk',true));
 document.getElementById('talkPlayerBack')?.addEventListener('click',()=>show('lt1unit'));
 document.getElementById('talkSoundToggle')?.addEventListener('click',()=>{
   talkSoundEnabled=!talkSoundEnabled;
