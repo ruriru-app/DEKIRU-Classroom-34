@@ -381,7 +381,7 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
       </div>
       <div class="talk-audio-controls">
         <button class="talk-top-control talk-sound-toggle" id="talkSoundToggle" type="button" aria-pressed="true" aria-label="カードの音声を切る">🔊 音声ON</button>
-        <label class="talk-speed-control" for="talkSpeechRate"><span>速さ</span><select id="talkSpeechRate" aria-label="読み上げ速度"><option value="0.72" selected>ゆっくり</option><option value="0.88">ふつう</option><option value="1.02">はやめ</option></select></label>
+        <label class="talk-speed-control" for="talkSpeechRate"><span>速さ</span><select id="talkSpeechRate" aria-label="読み上げ速度"><option value="0.55" selected>ゆっくり</option><option value="0.85">ふつう</option><option value="1.20">はやめ</option></select></label>
       </div>
     </div>
     <div class="talk-stage" id="talkStage"></div>
@@ -420,7 +420,7 @@ let talkChoiceRole='object';
 let talkSelected={subject:'person_001',verb:'action5_002',object:'color_002'};
 let talkHiddenCategories=new Set();
 let talkSoundEnabled=true;
-let talkSpeechRate=.72;
+let talkSpeechRate=.55;
 const TALK_OBJECT_CATEGORIES=['colors','sports','desserts','drinks','fruits_vegetables'];
 const CONTRACTION_PARTS={"don't":['do','not'],"i'm":['I','am'],"you're":['you','are'],"it's":['it','is'],"that's":['that','is'],"what's":['what','is'],"who's":['who','is'],"can't":['can','not'],"won't":['will','not']};
 
@@ -828,7 +828,7 @@ document.getElementById('talkSoundToggle')?.addEventListener('click',()=>{
   updateTalkSoundButton();
 });
 document.getElementById('talkSpeechRate')?.addEventListener('change',event=>{
-  talkSpeechRate=Number(event.target.value)||.72;
+  talkSpeechRate=Number(event.target.value)||.55;
   window.speechSynthesis?.cancel();
 });
 document.querySelectorAll('[data-talk-role]').forEach(button=>button.addEventListener('click',()=>{
@@ -852,7 +852,7 @@ function speakText(text,element,rate){
   utterance.lang='en-US';
   utterance.rate=Number.isFinite(rate)?rate:.86;
   const voices=window.speechSynthesis.getVoices();
-  utterance.voice=voices.find(voice=>voice.lang==='en-US')||voices.find(voice=>voice.lang?.startsWith('en'))||null;
+  utterance.voice=voices.find(voice=>voice.lang==='en-US'&&voice.localService&&!/natural|online/i.test(voice.name))||voices.find(voice=>voice.lang==='en-US'&&voice.localService)||voices.find(voice=>voice.lang==='en-US')||voices.find(voice=>voice.lang?.startsWith('en')&&voice.localService)||voices.find(voice=>voice.lang?.startsWith('en'))||null;
   speakingElement=element||null;
   speakingElement?.classList.add('speaking');
   utterance.onend=utterance.onerror=()=>{
