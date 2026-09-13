@@ -553,7 +553,7 @@ function vocabularyMarkup(){
   orderedVocabularyGroups(currentUnitItems).forEach(group=>{
     const token=groupToken(group);
     const checked=vocabularyState.groups.get(token)===true;
-    const count=checked?group.items.filter(item=>vocabularyState.items.get(itemToken(item))!==false).length:0;
+    const count=group.items.filter(item=>vocabularyState.items.get(itemToken(item))!==false).length;
     const chips=group.items.map(item=>{
       const selected=vocabularyState.items.get(itemToken(item))!==false;
       return '<button class="word-chip '+(selected?'':'off')+'" type="button" data-item-token="'+escapeHtml(itemToken(item))+'">'+escapeHtml(item.english)+'</button>';
