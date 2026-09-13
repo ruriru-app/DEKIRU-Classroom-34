@@ -172,12 +172,12 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .talk-player-mode{overflow-x:hidden}.talk-player-mode header{display:none}.talk-player-mode main{width:100%;max-width:none;min-width:0;margin:0;padding:0;overflow-x:hidden}
 .page#talkSentences{width:calc(100vw - 16px);max-width:calc(100vw - 16px);min-width:0;margin:0 8px;padding:8px 0;overflow-x:hidden}
 .talk-shell{width:100%;max-width:100%;min-width:0;min-height:calc(100vh - 16px);display:grid;grid-template-rows:auto minmax(340px,1fr) auto;gap:8px;overflow-x:hidden}
-.talk-topbar{width:100%;max-width:100%;min-width:0;display:grid;grid-template-columns:minmax(110px,auto) minmax(0,1fr) minmax(124px,auto);align-items:center;gap:8px;padding:8px;border:1px solid #ece6e1;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(77,60,50,.05);overflow:hidden}
+.talk-topbar{width:100%;max-width:100%;min-width:0;display:grid;grid-template-columns:48px minmax(0,1fr) minmax(270px,auto);align-items:center;gap:8px;padding:7px;border:1px solid #ece6e1;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(77,60,50,.05);overflow:hidden}
 .talk-back{border:1px solid #e7e1dc;background:#fff;border-radius:12px;padding:9px 14px;color:var(--ink);font-weight:700;cursor:pointer}
-.talk-top-control{align-self:stretch;min-height:88px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;color:var(--ink);padding:8px 12px;font:700 14px/1.2 inherit;cursor:pointer;white-space:nowrap}.talk-top-control:hover{background:#faf7f4}.talk-sound-toggle[aria-pressed="false"]{color:#8b817a;background:#f4f1ee}
-.talk-audio-controls{align-self:stretch;min-width:124px;display:grid;grid-template-rows:minmax(48px,1fr) auto;gap:5px}.talk-audio-controls .talk-top-control{min-height:48px}.talk-speed-control{min-height:34px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;gap:5px;padding:4px 6px;color:#5e554f;font:700 12px/1 inherit;white-space:nowrap}.talk-speed-control select{min-width:0;border:0;background:transparent;color:#2f2925;font:700 12px/1 inherit;cursor:pointer;outline:0}
+.talk-top-control{align-self:stretch;min-height:64px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;color:var(--ink);padding:6px 9px;font:700 13px/1.15 inherit;cursor:pointer;white-space:nowrap}.talk-top-control:hover{background:#faf7f4}.talk-sound-toggle[aria-pressed="false"]{color:#8b817a;background:#f4f1ee}.talk-back-compact{width:48px;min-width:48px;padding:0;font-size:30px;line-height:1}
+.talk-audio-controls{align-self:stretch;min-width:270px;display:grid;grid-template-columns:minmax(72px,.8fr) minmax(92px,1.15fr) minmax(92px,1fr);gap:5px}.talk-audio-controls .talk-top-control{min-height:64px}.talk-speed-control{min-height:64px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:4px 6px;color:#5e554f;font:700 11px/1 inherit;white-space:nowrap}.talk-speed-control select{min-width:0;max-width:100%;border:0;background:transparent;color:#2f2925;font:700 12px/1 inherit;cursor:pointer;outline:0}.talk-clarity-toggle{display:flex;align-items:center;justify-content:center;gap:5px}.talk-check-box{width:19px;height:19px;flex:0 0 19px;border:2px solid #a9a19a;border-radius:4px;background:#fff;display:grid;place-items:center;font:900 15px/1 Arial,sans-serif}.talk-clarity-toggle[aria-pressed="true"]{border-color:#6a9fd1;background:#eef7ff;color:#315f8a}.talk-clarity-toggle[aria-pressed="true"] .talk-check-box{border-color:#5e9bd2;color:#315f8a}.talk-clarity-toggle[aria-pressed="true"] .talk-check-box::after{content:'✓'}
 .talk-rules{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;min-width:0}
-.talk-rule{min-height:88px;border:4px solid var(--role-color);border-radius:11px;background:var(--role-bg);color:#2f2925;padding:10px 6px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(19px,1.5vw,27px);font-weight:800;line-height:1.15;white-space:nowrap}
+.talk-rule{min-height:64px;border:4px solid var(--role-color);border-radius:11px;background:var(--role-bg);color:#2f2925;padding:5px 4px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(19px,1.5vw,27px);font-weight:800;line-height:1.15;white-space:nowrap}
 .role-subject{--role-color:#e45757;--role-bg:#fff1f1}.role-negative{--role-color:#d8ad12;--role-bg:#fff9df}.role-verb{--role-color:#ef8fac;--role-bg:#fff2f6}.role-adjective{--role-color:#69af78;--role-bg:#f0faf2}.role-object{--role-color:#8a70cb;--role-bg:#f4f0ff}.role-place{--role-color:#e79643;--role-bg:#fff5e9}.role-time{--role-color:#5e9bd2;--role-bg:#eef7ff}.role-neutral{--role-color:#a89f98;--role-bg:#f6f4f2}
 .talk-stage{width:100%;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:safe center;border:1px solid #eee8e3;border-radius:20px;background:#fffdfb;padding:12px;overflow-x:auto}
 .talk-sentence-row{display:flex;align-items:flex-end;justify-content:center;gap:10px;min-width:max-content}
@@ -203,7 +203,7 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
   .page#lt1unit,.page#pronunciation{width:100%;margin-left:0;transform:none}
   .unit-sidebar,.pron-menu{position:static;max-height:none}
   .talk-activity-list{grid-template-columns:1fr}.page#talkSentences{width:100%;margin-left:0;transform:none}
-  .talk-shell{min-height:auto;display:block}.talk-topbar{grid-template-columns:1fr 1fr}.talk-topbar .talk-rules{grid-column:1/-1;grid-row:2;grid-template-columns:repeat(4,1fr);margin-top:8px}.talk-audio-controls{grid-column:2}.talk-stage{justify-content:flex-start;min-height:360px;margin:8px 0}
+  .talk-shell{min-height:auto;display:block}.talk-topbar{grid-template-columns:48px minmax(0,1fr)}.talk-topbar .talk-rules{grid-column:1/-1;grid-row:2;grid-template-columns:repeat(4,1fr);margin-top:8px}.talk-audio-controls{grid-column:2;min-width:0}.talk-stage{justify-content:flex-start;min-height:390px;margin:8px 0}
   .talk-question-layout{min-width:max-content}.talk-choices{margin-top:8px}
 }
 
@@ -375,13 +375,14 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 <section id="talkSentences" class="page">
   <div class="talk-shell">
     <div class="talk-topbar">
-      <button class="talk-top-control" id="talkPlayerBack" type="button">← Unit 4へ戻る</button>
+      <button class="talk-top-control talk-back-compact" id="talkPlayerBack" type="button" aria-label="Unit 4へ戻る" title="Unit 4へ戻る">◁</button>
       <div class="talk-rules" aria-label="文の組み立ての色分け">
         <div class="talk-rule role-subject">だれが</div><div class="talk-rule role-negative">打ち消し</div><div class="talk-rule role-verb">何する</div><div class="talk-rule role-adjective">どんな</div><div class="talk-rule role-object">だれを・何を</div><div class="talk-rule role-place">どこ</div><div class="talk-rule role-time">いつ</div>
       </div>
       <div class="talk-audio-controls">
         <button class="talk-top-control talk-sound-toggle" id="talkSoundToggle" type="button" aria-pressed="true" aria-label="カードの音声を切る">🔊 音声ON</button>
         <label class="talk-speed-control" for="talkSpeechRate"><span>速さ</span><select id="talkSpeechRate" aria-label="読み上げ速度"><option value="0.55" selected>ゆっくり</option><option value="0.85">ふつう</option><option value="1.20">はやめ</option></select></label>
+        <button class="talk-top-control talk-clarity-toggle" id="talkClarityToggle" type="button" aria-pressed="false"><span class="talk-check-box" aria-hidden="true"></span><span>はっきり</span></button>
       </div>
     </div>
     <div class="talk-stage" id="talkStage"></div>
@@ -421,13 +422,16 @@ let talkSelected={subject:'person_001',verb:'action5_002',object:'color_002'};
 let talkHiddenCategories=new Set();
 let talkSoundEnabled=true;
 let talkSpeechRate=.55;
+let talkClearSpeech=false;
+let talkSpeechSequenceId=0;
+let talkSpeechPauseTimer=null;
 const TALK_OBJECT_CATEGORIES=['colors','sports','desserts','drinks','fruits_vegetables'];
 const CONTRACTION_PARTS={"don't":['do','not'],"i'm":['I','am'],"you're":['you','are'],"it's":['it','is'],"that's":['that','is'],"what's":['what','is'],"who's":['who','is'],"can't":['can','not'],"won't":['will','not']};
 
 function show(id){
   if(id!=='pronunciation'){
     stopAuto();
-    window.speechSynthesis?.cancel();
+    stopTalkSpeechSequence();
   }
   pages.forEach(page=>page.classList.toggle('active',page.id===id));
   document.body.classList.toggle('talk-player-mode',id==='talkSentences');
@@ -657,7 +661,8 @@ function talkCardMarkup(token){
 function talkRowMarkup(tokens,punctuation,extraClass){
   const displayTokens=tokens.map(sentenceStartToken);
   const sentence=displayTokens.map(token=>token.speech||token.word).join(' ')+punctuation;
-  return '<div class="talk-sentence-row '+(extraClass||'')+'"><button class="talk-sentence-audio" type="button" data-talk-sentence="'+escapeHtml(sentence)+'" aria-label="文章全体を発音する">🔊</button>'+displayTokens.map(token=>'<span class="talk-token-slot" data-talk-token-slot>'+talkCardMarkup(token)+'</span>').join('')+'<span class="talk-punctuation" aria-hidden="true">'+escapeHtml(punctuation)+'</span></div>';
+  const parts=displayTokens.map(token=>token.speech||token.word);
+  return '<div class="talk-sentence-row '+(extraClass||'')+'"><button class="talk-sentence-audio" type="button" data-talk-sentence="'+escapeHtml(sentence)+'" data-talk-parts="'+escapeHtml(JSON.stringify(parts))+'" aria-label="文章全体を発音する">🔊</button>'+displayTokens.map(token=>'<span class="talk-token-slot" data-talk-token-slot>'+talkCardMarkup(token)+'</span>').join('')+'<span class="talk-punctuation" aria-hidden="true">'+escapeHtml(punctuation)+'</span></div>';
 }
 function talkChoiceItems(role,includeHidden){
   const seen=new Set();
@@ -748,7 +753,12 @@ function showTalkContractionParts(card,onRestore){
   },3000);
 }
 function bindTalkStageEvents(stage){
-  stage.querySelectorAll('[data-talk-sentence]').forEach(button=>button.addEventListener('click',()=>{if(talkSoundEnabled)speakText(button.dataset.talkSentence,button,talkSpeechRate)}));
+  stage.querySelectorAll('[data-talk-sentence]').forEach(button=>button.addEventListener('click',()=>{
+    if(!talkSoundEnabled)return;
+    let parts=[];
+    try{parts=JSON.parse(button.dataset.talkParts||'[]');}catch{}
+    speakTalkSentence(button.dataset.talkSentence,parts,button);
+  }));
   stage.querySelectorAll('[data-talk-speech]').forEach(card=>{
     let timer=null;
     let longPressed=false;
@@ -804,6 +814,11 @@ function updateTalkSoundButton(){
   button.setAttribute('aria-label',talkSoundEnabled?'カードの音声を切る':'カードの音声を入れる');
   button.textContent=talkSoundEnabled?'🔊 音声ON':'🔇 音声OFF';
 }
+function updateTalkClarityButton(){
+  const button=document.getElementById('talkClarityToggle');
+  button.setAttribute('aria-pressed',String(talkClearSpeech));
+  button.setAttribute('aria-label',talkClearSpeech?'単語ごとの区切り読みを切る':'単語ごとの区切り読みを入れる');
+}
 function openTalkActivity(activity){
   talkActivity=activity;
   talkChoiceRole='object';
@@ -818,18 +833,24 @@ function openTalkActivity(activity){
   renderTalkStage();
   renderTalkChoices();
   updateTalkSoundButton();
+  updateTalkClarityButton();
   show('talkSentences');
 }
 document.getElementById('openTalkSentences')?.addEventListener('click',()=>openActivityAccordion('talk',true));
 document.getElementById('talkPlayerBack')?.addEventListener('click',()=>show('lt1unit'));
 document.getElementById('talkSoundToggle')?.addEventListener('click',()=>{
   talkSoundEnabled=!talkSoundEnabled;
-  if(!talkSoundEnabled)window.speechSynthesis?.cancel();
+  if(!talkSoundEnabled)stopTalkSpeechSequence();
   updateTalkSoundButton();
 });
 document.getElementById('talkSpeechRate')?.addEventListener('change',event=>{
   talkSpeechRate=Number(event.target.value)||.55;
-  window.speechSynthesis?.cancel();
+  stopTalkSpeechSequence();
+});
+document.getElementById('talkClarityToggle')?.addEventListener('click',()=>{
+  talkClearSpeech=!talkClearSpeech;
+  stopTalkSpeechSequence();
+  updateTalkClarityButton();
 });
 document.querySelectorAll('[data-talk-role]').forEach(button=>button.addEventListener('click',()=>{
   talkChoiceRole=button.dataset.talkRole;
@@ -844,22 +865,74 @@ function cardMarkup(item){
   return '<button class="pron-card" type="button" data-speech="'+escapeHtml(item.speech||item.english)+'" aria-label="'+escapeHtml(item.english)+' の音声を再生"><div class="card-picture '+(item.image?'':'no-image')+'">'+image+'</div><div class="card-label"><div><span class="en-text">'+escapeHtml(item.english)+'</span><span class="jp-label">'+escapeHtml(item.japanese)+'</span></div></div></button>';
 }
 
-function speakText(text,element,rate){
-  if(!text||!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window))return;
-  window.speechSynthesis.cancel();
+function stopTalkSpeechSequence(){
+  talkSpeechSequenceId+=1;
+  clearTimeout(talkSpeechPauseTimer);
+  talkSpeechPauseTimer=null;
+  window.speechSynthesis?.cancel();
+  document.querySelectorAll('#talkStage .talk-card.speaking').forEach(card=>card.classList.remove('speaking'));
   speakingElement?.classList.remove('speaking');
+  speakingElement=null;
+}
+function createSpeechUtterance(text,rate){
   const utterance=new SpeechSynthesisUtterance(text);
   utterance.lang='en-US';
   utterance.rate=Number.isFinite(rate)?rate:.86;
   const voices=window.speechSynthesis.getVoices();
   utterance.voice=voices.find(voice=>voice.lang==='en-US'&&voice.localService&&!/natural|online/i.test(voice.name))||voices.find(voice=>voice.lang==='en-US'&&voice.localService)||voices.find(voice=>voice.lang==='en-US')||voices.find(voice=>voice.lang?.startsWith('en')&&voice.localService)||voices.find(voice=>voice.lang?.startsWith('en'))||null;
+  return utterance;
+}
+function speakText(text,element,rate){
+  if(!text||!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window))return;
+  stopTalkSpeechSequence();
+  const playbackId=talkSpeechSequenceId;
+  const utterance=createSpeechUtterance(text,rate);
   speakingElement=element||null;
   speakingElement?.classList.add('speaking');
   utterance.onend=utterance.onerror=()=>{
+    if(playbackId!==talkSpeechSequenceId)return;
     speakingElement?.classList.remove('speaking');
     speakingElement=null;
   };
   window.speechSynthesis.speak(utterance);
+}
+function speakTalkSentence(text,parts,element){
+  if(!talkClearSpeech){
+    speakText(text,element,talkSpeechRate);
+    return;
+  }
+  if(!text||!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window))return;
+  const spokenParts=(Array.isArray(parts)&&parts.length?parts:[text]).map(part=>String(part||'').trim()).filter(Boolean);
+  if(!spokenParts.length)return;
+  const punctuation=String(text).trim().match(/[?!.]$/)?.[0]||'';
+  if(punctuation)spokenParts[spokenParts.length-1]+=punctuation;
+  stopTalkSpeechSequence();
+  const sequenceId=talkSpeechSequenceId;
+  const row=element?.closest('.talk-sentence-row');
+  const cards=[...(row?.querySelectorAll('[data-talk-token-slot] > .talk-card')||[])];
+  speakingElement=element||null;
+  speakingElement?.classList.add('speaking');
+  const finish=()=>{
+    cards.forEach(card=>card.classList.remove('speaking'));
+    if(sequenceId!==talkSpeechSequenceId)return;
+    speakingElement?.classList.remove('speaking');
+    speakingElement=null;
+  };
+  const speakPart=index=>{
+    if(sequenceId!==talkSpeechSequenceId)return;
+    if(index>=spokenParts.length){finish();return;}
+    cards.forEach(card=>card.classList.remove('speaking'));
+    cards[index]?.classList.add('speaking');
+    const utterance=createSpeechUtterance(spokenParts[index],talkSpeechRate);
+    utterance.onend=()=>{
+      cards[index]?.classList.remove('speaking');
+      if(sequenceId!==talkSpeechSequenceId)return;
+      talkSpeechPauseTimer=setTimeout(()=>speakPart(index+1),360);
+    };
+    utterance.onerror=finish;
+    window.speechSynthesis.speak(utterance);
+  };
+  speakPart(0);
 }
 
 function bindCardSpeech(container){
