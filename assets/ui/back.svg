@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Linearity Curve (http://linearity.io/curve) -->
+<svg height="430.0px" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 430 430" width="430.0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs/>
+<g id="レイヤー-1">
+<g opacity="1">
+<path d="M0 72.7877C0 32.5882 32.5882 0 72.7877 0L357.212 0C397.412 0 430 32.5882 430 72.7877L430 357.212C430 397.412 397.412 430 357.212 430L72.7877 430C32.5882 430 0 397.412 0 357.212L0 72.7877Z" fill="#8bb7e8" fill-rule="nonzero" opacity="0.5" stroke="none"/>
+<path d="M107.028 215L289.56 109.615L289.56 320.385L107.028 215Z" fill="#6b5746" fill-rule="nonzero" opacity="1" stroke="#6b5746" stroke-linecap="butt" stroke-linejoin="round" stroke-width="22.4626"/>
+</g>
+</g>
+</svg>
