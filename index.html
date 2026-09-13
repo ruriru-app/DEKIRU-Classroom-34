@@ -172,10 +172,10 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .talk-player-mode{overflow-x:hidden}.talk-player-mode header{display:none}.talk-player-mode main{width:100%;max-width:none;min-width:0;margin:0;padding:0;overflow-x:hidden}
 .page#talkSentences{width:calc(100vw - 16px);max-width:calc(100vw - 16px);min-width:0;margin:0 8px;padding:8px 0;overflow-x:hidden}
 .talk-shell{width:100%;max-width:100%;min-width:0;min-height:calc(100vh - 16px);display:grid;grid-template-rows:auto minmax(340px,1fr) auto;gap:8px;overflow-x:hidden}
-.talk-topbar{width:100%;max-width:100%;min-width:0;display:grid;grid-template-columns:48px minmax(0,1fr) minmax(270px,auto);align-items:center;gap:8px;padding:7px;border:1px solid #ece6e1;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(77,60,50,.05);overflow:hidden}
+.talk-topbar{width:100%;max-width:100%;min-width:0;display:grid;grid-template-columns:48px minmax(0,1fr) 118px;align-items:center;gap:8px;padding:7px;border:1px solid #ece6e1;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(77,60,50,.05);overflow:hidden}
 .talk-back{border:1px solid #e7e1dc;background:#fff;border-radius:12px;padding:9px 14px;color:var(--ink);font-weight:700;cursor:pointer}
-.talk-top-control{align-self:stretch;min-height:64px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;color:var(--ink);padding:6px 9px;font:700 13px/1.15 inherit;cursor:pointer;white-space:nowrap}.talk-top-control:hover{background:#faf7f4}.talk-sound-toggle[aria-pressed="false"]{color:#8b817a;background:#f4f1ee}.talk-back-compact{width:48px;min-width:48px;padding:0;font-size:30px;line-height:1}
-.talk-audio-controls{align-self:stretch;min-width:270px;display:grid;grid-template-columns:minmax(72px,.8fr) minmax(92px,1.15fr) minmax(92px,1fr);gap:5px}.talk-audio-controls .talk-top-control{min-height:64px}.talk-speed-control{min-height:64px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:4px 6px;color:#5e554f;font:700 11px/1 inherit;white-space:nowrap}.talk-speed-control select{min-width:0;max-width:100%;border:0;background:transparent;color:#2f2925;font:700 12px/1 inherit;cursor:pointer;outline:0}.talk-clarity-toggle{display:flex;align-items:center;justify-content:center;gap:5px}.talk-check-box{width:19px;height:19px;flex:0 0 19px;border:2px solid #a9a19a;border-radius:4px;background:#fff;display:grid;place-items:center;font:900 15px/1 Arial,sans-serif}.talk-clarity-toggle[aria-pressed="true"]{border-color:#6a9fd1;background:#eef7ff;color:#315f8a}.talk-clarity-toggle[aria-pressed="true"] .talk-check-box{border-color:#5e9bd2;color:#315f8a}.talk-clarity-toggle[aria-pressed="true"] .talk-check-box::after{content:'✓'}
+.talk-top-control{align-self:stretch;min-height:64px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;color:var(--ink);padding:6px 9px;font:700 13px/1.15 inherit;cursor:pointer;white-space:nowrap}.talk-top-control:hover{background:#faf7f4}.talk-back-compact{width:48px;min-width:48px;padding:0;font-size:30px;line-height:1}
+.talk-audio-controls{align-self:stretch;width:118px;min-width:118px;height:64px;display:grid;grid-template-rows:36px 24px;gap:4px}.talk-icon-row{min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:4px}.talk-icon-control{position:relative;min-width:0;border:0;border-radius:8px;background:#fff;padding:0;overflow:hidden;cursor:pointer}.talk-icon-control:focus-visible{outline:3px solid #5e9bd2;outline-offset:1px}.talk-svg-crop{position:absolute;inset:0;overflow:hidden}.talk-svg-crop img{position:absolute;top:-5%;left:0;height:110%;width:auto;max-width:none;display:block;pointer-events:none}.talk-svg-crop.second img{right:0;left:auto}.talk-icon-control[aria-pressed="false"] .talk-svg-crop{opacity:.45;filter:grayscale(.75)}.talk-icon-control[aria-pressed="true"]{box-shadow:inset 0 0 0 2px #6a9fd1}.talk-sound-toggle[aria-pressed="false"]::after{content:'';position:absolute;left:10%;top:48%;width:80%;height:3px;border-radius:3px;background:#d85d5d;transform:rotate(-32deg)}.talk-clarity-toggle[aria-pressed="true"]::after{content:'✓';position:absolute;right:2px;top:1px;width:16px;height:16px;border-radius:50%;background:#fff;color:#315f8a;font:900 13px/16px Arial,sans-serif}.talk-speed-control{min-height:24px;border:1px solid #d9d1ca;border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;gap:3px;padding:1px 4px;color:#5e554f;font:700 11px/1 inherit;white-space:nowrap}.talk-speed-control select{min-width:0;max-width:72px;border:0;background:transparent;color:#2f2925;font:700 11px/1 inherit;cursor:pointer;outline:0}
 .talk-rules{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;min-width:0}
 .talk-rule{min-height:64px;border:4px solid var(--role-color);border-radius:11px;background:var(--role-bg);color:#2f2925;padding:5px 4px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(19px,1.5vw,27px);font-weight:800;line-height:1.15;white-space:nowrap}
 .role-subject{--role-color:#e45757;--role-bg:#fff1f1}.role-negative{--role-color:#d8ad12;--role-bg:#fff9df}.role-verb{--role-color:#ef8fac;--role-bg:#fff2f6}.role-adjective{--role-color:#69af78;--role-bg:#f0faf2}.role-object{--role-color:#8a70cb;--role-bg:#f4f0ff}.role-place{--role-color:#e79643;--role-bg:#fff5e9}.role-time{--role-color:#5e9bd2;--role-bg:#eef7ff}.role-neutral{--role-color:#a89f98;--role-bg:#f6f4f2}
@@ -186,7 +186,7 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .talk-card{position:relative;width:clamp(136px,10.5vw,184px);aspect-ratio:210/297;flex:0 0 auto;border:4px solid var(--role-color);border-radius:15px;background:#fff;padding:8px;display:grid;grid-template-rows:1fr auto;overflow:hidden;color:var(--ink);font:inherit;box-shadow:0 3px 9px rgba(69,51,42,.09);cursor:pointer}
 .talk-card-picture{width:100%;aspect-ratio:1/1;align-self:start;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:8px;background:#fff}
 .talk-card-picture img{width:100%;height:100%;object-fit:contain;display:block}.talk-card-picture.symbol{font-family:'DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(48px,5vw,78px);font-weight:700;color:var(--role-color)}
-.talk-card-word{min-height:54px;display:flex;align-items:center;justify-content:center;padding:6px 2px 2px;font-family:'RuRiRu Font','DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(28px,2.5vw,40px);font-weight:400;line-height:1.05;text-align:center;white-space:nowrap;max-width:100%;overflow:hidden}.talk-card-word.long{font-size:clamp(20px,1.85vw,30px)}.talk-card-word.extra-long{font-size:clamp(16px,1.45vw,24px);line-height:1;white-space:normal;overflow-wrap:anywhere}
+.talk-card-word{min-height:54px;display:flex;align-items:center;justify-content:center;padding:6px 1px 2px;font-family:'RuRiRu Font','DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(28px,2.5vw,40px);font-weight:400;line-height:1.05;text-align:center;white-space:nowrap;max-width:100%;overflow:hidden}.talk-card-word.long{font-size:clamp(20px,1.85vw,30px)}.talk-card-word.extra-long{font-size:clamp(15px,1.4vw,23px);line-height:1;white-space:nowrap}
 .talk-card:hover{box-shadow:0 5px 14px rgba(69,51,42,.15)}.talk-card:focus-visible,.talk-choice:focus-visible{outline:3px solid #78a8db;outline-offset:3px}.talk-card.speaking{outline:3px solid var(--pink);outline-offset:3px}
 .talk-punctuation{font-family:'DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(42px,4.2vw,70px);font-weight:700;line-height:.72;padding:0 2px 3px;color:var(--ink)}
 .talk-question-layout{width:max-content;min-width:100%;display:grid;grid-template-columns:auto auto;align-items:center;justify-content:center;gap:clamp(28px,4vw,72px)}
@@ -380,9 +380,11 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
         <div class="talk-rule role-subject">だれが</div><div class="talk-rule role-negative">打ち消し</div><div class="talk-rule role-verb">何する</div><div class="talk-rule role-adjective">どんな</div><div class="talk-rule role-object">だれを・何を</div><div class="talk-rule role-place">どこ</div><div class="talk-rule role-time">いつ</div>
       </div>
       <div class="talk-audio-controls">
-        <button class="talk-top-control talk-sound-toggle" id="talkSoundToggle" type="button" aria-pressed="true" aria-label="カードの音声を切る">🔊 音声ON</button>
+        <div class="talk-icon-row">
+          <button class="talk-icon-control talk-sound-toggle" id="talkSoundToggle" type="button" aria-pressed="true" aria-label="カードの音声を切る" title="音声ON"><span class="talk-svg-crop"><img src="assets/ui/audio_controls.svg" alt=""></span></button>
+          <button class="talk-icon-control talk-clarity-toggle" id="talkClarityToggle" type="button" aria-pressed="false" aria-label="1枚ずつ区切って読む" title="1枚ずつ読む"><span class="talk-svg-crop second"><img src="assets/ui/audio_controls.svg" alt=""></span></button>
+        </div>
         <label class="talk-speed-control" for="talkSpeechRate"><span>速さ</span><select id="talkSpeechRate" aria-label="読み上げ速度"><option value="0.55" selected>ゆっくり</option><option value="0.85">ふつう</option><option value="1.20">はやめ</option></select></label>
-        <button class="talk-top-control talk-clarity-toggle" id="talkClarityToggle" type="button" aria-pressed="false"><span class="talk-check-box" aria-hidden="true"></span><span>はっきり</span></button>
       </div>
     </div>
     <div class="talk-stage" id="talkStage"></div>
@@ -642,6 +644,29 @@ function talkWordSizeClass(word){
   const length=[...String(word||'')].length;
   return length>=12?' extra-long':length>=9?' long':'';
 }
+function fitTalkWordLabels(root){
+  const apply=()=>{
+    if(!root?.isConnected)return;
+    root.querySelectorAll('.talk-card-word,.talk-choice-word').forEach(label=>{
+      label.style.fontSize='';
+      label.style.paddingInline='1px';
+      const minimum=label.classList.contains('talk-choice-word')?9:11;
+      let size=parseFloat(getComputedStyle(label).fontSize)||minimum;
+      const available=Math.max(1,label.clientWidth-2);
+      const textWidth=()=>{
+        const range=document.createRange();
+        range.selectNodeContents(label);
+        return range.getBoundingClientRect().width;
+      };
+      while(textWidth()>available&&size>minimum){
+        size=Math.max(minimum,size-1);
+        label.style.fontSize=size+'px';
+      }
+    });
+  };
+  requestAnimationFrame(apply);
+  document.fonts?.ready.then(apply);
+}
 function sentenceStartToken(token,index){
   if(index!==0)return token;
   const word=String(token.word||'');
@@ -722,6 +747,7 @@ function renderTalkChoices(){
     renderTalkStage();
     renderTalkChoices();
   }));
+  fitTalkWordLabels(target);
 }
 function talkExpansionToken(part){
   const normalized=String(part||'').toLowerCase();
@@ -742,6 +768,7 @@ function showTalkContractionParts(card,onRestore){
   slot.classList.add('show-contraction-parts');
   const partCards=parts.map(part=>talkCardElement(talkExpansionToken(part)));
   slot.replaceChildren(...partCards);
+  fitTalkWordLabels(slot);
   partCards.forEach(partCard=>partCard.addEventListener('click',()=>{
     if(talkSoundEnabled)speakText(partCard.dataset.talkSpeech,partCard,talkSpeechRate);
   }));
@@ -749,6 +776,7 @@ function showTalkContractionParts(card,onRestore){
     slot.replaceChildren(card);
     slot.classList.remove('show-contraction-parts');
     delete slot.dataset.expanding;
+    fitTalkWordLabels(slot);
     onRestore?.();
   },3000);
 }
@@ -807,17 +835,19 @@ function renderTalkStage(){
     stage.innerHTML=talkRowMarkup([subjectToken,verbToken,objectToken],'.');
   }
   bindTalkStageEvents(stage);
+  fitTalkWordLabels(stage);
 }
 function updateTalkSoundButton(){
   const button=document.getElementById('talkSoundToggle');
   button.setAttribute('aria-pressed',String(talkSoundEnabled));
   button.setAttribute('aria-label',talkSoundEnabled?'カードの音声を切る':'カードの音声を入れる');
-  button.textContent=talkSoundEnabled?'🔊 音声ON':'🔇 音声OFF';
+  button.title=talkSoundEnabled?'音声ON':'音声OFF';
 }
 function updateTalkClarityButton(){
   const button=document.getElementById('talkClarityToggle');
   button.setAttribute('aria-pressed',String(talkClearSpeech));
-  button.setAttribute('aria-label',talkClearSpeech?'単語ごとの区切り読みを切る':'単語ごとの区切り読みを入れる');
+  button.setAttribute('aria-label',talkClearSpeech?'1枚ずつ読むのを切る':'1枚ずつ区切って読む');
+  button.title=talkClearSpeech?'1枚ずつ読む：ON':'1枚ずつ読む：OFF';
 }
 function openTalkActivity(activity){
   talkActivity=activity;
@@ -909,11 +939,13 @@ function speakTalkSentence(text,parts,element){
   stopTalkSpeechSequence();
   const sequenceId=talkSpeechSequenceId;
   const row=element?.closest('.talk-sentence-row');
-  const cards=[...(row?.querySelectorAll('[data-talk-token-slot] > .talk-card')||[])];
+  const slots=[...(row?.querySelectorAll('[data-talk-token-slot]')||[])];
+  const clearHighlights=()=>slots.forEach(slot=>slot.querySelectorAll('.talk-card.speaking').forEach(card=>card.classList.remove('speaking')));
+  const highlightSlot=index=>slots[index]?.querySelectorAll('.talk-card').forEach(card=>card.classList.add('speaking'));
   speakingElement=element||null;
   speakingElement?.classList.add('speaking');
   const finish=()=>{
-    cards.forEach(card=>card.classList.remove('speaking'));
+    clearHighlights();
     if(sequenceId!==talkSpeechSequenceId)return;
     speakingElement?.classList.remove('speaking');
     speakingElement=null;
@@ -921,11 +953,11 @@ function speakTalkSentence(text,parts,element){
   const speakPart=index=>{
     if(sequenceId!==talkSpeechSequenceId)return;
     if(index>=spokenParts.length){finish();return;}
-    cards.forEach(card=>card.classList.remove('speaking'));
-    cards[index]?.classList.add('speaking');
+    clearHighlights();
+    highlightSlot(index);
     const utterance=createSpeechUtterance(spokenParts[index],talkSpeechRate);
     utterance.onend=()=>{
-      cards[index]?.classList.remove('speaking');
+      clearHighlights();
       if(sequenceId!==talkSpeechSequenceId)return;
       talkSpeechPauseTimer=setTimeout(()=>speakPart(index+1),360);
     };
