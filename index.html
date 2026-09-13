@@ -163,7 +163,7 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .activity-accordion-toggle:hover{color:#765b4c}.activity-section-title{font-size:18px;font-weight:700}.activity-arrow{font-size:15px;transition:transform .18s ease}.activity-accordion.open .activity-arrow{transform:rotate(180deg)}
 .activity-accordion-body{display:none;padding:0 0 20px}.activity-accordion.open .activity-accordion-body{display:block}.activity-accordion .activity-grid{margin-top:0}
 .activity-accordion[hidden]{display:none}
-.talk-activity-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.talk-activity-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .talk-activity-choice{min-height:180px;border:2px solid #eadbd3;border-radius:22px;background:#fff;padding:24px;text-align:left;color:var(--ink);cursor:pointer;box-shadow:0 6px 18px rgba(77,60,50,.08);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
 .talk-activity-choice:hover{transform:translateY(-2px);border-color:#dda9bd;box-shadow:0 9px 22px rgba(77,60,50,.12)}
 .talk-activity-choice .activity-number{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#f9e4ec;color:#875b6d;font-weight:700;margin-bottom:18px}
@@ -171,7 +171,7 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .talk-activity-choice span:last-child{display:block;margin-top:12px;color:var(--brown);font-size:14px;line-height:1.5}
 .talk-player-mode{overflow-x:hidden}.talk-player-mode header{display:none}.talk-player-mode main{width:100%;max-width:none;min-width:0;margin:0;padding:0;overflow-x:hidden}
 .page#talkSentences{width:calc(100vw - 16px);max-width:calc(100vw - 16px);min-width:0;margin:0 8px;padding:8px 0;overflow-x:hidden}
-.talk-shell{width:100%;max-width:100%;min-width:0;min-height:calc(100vh - 16px);display:grid;grid-template-rows:auto minmax(340px,1fr) auto;gap:8px;overflow-x:hidden}
+.talk-shell{width:100%;max-width:100%;min-width:0;height:calc(100vh - 16px);min-height:620px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;overflow:hidden}
 .talk-topbar{width:100%;max-width:100%;min-width:0;display:grid;grid-template-columns:48px minmax(0,1fr) 118px;align-items:center;gap:8px;padding:7px;border:1px solid #ece6e1;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(77,60,50,.05);overflow:hidden}
 .talk-back{border:1px solid #e7e1dc;background:#fff;border-radius:12px;padding:9px 14px;color:var(--ink);font-weight:700;cursor:pointer}
 .talk-top-control{align-self:stretch;min-height:64px;border:2px solid #d9d1ca;border-radius:10px;background:#fff;color:var(--ink);padding:6px 9px;font:700 13px/1.15 inherit;cursor:pointer;white-space:nowrap}.talk-top-control:hover{background:#faf7f4}.talk-back-compact{width:48px;min-width:48px;padding:0;font-size:30px;line-height:1}
@@ -179,18 +179,23 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
 .talk-rules{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;min-width:0}
 .talk-rule{min-height:64px;border:4px solid var(--role-color);border-radius:11px;background:var(--role-bg);color:#2f2925;padding:5px 4px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(19px,1.5vw,27px);font-weight:800;line-height:1.15;white-space:nowrap}
 .role-subject{--role-color:#e45757;--role-bg:#fff1f1}.role-negative{--role-color:#d8ad12;--role-bg:#fff9df}.role-verb{--role-color:#ef8fac;--role-bg:#fff2f6}.role-adjective{--role-color:#69af78;--role-bg:#f0faf2}.role-object{--role-color:#8a70cb;--role-bg:#f4f0ff}.role-place{--role-color:#e79643;--role-bg:#fff5e9}.role-time{--role-color:#5e9bd2;--role-bg:#eef7ff}.role-neutral{--role-color:#a89f98;--role-bg:#f6f4f2}
-.talk-stage{width:100%;max-width:100%;min-width:0;display:flex;align-items:center;justify-content:safe center;border:1px solid #eee8e3;border-radius:20px;background:#fffdfb;padding:12px;overflow-x:auto}
+.talk-stage-wrap{position:relative;width:100%;max-width:100%;min-width:0;min-height:0;display:flex}
+.talk-stage{width:100%;max-width:100%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:safe center;border:1px solid #eee8e3;border-radius:20px;background:#fffdfb;padding:8px;overflow:auto}
+.talk-stage-zoom{position:absolute;z-index:4;right:12px;top:12px;width:42px;height:42px;border:2px solid #d9d1ca;border-radius:12px;background:rgba(255,255,255,.94);color:#51463f;font:800 21px/1 Arial,sans-serif;cursor:pointer;box-shadow:0 2px 7px rgba(69,51,42,.08)}.talk-stage-zoom[aria-pressed="true"]{background:#eef7ff;border-color:#75a7d7}.talk-stage-zoom:focus-visible{outline:3px solid #78a8db;outline-offset:2px}
 .talk-sentence-row{display:flex;align-items:flex-end;justify-content:center;gap:10px;min-width:max-content}
 .talk-token-slot{display:flex;align-items:flex-end;gap:10px;flex:0 0 auto}
-.talk-sentence-audio{align-self:center;flex:0 0 auto;width:54px;height:54px;border:2px solid #d8d0ca;border-radius:50%;background:#fff;color:#5a4d45;display:grid;place-items:center;font-size:25px;cursor:pointer;box-shadow:0 2px 7px rgba(69,51,42,.08)}.talk-sentence-audio:hover{background:#f7f2ee}.talk-sentence-audio:focus-visible{outline:3px solid #78a8db;outline-offset:3px}
+.talk-sentence-audio{align-self:center;flex:0 0 auto;width:54px;height:54px;border:0;border-radius:50%;background:transparent;padding:0;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 7px rgba(69,51,42,.08)}.talk-sentence-audio img{width:100%;height:100%;display:block}.talk-sentence-audio:hover{filter:brightness(.97)}.talk-sentence-audio:focus-visible{outline:3px solid #78a8db;outline-offset:3px}
 .talk-card{position:relative;width:clamp(136px,10.5vw,184px);aspect-ratio:210/297;flex:0 0 auto;border:4px solid var(--role-color);border-radius:15px;background:#fff;padding:8px;display:grid;grid-template-rows:1fr auto;overflow:hidden;color:var(--ink);font:inherit;box-shadow:0 3px 9px rgba(69,51,42,.09);cursor:pointer}
 .talk-card-picture{width:100%;aspect-ratio:1/1;align-self:start;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:8px;background:#fff}
 .talk-card-picture img{width:100%;height:100%;object-fit:contain;display:block}.talk-card-picture.symbol{font-family:'DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(48px,5vw,78px);font-weight:700;color:var(--role-color)}
 .talk-card-word{min-height:54px;display:flex;align-items:center;justify-content:center;padding:6px 1px 2px;font-family:'RuRiRu Font','DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(28px,2.5vw,40px);font-weight:400;line-height:1.05;text-align:center;white-space:nowrap;max-width:100%;overflow:hidden}.talk-card-word.long{font-size:clamp(20px,1.85vw,30px)}.talk-card-word.extra-long{font-size:clamp(15px,1.4vw,23px);line-height:1;white-space:nowrap}
 .talk-card:hover{box-shadow:0 5px 14px rgba(69,51,42,.15)}.talk-card:focus-visible,.talk-choice:focus-visible{outline:3px solid #78a8db;outline-offset:3px}.talk-card.speaking{outline:3px solid var(--pink);outline-offset:3px}
 .talk-punctuation{font-family:'DEKIRU Andika','Trebuchet MS',Arial,sans-serif;font-size:clamp(42px,4.2vw,70px);font-weight:700;line-height:.72;padding:0 2px 3px;color:var(--ink)}
-.talk-question-layout{width:max-content;min-width:100%;display:grid;grid-template-columns:auto auto;align-items:center;justify-content:center;gap:clamp(28px,4vw,72px)}
-.talk-responses{display:flex;flex-direction:column;gap:16px;padding-left:clamp(16px,2.5vw,38px);border-left:2px solid #eee5df}.talk-response-row{display:flex;align-items:flex-end;gap:8px;min-width:max-content}
+.talk-sequence-layout{width:max-content;min-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.talk-question-layout{width:max-content;min-width:100%;display:grid;grid-template-columns:auto auto;align-items:center;justify-content:center;gap:clamp(10px,1.2vw,20px);padding:0 2px}
+.talk-responses{display:flex;flex-direction:column;gap:10px;padding-left:clamp(7px,.7vw,12px);border-left:2px solid #eee5df}.talk-response-row{display:flex;align-items:flex-end;gap:6px;min-width:max-content}
+.talk-question-row .talk-card{width:clamp(116px,8.6vw,158px)}.talk-response-row .talk-card{width:clamp(96px,7vw,128px);border-width:3px;padding:6px}.talk-response-row .talk-card-word{min-height:43px;font-size:clamp(23px,2vw,32px);padding-inline:0}.talk-response-row .talk-card-picture.symbol{font-size:clamp(39px,3.8vw,58px)}.talk-response-row .talk-sentence-audio{width:42px;height:42px}.talk-response-row .talk-punctuation{font-size:clamp(34px,3vw,48px)}
+.talk-stage.enlarged .talk-card{width:clamp(152px,12vw,210px)}.talk-stage.enlarged .talk-question-row .talk-card{width:clamp(136px,10vw,184px)}.talk-stage.enlarged .talk-response-row .talk-card{width:clamp(110px,8.2vw,146px)}
 .talk-choice-panel{width:100%;max-width:100%;min-width:0;border:1px solid #e9e2dc;border-radius:16px;background:#fff;padding:8px 11px 9px;box-shadow:0 -2px 12px rgba(77,60,50,.05);overflow:hidden}
 .talk-choice-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;overflow-x:auto;padding:1px 1px 3px}.talk-role-tabs,.talk-category-filters{display:flex;align-items:center;gap:7px;flex:0 0 auto}.talk-category-filters:empty{display:none}
 .talk-role-tab,.talk-category-filter{min-height:34px;border:2px solid var(--role-color);border-radius:999px;background:#fff;color:#2f2925;padding:5px 14px;font:700 14px/1.1 inherit;white-space:nowrap;cursor:pointer}.talk-role-tab[aria-pressed="true"],.talk-category-filter[aria-pressed="true"]{background:var(--role-bg)}.talk-category-filter.excluded{border-color:#c8c2bd;background:#eeeae7;color:#9a928d;text-decoration:line-through}.talk-role-tab:focus-visible,.talk-category-filter:focus-visible{outline:3px solid #78a8db;outline-offset:2px}
@@ -203,7 +208,7 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
   .page#lt1unit,.page#pronunciation{width:100%;margin-left:0;transform:none}
   .unit-sidebar,.pron-menu{position:static;max-height:none}
   .talk-activity-list{grid-template-columns:1fr}.page#talkSentences{width:100%;margin-left:0;transform:none}
-  .talk-shell{min-height:auto;display:block}.talk-topbar{grid-template-columns:48px minmax(0,1fr)}.talk-topbar .talk-rules{grid-column:1/-1;grid-row:2;grid-template-columns:repeat(4,1fr);margin-top:8px}.talk-audio-controls{grid-column:2;min-width:0}.talk-stage{justify-content:flex-start;min-height:390px;margin:8px 0}
+  .talk-shell{height:auto;min-height:auto;display:block}.talk-topbar{grid-template-columns:48px minmax(0,1fr)}.talk-topbar .talk-rules{grid-column:1/-1;grid-row:2;grid-template-columns:repeat(4,1fr);margin-top:8px}.talk-audio-controls{grid-column:2;min-width:0}.talk-stage-wrap{min-height:390px;margin:8px 0}.talk-stage{justify-content:flex-start}
   .talk-question-layout{min-width:max-content}.talk-choices{margin-top:8px}
 }
 
@@ -247,8 +252,11 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
         <button class="activity-accordion-toggle" type="button" aria-expanded="false"><span class="activity-section-title">文で話そう</span><span class="activity-arrow" aria-hidden="true">▼</span></button>
         <div class="activity-accordion-body"><div class="talk-activity-list">
           <button class="talk-activity-choice" type="button" data-talk-activity="like"><span class="activity-number">1</span><strong>I like red.</strong><span>好きな色を伝える</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="dont"><span class="activity-number">2</span><strong>I don't like black.</strong><span>好きではない色を伝える</span></button>
-          <button class="talk-activity-choice" type="button" data-talk-activity="question"><span class="activity-number">3</span><strong>Do you like red?</strong><span>質問し、Yes / No で答える</span></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="dont"><span class="activity-number">2</span><strong>I don't like red.</strong><span>好きではない色を伝える</span></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="like_dont"><span class="activity-number">3</span><strong>I like red. I don't like black.</strong><span>好きな色と好きではない色を伝える</span></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="question"><span class="activity-number">4</span><strong>Do you like red?</strong><span>質問し、Yes / No で答える</span></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="like_question"><span class="activity-number">5</span><strong>I like red. Do you like red?</strong><span>自分の好みを伝えてから質問する</span></button>
+          <button class="talk-activity-choice" type="button" data-talk-activity="dont_question"><span class="activity-number">6</span><strong>I don't like black. Do you like black?</strong><span>好きではない色を伝えてから質問する</span></button>
         </div></div>
       </div>
       <div class="activity-section activity-accordion" data-activity-section="class">
@@ -387,7 +395,10 @@ body.pron-fullscreen #pronunciation .auto-focus{height:calc(100vh - 62px);min-he
         <label class="talk-speed-control" for="talkSpeechRate"><span>速さ</span><select id="talkSpeechRate" aria-label="読み上げ速度"><option value="0.55" selected>ゆっくり</option><option value="0.85">ふつう</option><option value="1.20">はやめ</option></select></label>
       </div>
     </div>
-    <div class="talk-stage" id="talkStage"></div>
+    <div class="talk-stage-wrap">
+      <button class="talk-stage-zoom" id="talkStageZoom" type="button" aria-pressed="false" aria-label="文カードを拡大する" title="文カードを拡大する">⛶</button>
+      <div class="talk-stage" id="talkStage"></div>
+    </div>
     <div class="talk-choice-panel">
       <div class="talk-choice-head">
         <div class="talk-role-tabs" aria-label="入れ替える文の部分">
@@ -420,11 +431,13 @@ let autoOrder=[];
 let speakingElement=null;
 let talkActivity='like';
 let talkChoiceRole='object';
-let talkSelected={subject:'person_001',verb:'action5_002',object:'color_002'};
+let talkChoiceTarget='object';
+let talkSelected={subject:'person_001',questionSubject:'person_002',responseSubject:'person_001',verb:'action5_002',object:'color_002',negativeObject:'color_009'};
 let talkHiddenCategories=new Set();
 let talkSoundEnabled=true;
 let talkSpeechRate=.55;
 let talkClearSpeech=false;
+let talkStageEnlarged=false;
 let talkSpeechSequenceId=0;
 let talkSpeechPauseTimer=null;
 const TALK_OBJECT_CATEGORIES=['colors','sports','desserts','drinks','fruits_vegetables'];
@@ -634,8 +647,8 @@ function openUnit(unit){
 }
 document.querySelectorAll('[data-lt1-unit]').forEach(button=>button.addEventListener('click',()=>openUnit(Number(button.dataset.lt1Unit))));
 
-function talkToken(word,role,cardId,symbol,speech){
-  return {word,role,cardId:cardId||'',symbol:symbol||'',speech:speech||word.replace(/[,.?]$/,'')};
+function talkToken(word,role,cardId,symbol,speech,selectionKey){
+  return {word,role,cardId:cardId||'',symbol:symbol||'',speech:speech||word.replace(/[,.?]$/,''),selectionKey:selectionKey||''};
 }
 function contractionParts(word){
   return CONTRACTION_PARTS[String(word||'').toLowerCase()]||[];
@@ -681,13 +694,14 @@ function talkCardMarkup(token){
   const expansionParts=contractionParts(word);
   const picture=image?'<img src="'+escapeHtml(image)+'" alt="" onerror="this.parentElement.classList.add(&quot;symbol&quot;);this.parentElement.textContent=&quot;?&quot;">':'<span aria-hidden="true">'+escapeHtml(token.symbol||'•')+'</span>';
   const expansionData=expansionParts.length?' data-talk-expansion="'+escapeHtml(expansionParts.join('|'))+'" title="長押しすると元の形を表示"':'';
-  return '<button class="talk-card role-'+escapeHtml(token.role)+'" type="button" data-talk-speech="'+escapeHtml(speech)+'"'+expansionData+' aria-label="'+escapeHtml(word)+' の音声を再生"><span class="talk-card-picture '+(image?'':'symbol')+'">'+picture+'</span><span class="talk-card-word'+talkWordSizeClass(word)+'">'+escapeHtml(word)+'</span></button>';
+  const selectionData=token.selectionKey?' data-talk-selection-key="'+escapeHtml(token.selectionKey)+'" data-talk-selection-role="'+escapeHtml(token.role)+'"':'';
+  return '<button class="talk-card role-'+escapeHtml(token.role)+'" type="button" data-talk-speech="'+escapeHtml(speech)+'"'+selectionData+expansionData+' aria-label="'+escapeHtml(word)+' の音声を再生"><span class="talk-card-picture '+(image?'':'symbol')+'">'+picture+'</span><span class="talk-card-word'+talkWordSizeClass(word)+'">'+escapeHtml(word)+'</span></button>';
 }
 function talkRowMarkup(tokens,punctuation,extraClass){
   const displayTokens=tokens.map(sentenceStartToken);
   const sentence=displayTokens.map(token=>token.speech||token.word).join(' ')+punctuation;
   const parts=displayTokens.map(token=>token.speech||token.word);
-  return '<div class="talk-sentence-row '+(extraClass||'')+'"><button class="talk-sentence-audio" type="button" data-talk-sentence="'+escapeHtml(sentence)+'" data-talk-parts="'+escapeHtml(JSON.stringify(parts))+'" aria-label="文章全体を発音する">🔊</button>'+displayTokens.map(token=>'<span class="talk-token-slot" data-talk-token-slot>'+talkCardMarkup(token)+'</span>').join('')+'<span class="talk-punctuation" aria-hidden="true">'+escapeHtml(punctuation)+'</span></div>';
+  return '<div class="talk-sentence-row '+(extraClass||'')+'"><button class="talk-sentence-audio" type="button" data-talk-sentence="'+escapeHtml(sentence)+'" data-talk-parts="'+escapeHtml(JSON.stringify(parts))+'" aria-label="文章全体を発音する"><img src="assets/ui/read_aloud.svg" alt=""></button>'+displayTokens.map(token=>'<span class="talk-token-slot" data-talk-token-slot>'+talkCardMarkup(token)+'</span>').join('')+'<span class="talk-punctuation" aria-hidden="true">'+escapeHtml(punctuation)+'</span></div>';
 }
 function talkChoiceItems(role,includeHidden){
   const seen=new Set();
@@ -724,7 +738,7 @@ function renderTalkChoiceControls(){
     const category=button.dataset.talkCategory;
     if(talkHiddenCategories.has(category))talkHiddenCategories.delete(category);else talkHiddenCategories.add(category);
     const choices=talkChoiceItems('object',false);
-    if(choices.length&&!choices.some(card=>card.id===talkSelected.object))talkSelected.object=choices[0].id;
+    if(choices.length&&!choices.some(card=>card.id===talkSelected[talkChoiceTarget]))talkSelected[talkChoiceTarget]=choices[0].id;
     renderTalkChoiceControls();
     renderTalkStage();
     renderTalkChoices();
@@ -739,11 +753,11 @@ function renderTalkChoices(){
   }
   target.innerHTML=choices.map(card=>{
     const id=card.id;
-    const active=id===talkSelected[talkChoiceRole];
+    const active=id===talkSelected[talkChoiceTarget];
     return '<button class="talk-choice role-'+escapeHtml(talkChoiceRole)+' '+(active?'active':'')+'" type="button" data-talk-choice="'+escapeHtml(id)+'" aria-pressed="'+String(active)+'"><span class="talk-choice-picture"><img src="'+escapeHtml(card.image)+'" alt=""></span><span class="talk-choice-word'+talkWordSizeClass(card.english)+'">'+escapeHtml(card.english)+'</span></button>';
   }).join('');
   target.querySelectorAll('[data-talk-choice]').forEach(button=>button.addEventListener('click',()=>{
-    talkSelected[talkChoiceRole]=button.dataset.talkChoice;
+    talkSelected[talkChoiceTarget]=button.dataset.talkChoice;
     renderTalkStage();
     renderTalkChoices();
   }));
@@ -810,30 +824,43 @@ function bindTalkStageEvents(stage){
     card.addEventListener('contextmenu',event=>{if(card.dataset.talkExpansion){event.preventDefault();showExpansion();finish();}});
     card.addEventListener('click',event=>{
       if(longPressed){longPressed=false;event.preventDefault();return;}
+      if(card.dataset.talkSelectionKey){
+        talkChoiceTarget=card.dataset.talkSelectionKey;
+        talkChoiceRole=card.dataset.talkSelectionRole||talkChoiceRole;
+        renderTalkChoiceControls();
+        renderTalkChoices();
+      }
       if(talkSoundEnabled)speakText(card.dataset.talkSpeech,card,talkSpeechRate);
     });
   });
 }
 function renderTalkStage(){
   const stage=document.getElementById('talkStage');
-  const object=cardById.get(talkSelected.object)||cardById.get('color_002');
-  const subject=cardById.get(talkSelected.subject)||cardById.get('person_001');
-  const responseSubject=cardById.get(subject?.id==='person_002'?'person_001':'person_002');
-  const verb=cardById.get(talkSelected.verb)||cardById.get('action5_002');
-  const objectToken=talkToken(object?.english||'red','object',object?.id||'color_002','',object?.speech||object?.english||'red');
-  const subjectToken=talkToken(subject?.english||'I','subject',subject?.id||'person_001','',subject?.speech||subject?.english||'I');
-  const responseSubjectToken=talkToken(responseSubject?.english||'you','subject',responseSubject?.id||'person_002','',responseSubject?.speech||responseSubject?.english||'you');
-  const verbToken=talkToken(verb?.english||'like','verb',verb?.id||'action5_002','',verb?.speech||verb?.english||'like');
-  if(talkActivity==='dont'){
-    stage.innerHTML=talkRowMarkup([subjectToken,talkToken("don't",'negative','','×',"don't"),verbToken,objectToken],'.');
-  }else if(talkActivity==='question'){
-    const question=talkRowMarkup([talkToken('Do','neutral','','?','Do'),subjectToken,verbToken,objectToken],'?');
+  const selectableToken=(selectionKey,role,fallbackId,fallbackWord)=>{
+    const source=cardById.get(talkSelected[selectionKey])||cardById.get(fallbackId);
+    return talkToken(source?.english||fallbackWord,role,source?.id||fallbackId,'',source?.speech||source?.english||fallbackWord,selectionKey);
+  };
+  const subjectToken=selectableToken('subject','subject','person_001','I');
+  const questionSubjectToken=selectableToken('questionSubject','subject','person_002','you');
+  const responseSubjectToken=selectableToken('responseSubject','subject','person_001','I');
+  const verbToken=selectableToken('verb','verb','action5_002','like');
+  const objectToken=selectableToken('object','object','color_002','red');
+  const negativeObjectToken=selectableToken('negativeObject','object','color_009','black');
+  const likeRow=()=>talkRowMarkup([subjectToken,verbToken,objectToken],'.','talk-statement-row');
+  const dontRow=()=>talkRowMarkup([subjectToken,talkToken("don't",'negative','','×',"don't"),verbToken,negativeObjectToken],'.','talk-statement-row');
+  const questionBlock=(questionObject)=>{
+    const question=talkRowMarkup([talkToken('Do','neutral','','?','Do'),questionSubjectToken,verbToken,questionObject],'?','talk-question-row');
     const yes=talkRowMarkup([talkToken('Yes,','neutral','','〇','Yes'),responseSubjectToken,talkToken('do','verb','','〇','do')],'.','talk-response-row');
     const no=talkRowMarkup([talkToken('No,','neutral','','×','No'),responseSubjectToken,talkToken("don't",'negative','','×',"don't")],'.','talk-response-row');
-    stage.innerHTML='<div class="talk-question-layout"><div>'+question+'</div><div class="talk-responses">'+yes+no+'</div></div>';
-  }else{
-    stage.innerHTML=talkRowMarkup([subjectToken,verbToken,objectToken],'.');
-  }
+    return '<div class="talk-question-layout"><div>'+question+'</div><div class="talk-responses">'+yes+no+'</div></div>';
+  };
+  if(talkActivity==='dont')stage.innerHTML=dontRow();
+  else if(talkActivity==='like_dont')stage.innerHTML='<div class="talk-sequence-layout">'+likeRow()+dontRow()+'</div>';
+  else if(talkActivity==='question')stage.innerHTML=questionBlock(objectToken);
+  else if(talkActivity==='like_question')stage.innerHTML='<div class="talk-sequence-layout">'+likeRow()+questionBlock(objectToken)+'</div>';
+  else if(talkActivity==='dont_question')stage.innerHTML='<div class="talk-sequence-layout">'+dontRow()+questionBlock(negativeObjectToken)+'</div>';
+  else stage.innerHTML=likeRow();
+  stage.classList.toggle('enlarged',talkStageEnlarged);
   bindTalkStageEvents(stage);
   fitTalkWordLabels(stage);
 }
@@ -849,21 +876,37 @@ function updateTalkClarityButton(){
   button.setAttribute('aria-label',talkClearSpeech?'1枚ずつ読むのを切る':'1枚ずつ区切って読む');
   button.title=talkClearSpeech?'1枚ずつ読む：ON':'1枚ずつ読む：OFF';
 }
+function updateTalkStageZoomButton(){
+  const button=document.getElementById('talkStageZoom');
+  const stage=document.getElementById('talkStage');
+  stage?.classList.toggle('enlarged',talkStageEnlarged);
+  button?.setAttribute('aria-pressed',String(talkStageEnlarged));
+  button?.setAttribute('aria-label',talkStageEnlarged?'文カードを元の大きさに戻す':'文カードを拡大する');
+  if(button)button.title=talkStageEnlarged?'元の大きさに戻す':'文カードを拡大する';
+  fitTalkWordLabels(stage);
+}
 function openTalkActivity(activity){
   talkActivity=activity;
   talkChoiceRole='object';
+  talkChoiceTarget=(activity==='dont'||activity==='dont_question')?'negativeObject':'object';
   talkHiddenCategories.clear();
-  talkSelected.subject=activity==='question'?'person_002':'person_001';
+  talkSelected.subject='person_001';
+  talkSelected.questionSubject='person_002';
+  talkSelected.responseSubject='person_001';
   const verbs=talkChoiceItems('verb',false);
   talkSelected.verb=verbs.some(card=>card.id==='action5_002')?'action5_002':(verbs[0]?.id||'action5_002');
   const choices=talkChoiceItems('object',false);
-  const preferred=activity==='dont'?'color_009':'color_002';
-  talkSelected.object=choices.some(card=>card.id===preferred)?preferred:(choices[0]?.id||preferred);
+  const preferredObject=activity==='dont_question'?'color_009':'color_002';
+  const preferredNegative=activity==='dont'?'color_002':'color_009';
+  talkSelected.object=choices.some(card=>card.id===preferredObject)?preferredObject:(choices[0]?.id||preferredObject);
+  talkSelected.negativeObject=choices.some(card=>card.id===preferredNegative)?preferredNegative:(choices[0]?.id||preferredNegative);
+  talkStageEnlarged=false;
   renderTalkChoiceControls();
   renderTalkStage();
   renderTalkChoices();
   updateTalkSoundButton();
   updateTalkClarityButton();
+  updateTalkStageZoomButton();
   show('talkSentences');
 }
 document.getElementById('openTalkSentences')?.addEventListener('click',()=>openActivityAccordion('talk',true));
@@ -882,8 +925,13 @@ document.getElementById('talkClarityToggle')?.addEventListener('click',()=>{
   stopTalkSpeechSequence();
   updateTalkClarityButton();
 });
+document.getElementById('talkStageZoom')?.addEventListener('click',()=>{
+  talkStageEnlarged=!talkStageEnlarged;
+  updateTalkStageZoomButton();
+});
 document.querySelectorAll('[data-talk-role]').forEach(button=>button.addEventListener('click',()=>{
   talkChoiceRole=button.dataset.talkRole;
+  talkChoiceTarget=talkChoiceRole==='object'&&['dont','dont_question'].includes(talkActivity)?'negativeObject':talkChoiceRole;
   renderTalkChoiceControls();
   renderTalkChoices();
 }));
