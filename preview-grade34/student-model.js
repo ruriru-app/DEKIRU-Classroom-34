@@ -28,12 +28,12 @@
     return {
       game, get config() { return {...config}; }, get answers() { return [...answers]; },
       get locked() { return locked; },
-      lock() { if (answers.every(Boolean)) locked = true; return locked; },
+      lock() { if (answers.some(Boolean)) locked = true; return locked; },
       get repeat() { return game.allowRepeat(config, allowed.size); },
       configure, reset,
-      add(ref) {
-        const slot = answers.indexOf(null);
-        if (locked || !allowed.has(ref) || slot < 0 || (!this.repeat && answers.includes(ref))) return false;
+      add(ref, slot = answers.indexOf(null)) {
+        if (locked || !allowed.has(ref) || !Number.isInteger(slot) || slot < 0 || slot >= answers.length ||
+            (!this.repeat && answers.some((value, index) => value === ref && index !== slot))) return false;
         answers[slot] = ref; return true;
       },
       remove(index) { if (!locked && Number.isInteger(index) && index >= 0 && index < answers.length) answers[index] = null; }
