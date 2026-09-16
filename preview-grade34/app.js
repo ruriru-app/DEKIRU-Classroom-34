@@ -242,6 +242,12 @@
     return [...vocabulary.basic, ...vocabulary.advance].filter((item) => selection.has(item.ref));
   }
 
+  function savedSetsMarkup(bookKey,unit){
+    try{
+      const sets=SavedCardSets.list(`${bookKey}-${unit}`);
+      return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>「児童に配信」で名前を付けて保存できます。</p>'}`;
+    }catch(error){return `<p>${escapeHtml(error.message)}</p>`;}
+  }
   function renderUnit(bookKey, unit) {
     const previousSidebar = state.activeUnit?.bookKey === bookKey && state.activeUnit?.unit === unit
       ? app.querySelector('.unit-sidebar') : null;
@@ -272,6 +278,7 @@
           </div>
           <button class="side-action" data-feature="today"><span>Today is...</span><b>›</b></button>
           <button class="side-action" data-feature="unit-activities"><span>Activities</span><b>›</b></button>
+          <section class="saved-card-sets" id="saved-card-sets">${savedSetsMarkup(bookKey,unit)}</section>
           ${displaySettings()}
           ${wordSelection(vocabulary, selection, bookKey, unit)}
           <section class="specific-settings" id="specific-settings">
@@ -600,12 +607,39 @@
   }
 
   app.addEventListener("click", (event) => {
+    const savedButton=event.target.closest('[data-saved-set],[data-delete-set]');
+    if(savedButton&&state.activeUnit){
+      if(LookSay.isRunning()||WhatsMissing.isRunning()||BombGame.isRunning()){showToast('ゲームの進行が終わってから操作してください');return;}
+      const {bookKey,unit}=state.activeUnit,key=`${bookKey}-${unit}`;
+      try{
+        const id=savedButton.dataset.savedSet||savedButton.dataset.deleteSet;
+        const saved=SavedCardSets.list(key).find(s=>s.id===id);if(!saved)return;
+        if(savedButton.hasAttribute('data-delete-set')){
+          if(!window.confirm(`「${saved.name}」を削除しますか？配信済みのURLは引き続き使えます。`))return;
+          SavedCardSets.remove(key,id);
+          document.getElementById('saved-card-sets').innerHTML=savedSetsMarkup(bookKey,unit);
+          showToast('セットを削除しました');return;
+        }
+        const restored=CardSet.resolve(saved.payload),vocabulary=getUnitVocabulary(bookKey,unit);
+        const available=new Set([...vocabulary.basic,...vocabulary.advance].map(i=>i.ref));
+        if(restored.items.some(i=>!available.has(i.ref)))throw new Error('このUnitで使えない語が含まれるため復元できません。');
+        LookSay.stop(true);WhatsMissing.stop(true);BombGame.stop(true);
+        state.unitSelections.set(key,new Set(restored.items.map(i=>i.ref)));state.display=restored.display;
+        renderUnit(bookKey,unit);showToast(`「${saved.name}」を呼び出しました`);
+      }catch(error){showToast(error.message);}
+      return;
+    }
     if (event.target.closest('[data-card-set-share]') && state.activeUnit) {
       const {bookKey, unit} = state.activeUnit;
       const vocabulary = getUnitVocabulary(bookKey, unit);
       const items = selectedItems(vocabulary, getSelection(bookKey, unit, vocabulary));
       if (!items.length) { showToast('使用する単語を選んでください'); return; }
-      CardShare.open(items, state.display).catch(error => showToast(error.message));
+      CardShare.open(items, state.display, {save:(name,payload)=>{
+        SavedCardSets.save(`${bookKey}-${unit}`,name,payload);
+        if(state.activeUnit?.bookKey===bookKey&&state.activeUnit?.unit===unit){
+          const section=document.getElementById('saved-card-sets');if(section)section.innerHTML=savedSetsMarkup(bookKey,unit);
+        }
+      }}).catch(error => showToast(error.message));
       return;
     }
     const lookAction = event.target.closest("[data-look-action]");
