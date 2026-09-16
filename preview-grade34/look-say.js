@@ -33,7 +33,7 @@ window.LookSay = (() => {
       <p>カードが足りない場合は、全語を使ってから繰り返します。</p>`;
   }
   function markup() {
-    return `<div class="look-game"><header class="game-heading"><button class="back-button" data-feature="close" aria-label="戻る"><img src="assets/ui/originals/戻る.svg" alt=""></button><h1>Look &amp; Say</h1><button class="fullscreen-button" data-fullscreen aria-label="全画面表示切り替え">⛶</button></header>
+    return `<div class="look-game">${PictureGame.heading('Look &amp; Say')}
       <div class="look-stage" id="look-stage"></div><footer class="game-controls">${['start','replay','answer'].map(action=>`<button class="game-art-button" data-look-action="${action}" aria-label="${action.toUpperCase()}"><img src="assets/ui/${action}.svg" alt="${action.toUpperCase()}"></button>`).join('')}</footer></div>`;
   }
   function attach(options) { host = options; paint(); }
@@ -51,19 +51,7 @@ window.LookSay = (() => {
     document.querySelectorAll('.unit-sidebar input,.unit-sidebar select,.unit-sidebar [data-word-ref]').forEach(control => { control.disabled = running; });
   }
   async function preload(items) {
-    await Promise.all([...new Set(items.map(host.source).filter(Boolean))].map(source => new Promise(resolve => {
-      const image = new Image();
-      let fallback = false;
-      const timeout = setTimeout(resolve, 5000);
-      const done = () => { clearTimeout(timeout); resolve(); };
-      image.onload = () => { if (image.decode) image.decode().catch(()=>{}).then(done); else done(); };
-      image.onerror = () => {
-        if (!fallback && source.includes('/assets/cards/')) {
-          fallback = true; image.src = 'assets/cards/' + source.split('/assets/cards/')[1];
-        } else done();
-      };
-      image.src = source;
-    })));
+    return PictureGame.preload(items, host.source);
   }
   async function play() {
     running = true; phase = 'loading'; paint();

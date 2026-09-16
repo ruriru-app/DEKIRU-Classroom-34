@@ -288,9 +288,10 @@
         details.open = openDetails.has(details.dataset.accordion);
       });
     }
-    if (state.activeFeature === "look-say") {
-      document.getElementById("specific-settings").innerHTML = LookSay.settingsMarkup();
-      LookSay.attach({ pool: () => selectedItems(vocabulary, selection), source: pictureSource,
+    const activeGame = state.activeFeature === 'look-say' ? LookSay : state.activeFeature === 'whats-missing' ? WhatsMissing : null;
+    if (activeGame) {
+      document.getElementById("specific-settings").innerHTML = activeGame.settingsMarkup();
+      activeGame.attach({ pool: () => selectedItems(vocabulary, selection), source: pictureSource,
         display: () => state.display, notify: showToast,
         card: item => mainCard(item).replace(/ data-speak="[^"]*"/, ' tabindex="-1"') });
     }
@@ -393,6 +394,7 @@
 
   function renderFeature(feature, bookKey, unit, unitTitle, vocabulary, selection) {
     if (feature === "look-say") return LookSay.markup();
+    if (feature === "whats-missing") return WhatsMissing.markup();
     const chosen = selectedItems(vocabulary, selection);
     const meta = featureMeta(feature);
     const content = featureContent(feature, chosen, bookKey, unit);
@@ -607,6 +609,8 @@
     }
     const lookAction = event.target.closest("[data-look-action]");
     if (lookAction) { LookSay.action(lookAction.dataset.lookAction); return; }
+    const missingAction = event.target.closest('[data-missing-action]');
+    if (missingAction) { WhatsMissing.action(missingAction.dataset.missingAction); return; }
     const todayField = event.target.closest("[data-today-field]");
     const todayChoice = event.target.closest("[data-today-choice]");
     if (todayField || todayChoice) {
@@ -619,7 +623,7 @@
     }
     const routeTarget = event.target.closest("[data-route]");
     if (routeTarget) {
-      LookSay.stop(true);
+      LookSay.stop(true); WhatsMissing.stop(true);
       state.activeFeature = null;
       navigate(routeTarget.dataset.route);
       return;
@@ -639,7 +643,7 @@
 
     const wordTarget = event.target.closest("[data-word-ref]");
     if (wordTarget) {
-      if (LookSay.isRunning()) return;
+      if (LookSay.isRunning() || WhatsMissing.isRunning()) return;
       toggleWord(wordTarget.dataset.wordRef, wordTarget.dataset.book, Number(wordTarget.dataset.unit));
       return;
     }
@@ -650,7 +654,7 @@
         toggleFullscreen();
         return;
       }
-      LookSay.stop(true);
+      LookSay.stop(true); WhatsMissing.stop(true);
       state.activeFeature = featureTarget.dataset.feature === "close" ? null : featureTarget.dataset.feature;
       if (state.activeFeature === "today") state.todayField = "day";
       renderUnit(state.activeUnit.bookKey, state.activeUnit.unit);
@@ -664,7 +668,12 @@
   app.addEventListener("change", (event) => {
     const lookSetting = event.target.closest("[data-look-setting]");
     if (lookSetting) { LookSay.configure(lookSetting.dataset.lookSetting, lookSetting.value); return; }
-    if (LookSay.isRunning()) return;
+    const missingSetting = event.target.closest('[data-missing-setting],[data-missing-seconds]');
+    if (missingSetting) {
+      WhatsMissing.configure(missingSetting.dataset.missingSetting || missingSetting.dataset.missingSeconds, missingSetting.value);
+      renderUnit(state.activeUnit.bookKey,state.activeUnit.unit); return;
+    }
+    if (LookSay.isRunning() || WhatsMissing.isRunning()) return;
     const display = event.target.closest("[data-display]");
     if (display && state.activeUnit) {
       state.display[display.dataset.display] = display.checked;
@@ -698,7 +707,7 @@
     showToast("設定画面は今後追加します");
   });
   window.addEventListener("hashchange", () => {
-    LookSay.stop(true);
+    LookSay.stop(true); WhatsMissing.stop(true);
     state.activeFeature = null;
     render();
   });
@@ -707,6 +716,10 @@
     if (event.key === "Escape") document.querySelector('.fullscreen-content')?.classList.remove('fullscreen-content');
   });
   document.addEventListener("visibilitychange", () => {
+    if (document.hidden && WhatsMissing.isRunning()) {
+      WhatsMissing.stop();
+      if (state.activeFeature === 'whats-missing') renderUnit(state.activeUnit.bookKey,state.activeUnit.unit);
+    }
     if (document.hidden && LookSay.isRunning()) {
       LookSay.stop();
       if (state.activeFeature === "look-say") renderUnit(state.activeUnit.bookKey, state.activeUnit.unit);

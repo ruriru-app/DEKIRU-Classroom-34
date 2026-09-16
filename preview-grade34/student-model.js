@@ -2,6 +2,11 @@
 (() => {
   'use strict';
   const games = {
+    'whats-missing': {
+      title: 'What’s Missing?', description: '消えたカードを1枚選ぼう',
+      defaults: {}, fields: [], groups: () => [{label:'消えたカードは？',size:1}],
+      allowRepeat: () => false
+    },
     'look-say': {
       title: 'Look & Say', description: '見えたカードを、出てきた順番にならべよう',
       defaults: {count: 1, rounds: 3},

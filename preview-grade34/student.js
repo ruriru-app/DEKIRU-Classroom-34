@@ -137,8 +137,8 @@
     if (b.hasAttribute('data-back') && isFullscreen()) { toggleFullscreen().catch(() => {}); return; }
     if (b.dataset.game) {
       if (!sessions.has(b.dataset.game)) sessions.set(b.dataset.game, StudentGames.create(b.dataset.game, set.items.map(i=>i.ref)));
-      model=sessions.get(b.dataset.game); selectedSlot=null; screen='setup'; render();
-    } else if (b.hasAttribute('data-back')) { screen=screen==='answer'?'setup':'top'; render(); }
+      model=sessions.get(b.dataset.game); selectedSlot=null; screen=model.game.fields.length?'setup':'answer'; render();
+    } else if (b.hasAttribute('data-back')) { screen=screen==='answer'&&model.game.fields.length?'setup':'top'; render(); }
     else if (b.hasAttribute('data-begin')) {screen='answer'; render();}
     else if (b.hasAttribute('data-reset')) {model.reset(); selectedSlot=null; updateAnswers();}
     else if (b.hasAttribute('data-lock')) {model.lock(); updateAnswers();}
