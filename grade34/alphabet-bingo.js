@@ -99,6 +99,7 @@
     el('game').classList.add('finished'); el('draw-label').textContent = 'まだ出ていない文字';
     el('current').hidden = true; el('remaining').hidden = false;
     el('remaining').replaceChildren(...game.state().remaining.map(l => tile(l)));
+    el('remaining').style.gridTemplateRows = `repeat(${Math.max(1, Math.ceil(game.state().remaining.length / 3))}, minmax(0, 1fr))`;
     if (!game.state().remaining.length) el('remaining').textContent = 'すべて出ました';
     el('next').hidden = true; el('finish-game').hidden = true; el('close-game').hidden = false;
     el('status').textContent = `未抽選 ${game.state().remaining.length}枚 ／ 抽選済み ${game.state().order.length}枚`;
