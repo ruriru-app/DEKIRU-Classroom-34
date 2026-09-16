@@ -245,7 +245,7 @@
   function savedSetsMarkup(bookKey,unit){
     try{
       const sets=SavedCardSets.list(`${bookKey}-${unit}`);
-      return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>「児童に配信」で名前を付けて保存できます。</p>'}`;
+      return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button" data-share-saved-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を配信">配信</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>「児童に配信」で名前を付けて保存できます。</p>'}`;
     }catch(error){return `<p>${escapeHtml(error.message)}</p>`;}
   }
   function renderUnit(bookKey, unit) {
@@ -607,13 +607,18 @@
   }
 
   app.addEventListener("click", (event) => {
-    const savedButton=event.target.closest('[data-saved-set],[data-delete-set]');
+    const savedButton=event.target.closest('[data-saved-set],[data-delete-set],[data-share-saved-set]');
     if(savedButton&&state.activeUnit){
       if(LookSay.isRunning()||WhatsMissing.isRunning()||BombGame.isRunning()){showToast('ゲームの進行が終わってから操作してください');return;}
       const {bookKey,unit}=state.activeUnit,key=`${bookKey}-${unit}`;
       try{
-        const id=savedButton.dataset.savedSet||savedButton.dataset.deleteSet;
+        const id=savedButton.dataset.savedSet||savedButton.dataset.deleteSet||savedButton.dataset.shareSavedSet;
         const saved=SavedCardSets.list(key).find(s=>s.id===id);if(!saved)return;
+        if(savedButton.hasAttribute('data-share-saved-set')){
+          const restored=CardSet.resolve(saved.payload);
+          CardShare.open(restored.items,restored.display,{name:saved.name}).catch(error=>showToast(error.message));
+          return;
+        }
         if(savedButton.hasAttribute('data-delete-set')){
           if(!window.confirm(`「${saved.name}」を削除しますか？配信済みのURLは引き続き使えます。`))return;
           SavedCardSets.remove(key,id);
