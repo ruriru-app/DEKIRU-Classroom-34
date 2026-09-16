@@ -34,6 +34,14 @@
 
   const ACTIVITIES = [
     {
+      id: "alphabet-bingo",
+      title: "ALPHABET BINGO",
+      subtitle: "大文字・小文字のカードでビンゴの準備と抽選",
+      units: [],
+      href: "alphabet-bingo.html",
+      qrShare: true,
+    },
+    {
       id: "my-pencilcase",
       title: "My Pencilcase",
       subtitle: "自分だけの文房具セットを作ろう",
@@ -589,6 +597,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     const activity = ACTIVITIES.find((item) => item.id === activityId);
     if (!activity) return;
     const url = new URL(activity.href, location.href).href;
+    if (activity.qrShare) { CardShare.openUrl(url, activity.title); return; }
     try {
       await navigator.clipboard.writeText(url);
       showToast("URLをコピーしました");

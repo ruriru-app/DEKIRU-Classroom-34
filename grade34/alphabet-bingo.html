@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALPHABET BINGO | DEKIRU Classroom</title><link rel="stylesheet" href="alphabet-bingo.css?v=cab54e372e98"></head>
+<body>
+<header><button id="back" class="icon" aria-label="戻る" hidden><img src="assets/ui/originals/戻る.svg" alt=""></button><h1>ALPHABET BINGO</h1><span id="mode-label"></span><button id="sound" class="icon" aria-label="効果音をOFFにする" aria-pressed="true">🔊</button><button id="fullscreen" class="icon" aria-label="全画面表示" aria-pressed="false">⛶</button></header>
+<main>
+  <section id="home" class="setup">
+    <div class="panel"><h2>表示する文字を選んでください</h2>
+      <div class="choices" aria-label="文字の種類"><button id="mode-upper" class="choice on" aria-pressed="true">大文字</button><button id="mode-lower" class="choice" aria-pressed="false">小文字</button></div>
+      <div class="two"><button id="open-guide" class="large guide-button">① マスを埋めよう<small>アルファベット一覧を表示</small></button><button id="open-game" class="large bingo-button">② BINGO<small>抽選画面を開く</small></button></div>
+      <p>一覧を見てビンゴ用紙に文字を書き、準備ができたら②へ。<br>NEXTを押すと、文字のカードを1枚ずつ抽選します。</p>
+    </div>
+  </section>
+  <section id="guide" class="gallery-screen" hidden><h2>マスを埋めよう</h2><div id="alphabet" class="card-grid alphabet-grid"></div></section>
+  <section id="game" class="game" hidden>
+    <div class="draw-side"><h2>DRAW</h2><div id="current" class="current">?</div><button id="next" class="next">NEXT</button><button id="finish-game" class="finish-button">抽選終了</button></div>
+    <div class="history-side"><div class="history-heading"><h2>DRAWN LETTERS</h2><span id="counter">0 / 26</span></div><div id="drawn" class="card-grid history-grid"></div></div>
+  </section>
+  <section id="finish" class="gallery-screen" hidden><div class="history-heading"><h2>抽選した順番</h2><button id="close-game" class="finish-button">開始画面へ</button></div><div id="readout" class="card-grid alphabet-grid"></div></section>
+</main>
+<p id="status" role="status" aria-live="polite"></p>
+<script src="alphabet-bingo-model.js?v=af866acb260b"></script><script src="alphabet-bingo.js?v=9befc1c29a2e"></script>
+</body></html>
