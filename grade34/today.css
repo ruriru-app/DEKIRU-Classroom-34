@@ -1,0 +1,53 @@
+/* Restored from the v0.0.46 Today is... screen; isolated from Unit styles. */
+@font-face { font-family: 'DEKIRU Andika'; src: url('../assets/fonts/andika/Andika-Regular.ttf') format('truetype'); font-display: swap; font-weight: 400; }
+@font-face { font-family: 'DEKIRU Andika'; src: url('../assets/fonts/andika/Andika-Bold.ttf') format('truetype'); font-display: swap; font-weight: 700; }
+.today-player-mode { overflow: hidden; }
+.today-player-mode .app-header { display: none; }
+.today-player-mode .app-main { width: 100%; max-width: none; min-height: 0; margin: 0; padding: 8px; }
+.today-layout { height: calc(100dvh - 16px); display: grid; grid-template-rows: minmax(0, 1fr) 208px; gap: 8px; overflow: hidden; }
+.today-builder, .today-choices-panel { min-width: 0; border: 1px solid #ebe5df; border-radius: 22px; background: white; box-shadow: 0 4px 16px #4e423a12; }
+.today-builder { position: relative; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 38px 70px; }
+.today-builder-back { position: absolute; top: 16px; left: 16px; z-index: 2; }
+.today-formula { display: grid; grid-template-columns: max-content max-content 34px; grid-template-rows: repeat(4, minmax(0, 1fr)); align-items: center; gap: 16px 24px; font-family: 'Trebuchet MS', Arial, sans-serif; }
+.today-lead { font-size: clamp(32px, 4vw, 76px); font-weight: 700; white-space: nowrap; }
+.today-lead.weather { font-size: clamp(28px, 3.6vw, 68px); }
+.today-punctuation { font-size: clamp(36px, 4.2vw, 78px); font-weight: 700; line-height: 1.2; }
+.today-layout .today-slot { width: max-content; min-width: 470px; height: 118px; border: 4px solid #82add8; border-radius: 20px; background: #f3f9ff; color: inherit; padding: 7px 15px; display: grid; grid-template-columns: max-content 96px; align-items: center; justify-content: center; gap: 16px; cursor: pointer; box-shadow: 0 3px 9px #45332a12; }
+.today-layout .today-slot:hover { background: #eaf4fe; }
+.today-layout .today-slot.active { outline: 4px solid #f2a2ba; outline-offset: 3px; }
+.today-layout .today-slot.placeholder { grid-template-columns: 1fr; }
+.today-slot-word { padding: 4px 1px 9px; text-align: center; font-family: 'Trebuchet MS', Arial, sans-serif; font-size: clamp(32px, 3.6vw, 68px); line-height: 1.25; white-space: nowrap; overflow: visible; }
+.today-slot-picture { width: 96px; height: 96px; border-radius: 11px; overflow: hidden; background: white; }
+.today-slot-picture img, .today-choice-picture img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.today-slot-placeholder { font-size: 32px; font-weight: 700; color: #7694af; text-align: center; line-height: 1.2; }
+.today-choices-panel { display: grid; grid-template-rows: 36px minmax(0, 1fr); overflow: hidden; padding: 5px 7px 7px; }
+.today-choices-title { margin: 0; padding: 3px 8px; font-size: 17px; line-height: 28px; }
+.today-choices { min-width: 0; min-height: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-inline: contain; padding: 1px 2px 4px; display: grid; grid-auto-flow: column; grid-auto-columns: 142px; grid-template-rows: 1fr; gap: 7px; }
+.today-choice { width: 142px; min-height: 0; border: 2px solid #d6e3f0; border-radius: 13px; background: white; padding: 3px; display: grid; grid-template-rows: minmax(0, 1fr) auto; color: inherit; cursor: pointer; }
+.today-choice:hover { border-color: #82add8; }
+.today-choice.selected { border-color: #ef8fac; background: #fff4f7; box-shadow: 0 0 0 2px #f8d3df; }
+.today-choice-picture { min-height: 0; aspect-ratio: 1; overflow: hidden; border-radius: 8px; justify-self: center; }
+.today-choice-word { min-height: 26px; padding: 3px 1px 1px; text-align: center; font-size: 15px; line-height: 1.1; white-space: nowrap; }
+.today-formula, .today-slot-word, .today-choice-word { font-family: 'DEKIRU Andika', 'Trebuchet MS', Arial, sans-serif; }
+@media (max-width: 1200px), (max-height: 850px) {
+  .today-formula { grid-template-columns: max-content max-content 20px; gap: 11px 12px; }
+  .today-layout .today-slot { min-width: 310px; height: 92px; grid-template-columns: max-content 72px; gap: 8px; }
+  .today-slot-picture { width: 72px; height: 72px; }
+  .today-lead { font-size: clamp(28px, 4vw, 46px); }
+  .today-lead.weather { font-size: clamp(25px, 3.6vw, 41px); }
+  .today-slot-word { font-size: clamp(28px, 4vw, 44px); }
+}
+@media (max-width: 720px), (max-height: 720px) {
+  .today-layout { grid-template-rows: minmax(0, 1fr) 160px; }
+  .today-builder { padding: 52px 8px 8px; }
+  .today-builder-back { width: 40px; height: 40px; font-size: 22px; top: 8px; left: 8px; }
+  .today-formula { gap: 8px 6px; grid-template-columns: max-content max-content 14px; }
+  .today-layout .today-slot { min-width: 0; height: 64px; grid-template-columns: max-content 44px; padding: 3px 6px; gap: 5px; border-width: 3px; }
+  .today-slot-picture { width: 44px; height: 44px; }
+  .today-lead, .today-lead.weather { font-size: clamp(16px, 3.4vw, 27px); }
+  .today-slot-word { font-size: clamp(19px, 4vw, 32px); }
+  .today-slot-placeholder { font-size: 24px; }
+  .today-punctuation { font-size: 28px; }
+  .today-choices { grid-auto-columns: 120px; }
+  .today-choice { width: 120px; }
+}
