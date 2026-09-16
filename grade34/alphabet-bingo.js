@@ -2,25 +2,31 @@
   'use strict';
   const {letters, card, create} = window.AlphabetBingo;
   const el = id => document.getElementById(id);
-  const screens = ['home', 'guide', 'game', 'finish'];
-  const sound = new Audio('assets/ui/bingo/draw.mp3');
-  const ROLL_MS = 2800, FRAME_MS = 70;
-  let mode = 'upper', page = 'home', game = null, timer = null, soundOn = true;
-  function image(letter) {
-    const spec = card(letter, mode), img = document.createElement('img');
+  const screens = ['home', 'guide', 'game'];
+  const sound = new Audio('assets/ui/bingo/drum.wav');
+  const cymbal = new Audio('assets/ui/bingo/cymbal.wav');
+  sound.loop = true;
+  const FRAME_MS = 70;
+  let mode = 'upper', page = 'home', game = null, timer = null, soundOn = true, finished = false;
+  function image(letter, guide = false) {
+    const spec = card(letter, mode, guide), img = document.createElement('img');
     img.src = spec.src; img.alt = spec.label; img.draggable = false;
     img.onerror = () => { el('status').textContent = 'カード画像を読み込めません。接続を確認してページを読み直してください。'; };
     return img;
   }
-  function tile(letter, animate = false) {
+  function tile(letter, animate = false, guide = false) {
     const node = document.createElement('div'); node.className = 'picture-card' + (animate ? ' arrive' : '');
-    node.append(image(letter)); return node;
+    node.append(image(letter, guide)); return node;
   }
-  function stopSound() { sound.pause(); sound.currentTime = 0; }
+  function stopSound() { for (const audio of [sound, cymbal]) { audio.pause(); audio.currentTime = 0; } }
+  function play(audio) {
+    if (soundOn) audio.play().catch(() => { el('status').textContent = '音声を再生できませんでした。抽選は続けられます。'; });
+  }
   function updateButtons() {
     const state = game?.state();
-    el('next').disabled = !state || state.drawing || !state.remaining.length;
-    el('finish-game').disabled = !!state?.drawing;
+    el('next').disabled = finished || !state || !state.remaining.length;
+    el('next').textContent = state?.drawing ? 'STOP' : 'START';
+    el('finish-game').disabled = finished || !state;
     el('counter').textContent = `${state?.order.length || 0} / 26`;
   }
   function cancelDraw() {
@@ -55,38 +61,48 @@
   }
   el('mode-upper').onclick = () => choose('upper');
   el('mode-lower').onclick = () => choose('lower');
-  el('open-guide').onclick = () => { show('guide'); el('alphabet').replaceChildren(...letters.map(l => tile(l))); };
+  el('open-guide').onclick = () => { show('guide'); el('alphabet').replaceChildren(...letters.map(l => tile(l, false, true))); };
   el('open-game').onclick = () => {
-    cancelDraw(); game = create(mode); show('game');
+    cancelDraw(); game = create(mode); finished = false; show('game');
+    el('game').classList.remove('finished');
+    el('draw-label').textContent = 'DRAW';
+    el('current').hidden = false; el('remaining').hidden = true; el('remaining').replaceChildren();
+    el('next').hidden = false; el('finish-game').hidden = false; el('close-game').hidden = true;
     el('drawn').replaceChildren(); el('current').replaceChildren(); el('current').textContent = '?';
     updateButtons();
   };
   el('next').onclick = () => {
-    if (!game || !game.begin()) return;
-    const started = performance.now();
+    if (!game || finished) return;
+    if (game.state().drawing) {
+      clearInterval(timer); timer = null; stopSound();
+      const picked = game.complete();
+      el('current').replaceChildren(image(picked));
+      el('current').classList.remove('rolling'); el('current').classList.add('reveal');
+      el('drawn').append(tile(picked, true)); updateButtons(); play(cymbal);
+      el('status').textContent = game.state().remaining.length ? `${card(picked, mode).label} が出ました` : '26文字すべて出ました。「抽選終了」で確認できます。';
+      return;
+    }
+    if (!game.begin()) return;
     updateButtons(); el('status').textContent = '';
     el('current').classList.remove('reveal'); el('current').classList.add('rolling');
     stopSound();
-    if (soundOn) sound.play().catch(() => { el('status').textContent = '音声を再生できませんでした。抽選は続けられます。'; });
+    play(sound);
     timer = setInterval(() => {
       const state = game.state();
-      if (performance.now() - started < ROLL_MS) {
-        el('current').replaceChildren(image(state.remaining[Math.floor(Math.random() * state.remaining.length)])); return;
-      }
-      clearInterval(timer); timer = null;
-      const picked = game.complete();
-      if (!picked) return;
-      el('current').replaceChildren(image(picked));
-      el('current').classList.remove('rolling'); el('current').classList.add('reveal');
-      el('drawn').append(tile(picked, true)); updateButtons();
-      el('status').textContent = game.state().remaining.length ? `${card(picked, mode).label} が出ました` : '26文字すべて出ました。「抽選終了」で順番を確認できます。';
+      el('current').replaceChildren(image(state.remaining[Math.floor(Math.random() * state.remaining.length)]));
     }, FRAME_MS);
   };
   el('finish-game').onclick = () => {
-    if (!game || game.state().drawing) return;
+    if (!game || finished) return;
     if (!game.state().order.length && !confirm('まだ抽選していません。終了しますか？')) return;
-    show('finish'); el('readout').replaceChildren(...game.state().order.map(l => tile(l)));
-    if (!game.state().order.length) el('status').textContent = '抽選したカードはありません。';
+    cancelDraw(); finished = true;
+    el('game').classList.add('finished'); el('draw-label').textContent = 'まだ出ていない文字';
+    el('current').hidden = true; el('remaining').hidden = false;
+    el('remaining').replaceChildren(...game.state().remaining.map(l => tile(l)));
+    if (!game.state().remaining.length) el('remaining').textContent = 'すべて出ました';
+    el('next').hidden = true; el('finish-game').hidden = true; el('close-game').hidden = false;
+    el('status').textContent = `未抽選 ${game.state().remaining.length}枚 ／ 抽選済み ${game.state().order.length}枚`;
+    updateButtons();
   };
   el('close-game').onclick = () => show('home');
   el('back').onclick = async () => {
@@ -96,6 +112,7 @@
   };
   el('sound').onclick = () => {
     soundOn = !soundOn; if (!soundOn) stopSound();
+    else if (game?.state().drawing) play(sound);
     el('sound').textContent = soundOn ? '🔊' : '🔇';
     el('sound').setAttribute('aria-pressed', String(soundOn));
     el('sound').setAttribute('aria-label', soundOn ? '効果音をOFFにする' : '効果音をONにする');
@@ -114,7 +131,7 @@
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) return;
     const drawing = game?.state().drawing; cancelDraw();
-    if (drawing) el('status').textContent = '抽選を中断しました。NEXTで再開してください。';
+    if (drawing) el('status').textContent = '抽選を中断しました。STARTで再開してください。';
   });
   window.addEventListener('pagehide', cancelDraw);
   choose('upper'); show('home');

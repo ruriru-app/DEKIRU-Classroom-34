@@ -4,11 +4,12 @@
   function checkMode(mode) {
     if (!['upper', 'lower'].includes(mode)) throw new Error('Unsupported alphabet mode');
   }
-  function card(letter, mode) {
+  function card(letter, mode, guide = false) {
     checkMode(mode);
     if (!letters.includes(letter)) throw new Error('Unknown letter');
     const label = mode === 'upper' ? letter : letter.toLowerCase();
-    return {label, src: `assets/cards/lets_try/alphabet/${mode}-${label}.png`};
+    const folder = guide && mode === 'lower' ? 'alphabet-guide' : 'alphabet';
+    return {label, src: `assets/cards/lets_try/${folder}/${mode}-${label}.png?v=2`};
   }
   function create(mode = 'upper', random = Math.random) {
     checkMode(mode);
