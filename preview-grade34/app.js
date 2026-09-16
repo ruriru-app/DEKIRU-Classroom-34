@@ -245,7 +245,7 @@
   function savedSetsMarkup(bookKey,unit){
     try{
       const sets=SavedCardSets.list(`${bookKey}-${unit}`);
-      return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button" data-share-saved-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を配信">配信</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>「児童に配信」で名前を付けて保存できます。</p>'}`;
+return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button" data-share-saved-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を配信">配信</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>単語を選び「セットを保存」で追加できます。</p>'}`;
     }catch(error){return `<p>${escapeHtml(error.message)}</p>`;}
   }
   function renderUnit(bookKey, unit) {
@@ -328,7 +328,7 @@
       <div class="word-groups">
         ${vocabulary.groups.map((group) => wordGroup(group, selection, bookKey, unit)).join("")}
       </div>
-    </details><button class="secondary-button card-set-share" data-card-set-share>児童に配信</button>`;
+    </details><button class="secondary-button card-set-share" data-card-set-save>セットを保存</button>`;
   }
 
   function wordGroup(group, selection, bookKey, unit) {
@@ -634,17 +634,18 @@
       }catch(error){showToast(error.message);}
       return;
     }
-    if (event.target.closest('[data-card-set-share]') && state.activeUnit) {
+    if (event.target.closest('[data-card-set-save]') && state.activeUnit) {
       const {bookKey, unit} = state.activeUnit;
       const vocabulary = getUnitVocabulary(bookKey, unit);
       const items = selectedItems(vocabulary, getSelection(bookKey, unit, vocabulary));
       if (!items.length) { showToast('使用する単語を選んでください'); return; }
-      CardShare.open(items, state.display, {save:(name,payload)=>{
+      try{CardShare.openSave(items, state.display, (name,payload)=>{
         SavedCardSets.save(`${bookKey}-${unit}`,name,payload);
         if(state.activeUnit?.bookKey===bookKey&&state.activeUnit?.unit===unit){
           const section=document.getElementById('saved-card-sets');if(section)section.innerHTML=savedSetsMarkup(bookKey,unit);
         }
-      }}).catch(error => showToast(error.message));
+        showToast('セットを保存しました。タイルの「配信」から配れます。');
+      });}catch(error){showToast(error.message);}
       return;
     }
     const lookAction = event.target.closest("[data-look-action]");
