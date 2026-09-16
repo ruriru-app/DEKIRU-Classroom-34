@@ -25,7 +25,10 @@ window.BombGame = (() => {
   }
   function layout(n){const columns=n<=4?n:n<=8?4:n<=15?5:6;return {columns,rows:Math.ceil(n/columns)};}
   function settingsMarkup(){return `<h2>BOMB GAME の設定</h2><label class="look-setting">表示枚数<select data-bomb-setting="count">${Array.from({length:22},(_,i)=>`<option value="${i+3}" ${settings.count===i+3?'selected':''}>${i+3}枚</option>`).join('')}</select></label><label><input type="checkbox" data-bomb-setting="sound" ${settings.sound?'checked':''}> 効果音</label><p>カードをタップして進めます。SAFEは○、BOMBは爆発！爆弾は1枚です。</p>`;}
-  function markup(){return `<div class="look-game bomb-game">${PictureGame.heading('BOMB GAME')}<div class="bomb-stage" id="bomb-stage"></div><footer class="game-controls"><button class="game-art-button" data-bomb-action="start" aria-label="START／もう一度"><img src="assets/ui/start.svg" alt="START"></button><span class="bomb-status" id="bomb-status" role="status"></span></footer></div>`;}
+  function markup(){
+    const controls=`<div class="bomb-heading-controls"><button class="game-art-button" data-bomb-action="start" aria-label="START／もう一度"><img src="assets/ui/start.svg" alt="START"></button><span class="bomb-status" id="bomb-status" role="status"></span></div>`;
+    return `<div class="look-game bomb-game">${PictureGame.heading('BOMB GAME',controls)}<div class="bomb-stage" id="bomb-stage"></div></div>`;
+  }
   function paint(animateSafe=-1){
     const stage=document.getElementById('bomb-stage');if(!stage||!host)return;
     if(phase==='idle'||phase==='loading')stage.innerHTML=`<p class="look-message">${phase==='loading'?'準備中…':'STARTを押してください'}</p>`;
