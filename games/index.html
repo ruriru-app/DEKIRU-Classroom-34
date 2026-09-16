@@ -1,0 +1,126 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEKIRU Games</title><link rel="stylesheet" href="legacy.css?v=21934dd121c0"><link rel="stylesheet" href="games.css?v=8f9f5163ff6b"></head><body><header><strong>DEKIRU Games</strong><button class="back" id="homeBtn">ホーム</button></header><main><section id="home" class="page active"><h1>DEKIRU Games</h1><p>英語で遊ぶ・ゲームを作る</p><div class="homegrid"><button class="blue" data-launch-alphabet>ALPHABET TOUCH<br><small>大文字・Easy〜Legend</small></button><button class="green nav" data-to="createGames">Create Games<br><small>作者用ゲーム作成</small></button></div><p>作成したゲームは、このブラウザに保存されます。</p><a href="../preview-grade34/">DEKIRU Classroom for Grade 3 &amp; 4</a></section><section id="createGames" class="page create-games-page">
+  <div class="head"><button class="back" data-back="home">← 戻る</button><h1>Create Games</h1></div>
+  <p class="create-games-note">作りたいゲームを選んで設定し、必要なUnitへ割り当てます。同じゲームを複数のUnitで使うこともできます。保存内容は、この端末のブラウザー内に保存されます。</p>
+  <section class="create-game-types">
+    <h2>ゲームを作る</h2>
+    <button class="create-game-type-card" id="openRouletteCreator" type="button"><strong>ROULETTE RACE</strong><span>ルーレットで選ばれた人が、カードのコースを1マス進むゲーム</span><small>＋ 新しく作る</small></button>
+  </section>
+  <section class="created-games-panel created-games-library">
+    <div class="created-games-head"><h2>保存したゲーム</h2></div>
+    <div class="created-games-list" id="createdGamesList"></div>
+  </section>
+</section>
+
+<section id="createRouletteGame" class="page create-games-page">
+  <div class="head"><button class="back" id="creatorBackToGames" data-back="createGames" type="button">← 戻る</button><h1>ROULETTE RACEを作る</h1></div>
+  <p class="create-games-note">カードやキーフレーズを設定し、使いたいUnitを選んで保存します。右側でゲームの仕上がりを確認できます。</p>
+  <div class="creator-split">
+    <section class="game-creator-panel creator-settings-panel">
+      <div class="created-games-head"><h2 id="creatorEditorTitle">新しいROULETTE RACE</h2><button class="creator-new-button" id="creatorNewGame" type="button">＋ 新規に戻す</button></div>
+      <div class="creator-form-grid">
+        <label class="creator-field wide"><span>ゲーム名</span><input id="creatorGameName" type="text" maxlength="50" value="ROULETTE RACE"></label>
+        <label class="creator-field"><span>コースのカード枚数</span><select id="creatorCardCount"><option value="1">1枚</option><option value="2">2枚</option><option value="3">3枚</option><option value="4">4枚</option><option value="5">5枚</option><option value="6">6枚</option><option value="7">7枚</option><option value="8">8枚</option><option value="9">9枚</option><option value="10">10枚</option><option value="11">11枚</option><option value="12" selected>12枚</option><option value="13">13枚</option><option value="14">14枚</option><option value="15">15枚</option><option value="16">16枚</option><option value="17">17枚</option><option value="18">18枚</option><option value="19">19枚</option><option value="20">20枚</option><option value="21">21枚</option><option value="22">22枚</option><option value="23">23枚</option><option value="24">24枚</option></select></label>
+        <div class="creator-field"><span>カードの表示設定</span><div class="creator-inline-checks"><label><input id="creatorShowPicture" type="checkbox" checked>絵</label><label><input id="creatorShowEnglish" type="checkbox" checked>英語</label><label><input id="creatorShowJapanese" type="checkbox">日本語</label></div></div>
+        <label class="creator-field wide"><span>「みんな」のキーフレーズ（任意）</span><input id="creatorEverybodySentence" type="text" maxlength="120" placeholder="例：Do you like (P)?"></label>
+        <label class="creator-field wide"><span>「選ばれた人」のキーフレーズ（任意）</span><input id="creatorSelectedSentence" type="text" maxlength="120" placeholder="例：Yes, I do. / No, I don't."></label>
+      </div>
+      <div class="creator-section"><h3 class="creator-section-title"><span>コースに使うカード</span><span class="creator-section-title-actions"><small id="creatorCardSelectionCount">0語を選択中</small><button class="creator-clear-button" id="creatorClearCards" type="button">すべて解除</button></span></h3><div class="creator-vocabulary" id="creatorVocabulary"></div></div>
+      <div class="creator-section"><h3 class="creator-section-title"><span>Unitでの表示先</span><small>個別の端末が初期設定です</small></h3><div class="creator-audience-options"><label class="creator-audience-option"><input type="checkbox" name="creatorAudience" value="individual" checked>Games（個別の端末で）</label><label class="creator-audience-option"><input type="checkbox" name="creatorAudience" value="class">Games（みんなで）</label></div></div>
+      <div class="creator-section"><h3 class="creator-section-title"><span>割り当てるUnit</span><small>複数選択できます</small></h3><div class="creator-unit-grid"><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:1"><span>Let's Try 1 Unit 1<small>Hello!</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:2"><span>Let's Try 1 Unit 2<small>How are you?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:3"><span>Let's Try 1 Unit 3<small>How many?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:4"><span>Let's Try 1 Unit 4<small>I like blue.</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:5"><span>Let's Try 1 Unit 5<small>What do you like?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:6"><span>Let's Try 1 Unit 6<small>ALPHABET</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:7"><span>Let's Try 1 Unit 7<small>This is for you.</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:8"><span>Let's Try 1 Unit 8<small>What's this?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt1:9"><span>Let's Try 1 Unit 9<small>Who are you?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:1"><span>Let's Try 2 Unit 1<small>Hello, world!</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:2"><span>Let's Try 2 Unit 2<small>Let's play cards.</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:3"><span>Let's Try 2 Unit 3<small>I like Mondays.</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:4"><span>Let's Try 2 Unit 4<small>What time is it?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:5"><span>Let's Try 2 Unit 5<small>Do you have a pen?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:6"><span>Let's Try 2 Unit 6<small>Alphabet</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:7"><span>Let's Try 2 Unit 7<small>What do you want?</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:8"><span>Let's Try 2 Unit 8<small>This is my favorite place.</small></span></label><label class="creator-unit-option"><input type="checkbox" name="creatorAssignedUnit" value="lt2:9"><span>Let's Try 2 Unit 9<small>This is my day.</small></span></label></div></div>
+      <div class="creator-actions"><button class="creator-action save" id="creatorSaveGame" type="button">保存する</button><button class="creator-action play" id="creatorPlayGame" type="button">この設定で試す</button><button class="creator-action delete" id="creatorDeleteGame" type="button" hidden>削除する</button><span class="creator-status" id="creatorStatus" aria-live="polite"></span></div>
+    </section>
+    <aside class="creator-preview-panel">
+      <div class="creator-preview-head"><h2>プレビュー</h2><small>設定に合わせて更新されます</small></div>
+      <div class="creator-preview-stage" id="creatorPreview"></div>
+    </aside>
+  </div>
+</section>
+<div class="share-modal" id="rouletteShareModal" hidden>
+  <div class="share-modal-backdrop" data-close-roulette-share></div>
+  <section class="share-modal-card" role="dialog" aria-modal="true" aria-labelledby="rouletteShareTitle">
+    <button class="share-modal-close" type="button" data-close-roulette-share aria-label="閉じる">×</button>
+    <h2 id="rouletteShareTitle">児童に配る</h2>
+    <p class="share-modal-name" id="rouletteShareGameName"></p>
+    <div class="share-qr" id="rouletteShareQr" aria-label="配布用QRコード"></div>
+    <button class="share-copy-button" id="rouletteCopyUrl" type="button">URLをコピーする</button>
+    <p class="share-status" id="rouletteShareStatus" aria-live="polite"></p>
+  </section>
+</div>
+<section id="rouletteRace" class="page">
+  <div class="roulette-layout">
+    <aside class="roulette-menu" aria-label="ROULETTE RACEの設定内容">
+      <div class="unit-context">
+        <div class="unit-course" id="rouletteContextCourse">Create Games</div>
+        <h1 class="unit-title" id="rouletteContextTitle">ROULETTE RACE</h1>
+      </div>
+      <p class="roulette-menu-note">保存した設定で遊びます。設定を変えるときは「Create Games」に戻って編集してください。</p>
+      <div class="roulette-summary">
+        <div class="roulette-summary-row"><b>コース</b><span id="rouletteSummaryCount">12枚</span></div>
+        <div class="roulette-summary-row"><b>みんな</b><span id="rouletteSummaryEverybody">設定なし</span></div>
+        <div class="roulette-summary-row"><b>選ばれた人</b><span id="rouletteSummarySelected">設定なし</span></div>
+        <div class="roulette-summary-row"><b>割り当て先</b><span id="rouletteSummaryUnits">設定なし</span></div>
+      </div>
+      <div class="look-settings-block">
+        <div class="menu-accordion closed" id="rouletteDisplayAccordion">
+          <button class="menu-accordion-btn" type="button" aria-expanded="false"><span>カードの表示設定</span><span class="accordion-arrow">▼</span></button>
+          <div class="menu-accordion-body"><div class="option-list">
+            <label class="option-row"><input id="rouletteShowPicture" type="checkbox" checked>絵</label>
+            <label class="option-row"><input id="rouletteShowEnglish" type="checkbox" checked>英語</label>
+            <label class="option-row"><input id="rouletteShowJapanese" type="checkbox">日本語</label>
+          </div></div>
+        </div>
+      </div>
+    </aside>
+    <section class="roulette-workspace" id="rouletteWorkspace">
+      <div class="game-toolbar">
+        <button class="game-back" id="rouletteBack" type="button" aria-label="前の画面へ戻る" title="前の画面へ戻る"><img src="../assets/ui/back.svg" alt=""></button>
+        <h1>ROULETTE RACE</h1>
+        <button class="game-fullscreen" id="rouletteExpand" type="button">⛶ 全画面表示</button>
+      </div>
+      <div class="roulette-stage" id="rouletteStage" aria-live="polite"><div class="roulette-stage-message">Create Gamesで設定を選んでください</div></div>
+    </section>
+  </div>
+</section>
+<section id="alphabetTouch" class="page">
+  <div class="alphabet-shell" id="alphabetShell">
+    <div class="alphabet-toolbar">
+      <button class="alphabet-back" id="alphabetBack" type="button" aria-label="戻る"><img src="../assets/ui/back.svg" alt=""></button>
+      <h1>ALPHABET TOUCH</h1>
+      <div class="alphabet-toolbar-right">
+        <div id="alphabetClock" class="alphabet-clock" hidden><strong>TIME <span id="alphabetTime">0.00</span></strong><span>BEST --:--</span></div>
+        <button class="alphabet-sound" id="alphabetSound" type="button" aria-pressed="true"><span id="alphabetSoundIcon">🔊</span> <span id="alphabetSoundLabel">効果音ON</span></button>
+      </div>
+    </div>
+    <section id="alphabetSetup" class="alphabet-setup">
+      <div class="alphabet-setting-card">
+        <div class="alphabet-setting-block">
+          <h2>モード</h2>
+          <button class="alphabet-mode selected" type="button" aria-pressed="true">大文字</button>
+        </div>
+        <div class="alphabet-setting-block">
+          <h2>レベル</h2>
+          <div class="alphabet-levels">
+            <button type="button" class="selected" data-alphabet-level="easy">Easy</button>
+            <button type="button" data-alphabet-level="normal">Normal</button>
+            <button type="button" data-alphabet-level="hard">Hard</button>
+            <button type="button" data-alphabet-level="extra">Extra Hard</button>
+            <button type="button" data-alphabet-level="legend">Legend</button>
+          </div>
+        </div>
+        <button type="button" id="alphabetDistribute" class="creator-action save">このレベルを配信</button><button id="alphabetStart" class="alphabet-start" type="button">START</button>
+      </div>
+    </section>
+    <section id="alphabetPlay" class="alphabet-play" hidden>
+      <div id="alphabetNext" class="alphabet-next"><span>NEXT</span><strong id="alphabetNextLetter">A</strong></div>
+      <div id="alphabetBoard" class="alphabet-board"></div>
+    </section>
+    <div id="alphabetFinish" class="alphabet-finish" hidden>
+      <div class="alphabet-finish-card">
+        <h2>FINISH!</h2>
+        <p>TIME <strong id="alphabetFinishTime">0.00 sec</strong></p>
+        <div class="alphabet-finish-actions"><button id="alphabetRetry" type="button">もう一度</button><button id="alphabetToSetup" type="button">開始画面へ</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main><script src="../assets/ui/qrcode.js"></script><script src="catalog.js?v=ee7c4ddb14e2"></script><script src="state.js?v=2ee0300ceba1"></script><script src="shell.js?v=aa55986310f5"></script><script src="share.js?v=8c2c67dd9885"></script><script src="alphabet.js?v=289fa3a30dad"></script><script src="creator.js?v=a56f261b050d"></script><script src="roulette.js?v=824c9a2063a4"></script><script src="boot.js?v=d5b02869d3b8"></script></body></html>

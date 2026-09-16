@@ -20,12 +20,16 @@
     const token = await CardSet.encode(payload);
     const url = new URL('student.html', location.href);
     url.hash = 'cards=' + token;
+    openUrl(url.href,options.name,payload.refs.length+'語のカードセット（発行時の選択内容）');
+  }
+  function openUrl(href,name,count='DEKIRU Gamesで開くゲームです'){
+    const url=new URL(href,location.href);
     dialog?.remove();
     dialog = document.createElement('dialog'); dialog.className = 'card-share-dialog';
     dialog.innerHTML = '<form method="dialog"><button class="secondary-button" aria-label="閉じる">閉じる ×</button></form><h2>児童に配信</h2><p class="share-count"></p><div class="share-qr"></div><p class="share-warning"></p><label>配信用URL<textarea readonly rows="3"></textarea></label><div class="share-actions"><button class="primary-button">URLをコピーする</button><a class="secondary-button" target="_blank" rel="noopener">回答画面を試す</a></div><p role="status" class="share-status"></p>';
     document.body.append(dialog);
-    if(options.name)dialog.querySelector('h2').textContent=options.name+' — 児童に配信';
-    dialog.querySelector('.share-count').textContent = payload.refs.length + '語のカードセット（発行時の選択内容）';
+    if(name)dialog.querySelector('h2').textContent=name+' — 児童に配信';
+    dialog.querySelector('.share-count').textContent = count;
     dialog.querySelector('textarea').value = url.href;
     dialog.querySelector('a').href = url.href;
     const warning = dialog.querySelector('.share-warning');
@@ -41,5 +45,5 @@
     };
     dialog.showModal();
   }
-  window.CardShare = {open,openSave};
+  window.CardShare = {open,openSave,openUrl};
 })();
