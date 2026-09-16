@@ -245,7 +245,7 @@
   function savedSetsMarkup(bookKey,unit){
     try{
       const sets=SavedCardSets.list(`${bookKey}-${unit}`);
-return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button" data-share-saved-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を配信">配信</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>単語を選び「セットを保存」で追加できます。</p>'}`;
+return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div class="saved-set-row"><button class="side-action" data-saved-set="${escapeHtml(s.id)}">${escapeHtml(s.name)}</button><button class="secondary-button saved-set-edit" data-edit-saved-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を確認・編集">確認・編集</button><button class="secondary-button" data-share-saved-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を配信">配信</button><button class="secondary-button" data-delete-set="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.name)}を削除">削除</button></div>`).join(''):'<p>単語を選び「セットを保存」で追加できます。</p>'}`;
     }catch(error){return `<p>${escapeHtml(error.message)}</p>`;}
   }
   function renderUnit(bookKey, unit) {
@@ -607,13 +607,21 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   }
 
   app.addEventListener("click", (event) => {
-    const savedButton=event.target.closest('[data-saved-set],[data-delete-set],[data-share-saved-set]');
+    const savedButton=event.target.closest('[data-saved-set],[data-delete-set],[data-share-saved-set],[data-edit-saved-set]');
     if(savedButton&&state.activeUnit){
       if(LookSay.isRunning()||WhatsMissing.isRunning()||BombGame.isRunning()){showToast('ゲームの進行が終わってから操作してください');return;}
       const {bookKey,unit}=state.activeUnit,key=`${bookKey}-${unit}`;
       try{
-        const id=savedButton.dataset.savedSet||savedButton.dataset.deleteSet||savedButton.dataset.shareSavedSet;
+        const id=savedButton.dataset.savedSet||savedButton.dataset.deleteSet||savedButton.dataset.shareSavedSet||savedButton.dataset.editSavedSet;
         const saved=SavedCardSets.list(key).find(s=>s.id===id);if(!saved)return;
+        if(savedButton.hasAttribute('data-edit-saved-set')){
+          CardSetEditor.open(saved,getUnitVocabulary(bookKey,unit).groups,(name,payload,replaceId)=>{
+            SavedCardSets.save(key,name,payload,replaceId);
+            const section=document.getElementById('saved-card-sets');if(section)section.innerHTML=savedSetsMarkup(bookKey,unit);
+            showToast(replaceId?'セットを更新しました':'別名で保存しました');
+          });
+          return;
+        }
         if(savedButton.hasAttribute('data-share-saved-set')){
           const restored=CardSet.resolve(saved.payload);
           CardShare.open(restored.items,restored.display,{name:saved.name}).catch(error=>showToast(error.message));
