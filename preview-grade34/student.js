@@ -5,16 +5,63 @@
   const sessions = new Map();
   let selectedSlot = null, drag = null, suppressClickUntil = 0;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function speakCard(ref) {
+    const item = set.items.find(i => i.ref === ref);
+    if (!item) return;
+    if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+      root.querySelector('.instructions').textContent = 'このブラウザでは読み上げを利用できません。回答はLOCK中です。';
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(item.speech || item.english);
+    utterance.lang = 'en-US'; utterance.rate = 0.78;
+    window.speechSynthesis.speak(utterance);
+  }
   function card(item) {
     const src = CardSet.source(item), d = set.display;
     return `${d.image && src ? `<img src="${esc(src)}" alt="" draggable="false">` : ''}${d.image && !src && !d.english && !d.japanese ? `<b>${esc(item.english)}</b>` : ''}${d.english ? `<b>${esc(item.english)}</b>` : ''}${d.japanese ? `<span>${esc(item.japanese)}</span>` : ''}`;
   }
-  function header(title, reset = false) {
-    return `<header class="student-header"><button data-back aria-label="戻る">◀</button><h1>${esc(title)}</h1>${reset ? '<div class="answer-actions"><button data-reset>リセット</button></div>' : '<span></span>'}</header>`;
+  function isFullscreen() {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement || root.classList.contains('expanded-view'));
+  }
+  function syncFullscreenButton() {
+    root.querySelectorAll('[data-fullscreen]').forEach(button => {
+      const expanded = isFullscreen();
+      button.textContent = expanded ? '⤢ 元に戻す' : '⛶ 全画面';
+      button.setAttribute('aria-label', expanded ? '全画面表示を解除' : '全画面表示');
+      button.setAttribute('aria-pressed', String(expanded));
+    });
+  }
+  async function toggleFullscreen() {
+    endDrag(null, true);
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) await exit.call(document);
+      } else if (root.classList.contains('expanded-view')) {
+        root.classList.remove('expanded-view');
+      } else {
+        const request = root.requestFullscreen || root.webkitRequestFullscreen;
+        try {
+          if (!request) throw new Error('Unsupported');
+          await request.call(root);
+        } catch { root.classList.add('expanded-view'); }
+      }
+    } finally { syncFullscreenButton(); }
+  }
+  document.addEventListener('fullscreenchange', syncFullscreenButton);
+  document.addEventListener('webkitfullscreenchange', syncFullscreenButton);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && root.classList.contains('expanded-view')) {
+      root.classList.remove('expanded-view'); syncFullscreenButton();
+    }
+  });
+  function header(title, reset = false, top = false) {
+    return `<header class="student-header">${top ? '<span></span>' : '<button data-back aria-label="戻る">◀</button>'}<h1>${esc(title)}</h1><div class="answer-actions">${reset ? '<button data-reset>リセット</button>' : ''}<button data-fullscreen aria-label="全画面表示">⛶ 全画面</button></div></header>`;
   }
   function render() {
     if (screen === 'top') {
-      root.innerHTML = `<section class="student-page"><h1>ゲームを選ぼう</h1><p>${set.items.length}語の回答カードが届きました</p><div class="game-tiles">${Object.entries(StudentGames.games).map(([id,g]) => `<button data-game="${esc(id)}"><strong>${esc(g.title)}</strong><span>${esc(g.description)}</span></button>`).join('')}</div></section>`;
+      root.innerHTML = `${header('回答カード', false, true)}<section class="student-page"><h1>ゲームを選ぼう</h1><p>${set.items.length}語の回答カードが届きました</p><div class="game-tiles">${Object.entries(StudentGames.games).map(([id,g]) => `<button data-game="${esc(id)}"><strong>${esc(g.title)}</strong><span>${esc(g.description)}</span></button>`).join('')}</div></section>`;
     } else if (screen === 'setup') {
       root.innerHTML = `${header(model.game.title)}<section class="student-page"><h2>先生と同じ設定にしよう</h2>${model.game.fields.map(f => `<label class="setup-field">${esc(f.label)}<select data-setting="${esc(f.key)}">${Array.from({length:f.max},(_,i) => `<option value="${i+1}" ${model.config[f.key]===i+1?'selected':''}>${i+1}</option>`).join('')}</select>${esc(f.unit)}</label>`).join('')}<p>枚数・回数を変更すると回答は消えます。</p><button class="begin" data-begin>回答画面へ</button></section>`;
     } else {
@@ -33,7 +80,7 @@
       lock.textContent = model.locked ? '🔒 LOCK済み' : 'LOCK（回答を確定）';
       lock.disabled = model.locked || !model.answers.some(Boolean);
       lock.title = '空欄が残っていても回答を確定できます';
-      toolbar.append(lock);
+      toolbar.insertBefore(lock, toolbar.querySelector('[data-fullscreen]'));
       const categories = ['all', ...new Set(set.items.map(i => i.category))];
       const tabs = document.createElement('div'); tabs.className = 'category-tabs'; tabs.setAttribute('aria-label', 'カテゴリー');
       tabs.innerHTML = categories.map(c => `<button data-category="${esc(c)}" aria-pressed="${filter === c}">${esc(c === 'all' ? 'All' : window.DEKIRU_DATA.categoryLabels[c] || (c === 'expressions' ? '表現' : c))}</button>`).join('');
@@ -53,10 +100,16 @@
         }
       }
       if (model.locked) {
-        root.querySelectorAll('[data-slot], [data-card]').forEach(el => { el.disabled = true; });
-        root.querySelector('.instructions').textContent = '🔒 回答を確定しました。次の問題はリセットで全カードを外してください。';
+        root.querySelectorAll('[data-slot], [data-card]').forEach(el => {
+          const ref = el.dataset.card || model.answers[Number(el.dataset.slot)];
+          const item = set.items.find(i => i.ref === ref);
+          el.disabled = !item;
+          if (item) el.setAttribute('aria-label', item.english + 'を読み上げる');
+        });
+        root.querySelector('.instructions').textContent = '🔒 LOCK中：カードをタップすると発音します。次の問題はリセットしてください。';
       }
     }
+    syncFullscreenButton();
   }
   function updateAnswers() {
     const top = root.querySelector('.answer-middle')?.scrollTop || 0;
@@ -76,6 +129,12 @@
   root.addEventListener('click', e => {
     if (Date.now() < suppressClickUntil) { e.preventDefault(); return; }
     const b = e.target.closest('button'); if (!b || !set) return;
+    if (model?.locked && (b.dataset.card || b.hasAttribute('data-slot'))) {
+      speakCard(b.dataset.card || model.answers[Number(b.dataset.slot)]); return;
+    }
+    window.speechSynthesis?.cancel();
+    if (b.hasAttribute('data-fullscreen')) { toggleFullscreen().catch(() => {}); return; }
+    if (b.hasAttribute('data-back') && isFullscreen()) { toggleFullscreen().catch(() => {}); return; }
     if (b.dataset.game) {
       if (!sessions.has(b.dataset.game)) sessions.set(b.dataset.game, StudentGames.create(b.dataset.game, set.items.map(i=>i.ref)));
       model=sessions.get(b.dataset.game); selectedSlot=null; screen='setup'; render();
@@ -131,6 +190,7 @@
     else {img.hidden=true; const label=document.createElement('span'); label.textContent=img.parentElement.getAttribute('aria-label') || '画像なし'; img.after(label);}
   },true);
   async function load() {
+    window.speechSynthesis?.cancel();
     endDrag(null,true); selectedSlot=null;
     const id=++loadId; sessions.clear(); set=null; model=null; screen='top'; filter='all';
     try {
