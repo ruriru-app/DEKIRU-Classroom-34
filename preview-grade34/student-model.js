@@ -4,6 +4,7 @@
   const games = {
     'whats-missing': {
       title: 'What’s Missing?', description: '消えたカードを1枚選ぼう',
+      answerLayout: 'single',
       defaults: {}, fields: [], groups: () => [{label:'消えたカードは？',size:1}],
       allowRepeat: () => false
     },

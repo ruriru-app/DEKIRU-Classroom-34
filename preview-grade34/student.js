@@ -75,6 +75,9 @@
       root.querySelector('.student-page').append(note);
     }
     if (screen === 'answer') {
+      const shell = root.querySelector('.answer-shell');
+      shell.classList.toggle('answers-locked', model.locked);
+      shell.classList.toggle('single-answer', model.game.answerLayout === 'single');
       const toolbar = root.querySelector('.answer-actions');
       const lock = document.createElement('button'); lock.dataset.lock = ''; lock.className = 'lock-button';
       lock.textContent = model.locked ? '🔒 LOCK済み' : 'LOCK（回答を確定）';
