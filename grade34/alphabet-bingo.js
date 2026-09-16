@@ -3,8 +3,8 @@
   const {letters, card, create} = window.AlphabetBingo;
   const el = id => document.getElementById(id);
   const screens = ['home', 'guide', 'game'];
-  const sound = new Audio('assets/ui/bingo/drum.wav');
-  const cymbal = new Audio('assets/ui/bingo/cymbal.wav');
+  const sound = new Audio('assets/ui/bingo/drum-original.mp3');
+  const cymbal = new Audio('assets/ui/bingo/finish-original.mp3');
   sound.loop = true;
   const FRAME_MS = 70;
   let mode = 'upper', page = 'home', game = null, timer = null, soundOn = true, finished = false;
