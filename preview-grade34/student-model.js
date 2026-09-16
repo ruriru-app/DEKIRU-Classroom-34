@@ -2,6 +2,11 @@
 (() => {
   'use strict';
   const games = {
+    'bomb-game': {
+      title: 'BOMB GAME', description: '爆弾だと思うカードを1枚選ぼう',
+      answerLayout: 'single', defaults: {}, fields: [],
+      groups: () => [{label:'爆弾はどのカード？',size:1}], allowRepeat: () => false
+    },
     'whats-missing': {
       title: 'What’s Missing?', description: '消えたカードを1枚選ぼう',
       answerLayout: 'single',
