@@ -1,0 +1,20 @@
+.practice-setting{display:flex;flex-direction:column;gap:8px;margin:18px 0}.practice-setting select{width:100%;min-width:0;padding:9px 4px;border:1px solid var(--line);border-radius:8px;background:white;font-size:14px}
+.practice-scroll{height:calc(100dvh - 330px);min-height:300px;overflow-y:auto;overflow-x:hidden;padding:4px}
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));grid-auto-rows:max-content;align-content:start;align-items:start;gap:16px}
+.practice-grid[data-layout="1"]{grid-template-columns:minmax(0,1fr)}
+.practice-grid[data-layout="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.practice-grid[data-layout="5"]{grid-template-columns:repeat(5,minmax(0,1fr))}
+.practice-card{position:relative;display:block;box-sizing:border-box;width:100%;min-width:0;aspect-ratio:3/2;border:2px solid var(--line);border-radius:16px;overflow:hidden;background:white;padding:0;container-type:inline-size;color:var(--ink)}
+.practice-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.practice-grid[data-layout="1"] .practice-card{max-width:1000px;justify-self:center}
+.practice-grid[data-layout="3"] .practice-card,.practice-grid[data-layout="5"] .practice-card{aspect-ratio:3/4}
+.practice-art{position:absolute;top:0;left:0;width:50%;height:100%;padding:8px;display:grid;place-items:center}.practice-art img,.practice-art svg{width:100%;height:100%;object-fit:contain;min-height:0}
+.practice-label{position:absolute;right:0;top:0;width:50%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;text-align:center;overflow-wrap:anywhere;font-size:clamp(16px,8cqw,46px)}
+.practice-label small{font-size:.55em}
+.practice-grid[data-layout="3"] .practice-art,.practice-grid[data-layout="5"] .practice-art{width:100%;height:60%}
+.practice-grid[data-layout="3"] .practice-label,.practice-grid[data-layout="5"] .practice-label{width:100%;height:40%;top:60%;font-size:clamp(16px,10cqw,44px)}
+.practice-card.phonics-portrait .practice-art{height:50%}.practice-card.phonics-portrait .practice-label{height:50%;top:50%;font-family:'Phonics Andika','DEKIRU Andika',sans-serif;font-size:38cqw;font-weight:400;line-height:1;-webkit-text-stroke:1px #635344;paint-order:stroke fill}
+.practice-label.vowels{color:#eb5555}.practice-label.unvoiced{color:#f4d54d}.practice-label.voiced{color:#68ac78}
+.practice-card.no-picture .practice-label{inset:0;width:100%;height:100%}
+.content-panel:fullscreen .practice-scroll,.content-panel.fullscreen-content .practice-scroll{height:calc(100dvh - 180px)}
+.practice-card:focus-visible{outline:3px solid var(--blue-dark);outline-offset:-4px}

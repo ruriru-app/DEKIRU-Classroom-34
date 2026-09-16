@@ -1,0 +1,20 @@
+@font-face{font-family:'Phonics Andika';src:url('assets/phonics/Andika-Regular.ttf') format('truetype');font-display:swap}
+body{font-family:'Phonics Andika','Yu Gothic',sans-serif}
+.app-header h1{font-size:28px;margin:0;flex:1}
+.app-header .icon-button{width:44px;height:44px}.app-header .icon-button img{width:34px;height:34px}
+.phonics-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;padding:24px;max-width:1800px;margin:auto}
+aside,.phonics-viewer{background:white;border:1px solid var(--line);border-radius:22px;padding:20px;min-width:0}
+aside{align-self:start;max-height:calc(100dvh - 140px);overflow:auto}aside h2{font-size:23px}
+details{border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:12px}summary{cursor:pointer}summary label{display:inline-flex;gap:6px;align-items:center;font-size:16px}
+.letter-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.letter-options label{padding:6px;border-radius:8px;background:var(--blue-pale)}input{width:18px;height:18px;vertical-align:middle}
+.audio-note{font-size:14px;color:var(--muted)}
+.phonics-viewer{display:flex;flex-direction:column;height:calc(100dvh - 140px);min-height:440px}
+.phonics-toolbar{display:flex;align-items:center;gap:10px;flex-shrink:0}.phonics-toolbar[hidden]{display:none}.phonics-toolbar h2{font-size:26px;margin:0}
+.phonics-toolbar button{border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:var(--blue-pale);cursor:pointer;min-height:44px}
+button:focus-visible,a:focus-visible{outline:3px solid var(--blue-dark);outline-offset:2px}#fullscreen{margin-left:auto}
+#stage{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;margin:16px 0;padding:4px}
+#open-practice{width:min(520px,100%);text-align:left;padding:24px;min-height:130px}
+#notice{font-size:14px;margin:6px 0 0;min-height:20px}
+.phonics-viewer:fullscreen,.phonics-viewer.expanded{height:100dvh;width:100vw;max-width:none;border-radius:0;background:white;padding:20px}
+.phonics-viewer.expanded{position:fixed;inset:0;z-index:100}
+@media(max-width:750px){.phonics-layout{grid-template-columns:1fr;padding:12px;gap:12px}aside{max-height:none}.phonics-viewer{height:75dvh}.app-header{padding:12px}.app-header>span{font-size:12px}}

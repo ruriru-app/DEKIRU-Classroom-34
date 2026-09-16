@@ -1,0 +1,8 @@
+@font-face { font-family:'DEKIRU Andika'; src:url('assets/Andika-Regular.ttf') format('truetype'); font-display:swap; }
+body {font-family:'DEKIRU Andika','Yu Gothic',sans-serif;}
+.top-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+.unit-grid {grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,auto);grid-auto-flow:column;}
+.page-heading h1 {font-size:clamp(24px,3vw,38px);}
+.back-button {width:44px;height:44px;}
+.back-button img {width:34px;height:34px;display:block;}
+@media(max-width:720px){.top-grid,.unit-grid {grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row;}}

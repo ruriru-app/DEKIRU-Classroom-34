@@ -14,6 +14,7 @@
   const ASSET_BASE = "../";
   const app = document.getElementById("app");
   const toast = document.getElementById("toast");
+  const practice = globalThis.CardPractice?.create();
   const cardById = new Map(DATA.cards.map((card) => [card.id, card]));
   const expressionById = new Map(DATA.expressions.map((expression) => [expression.id, expression]));
 
@@ -79,6 +80,7 @@
     const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
     if (!parts.length) return { page: "home" };
     if (parts[0] === "book" && BOOKS[parts[1]]) return { page: "book", book: parts[1] };
+    if (parts[0] === "phonics" && BOOKS[parts[1]]) return { page: "phonics", book: parts[1] };
     if (parts[0] === "unit" && BOOKS[parts[1]] && Number(parts[2])) {
       return { page: "unit", book: parts[1], unit: Number(parts[2]) };
     }
@@ -140,7 +142,12 @@
             <span>Unit ${escapeHtml(number)}</span>
             <strong>${escapeHtml(title)}</strong>
           </button>`).join("")}
+        <button class="unit-tile activities" data-route="#/phonics/${bookKey}"><span>一文字一音</span><strong>Phonics</strong></button>
       </section>`;
+  }
+
+  function renderPhonics(bookKey) {
+    location.replace(`phonics.html?from=${bookKey}`);
   }
 
   function renderActivities() {
@@ -456,7 +463,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
         ? `<div class="catalog-grid embedded">${activities.map(activityTile).join("")}</div>`
         : `<div class="empty-state"><h2>Activityは準備中です</h2><p>このUnitに合う活動を、今後ここへ追加します。</p></div>`;
     }
-    if (feature === "pronunciation") return cardGrid(chosen);
+    if (feature === "pronunciation") return practiceCards(chosen);
     if (feature === "sentences") return sentenceView(chosen);
     if (feature === "alphabet-touch") {
       return externalGameTile('ALPHABET TOUCH',GamesLinks.alphabet());
@@ -472,6 +479,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   function renderSpecificSettings(feature) {
     const container = document.getElementById("specific-settings");
     if (!container) return;
+    if(feature==='pronunciation'){container.innerHTML=practice.settings();return;}
     const meta = featureMeta(feature);
     const settings = {
       pronunciation: "一覧表示・1枚表示・自動再生などの設定をここへまとめます。",
@@ -530,6 +538,14 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   function cardGrid(items) {
     if (!items.length) return emptyVocabulary();
     return `<div class="card-grid">${items.map((item) => mainCard(item)).join("")}</div>`;
+  }
+
+  function practiceCards(items) {
+    if(!items.length)return emptyVocabulary();
+    return `<div class="practice-scroll"><div class="practice-grid" data-layout="${practice.layout}">${practice.arrange(items).map(item=>{
+      const source=pictureSource(item);
+      return `<button class="practice-card ${state.display.image?'':'no-picture'}" data-speak="${escapeHtml(item.speech||item.english)}">${state.display.image?`<div class="practice-art">${source?`<img src="${escapeHtml(source)}" alt="">`:'<span>No image</span>'}</div>`:''}<div class="practice-label">${state.display.english?`<strong>${escapeHtml(item.english)}</strong>`:''}${state.display.japanese?`<small>${escapeHtml(item.japanese)}</small>`:''}</div></button>`;
+    }).join('')}</div></div>`;
   }
 
   function emptyVocabulary() {
@@ -736,6 +752,8 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   });
 
   app.addEventListener("change", (event) => {
+    const practiceSetting=event.target.closest('[data-practice-setting]');
+    if(practiceSetting && state.activeUnit){practice.configure(practiceSetting.dataset.practiceSetting,practiceSetting.value);const {bookKey,unit}=state.activeUnit;const vocabulary=getUnitVocabulary(bookKey,unit);const selection=state.unitSelections.get(`${bookKey}-${unit}`);const panel=document.querySelector('#unit-content .practice-scroll');if(panel&&selection)panel.outerHTML=practiceCards(selectedItems(vocabulary,selection));else renderUnit(bookKey,unit);return;}
     const bombSetting = event.target.closest('[data-bomb-setting]');
     if (bombSetting) { BombGame.configure(bombSetting.dataset.bombSetting, bombSetting.type === 'checkbox' ? bombSetting.checked : bombSetting.value); return; }
     const lookSetting = event.target.closest("[data-look-setting]");
@@ -805,6 +823,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     document.body.classList.remove("today-player-mode");
     const current = route();
     if (current.page === "book") renderBook(current.book);
+    else if (current.page === "phonics") renderPhonics(current.book);
     else if (current.page === "unit") renderUnit(current.book, current.unit);
     else if (current.page === "activities") renderActivities();
     else renderHome();

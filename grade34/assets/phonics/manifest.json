@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "layout": "landscape-upper-lower-illustration",
+  "cards": [
+    {
+      "letter": "A",
+      "lowercase": "a",
+      "word": "apple",
+      "color": "red",
+      "image": "phonics-A-apple.png"
+    },
+    {
+      "letter": "B",
+      "lowercase": "b",
+      "word": "bear",
+      "color": "green",
+      "image": "phonics-B-bear.png"
+    },
+    {
+      "letter": "C",
+      "lowercase": "c",
+      "word": "cow",
+      "color": "yellow",
+      "image": "phonics-C-cow.png"
+    },
+    {
+      "letter": "D",
+      "lowercase": "d",
+      "word": "dog",
+      "color": "green",
+      "image": "phonics-D-dog.png"
+    },
+    {
+      "letter": "E",
+      "lowercase": "e",
+      "word": "egg",
+      "color": "red",
+      "image": "phonics-E-egg.png"
+    },
+    {
+      "letter": "F",
+      "lowercase": "f",
+      "word": "fish",
+      "color": "yellow",
+      "image": "phonics-F-fish.png"
+    },
+    {
+      "letter": "G",
+      "lowercase": "g",
+      "word": "goat",
+      "color": "green",
+      "image": "phonics-G-goat.png"
+    },
+    {
+      "letter": "H",
+      "lowercase": "h",
+      "word": "hat",
+      "color": "yellow",
+      "image": "phonics-H-hat.png"
+    },
+    {
+      "letter": "I",
+      "lowercase": "i",
+      "word": "ink",
+      "color": "red",
+      "image": "phonics-I-ink.png"
+    },
+    {
+      "letter": "J",
+      "lowercase": "j",
+      "word": "jet",
+      "color": "green",
+      "image": "phonics-J-jet.png"
+    },
+    {
+      "letter": "K",
+      "lowercase": "k",
+      "word": "king",
+      "color": "yellow",
+      "image": "phonics-K-king.png"
+    },
+    {
+      "letter": "L",
+      "lowercase": "l",
+      "word": "lion",
+      "color": "green",
+      "image": "phonics-L-lion.png"
+    },
+    {
+      "letter": "M",
+      "lowercase": "m",
+      "word": "monkey",
+      "color": "green",
+      "image": "phonics-M-monkey.png"
+    },
+    {
+      "letter": "N",
+      "lowercase": "n",
+      "word": "nest",
+      "color": "green",
+      "image": "phonics-N-nest.png"
+    },
+    {
+      "letter": "O",
+      "lowercase": "o",
+      "word": "octopus",
+      "color": "red",
+      "image": "phonics-O-octopus.png"
+    },
+    {
+      "letter": "P",
+      "lowercase": "p",
+      "word": "pig",
+      "color": "yellow",
+      "image": "phonics-P-pig.png"
+    },
+    {
+      "letter": "Q",
+      "lowercase": "q",
+      "word": "queen",
+      "color": "yellow",
+      "image": "phonics-Q-queen.png"
+    },
+    {
+      "letter": "R",
+      "lowercase": "r",
+      "word": "rabbit",
+      "color": "green",
+      "image": "phonics-R-rabbit.png"
+    },
+    {
+      "letter": "S",
+      "lowercase": "s",
+      "word": "sun",
+      "color": "yellow",
+      "image": "phonics-S-sun.png"
+    },
+    {
+      "letter": "T",
+      "lowercase": "t",
+      "word": "tiger",
+      "color": "yellow",
+      "image": "phonics-T-tiger.png"
+    },
+    {
+      "letter": "U",
+      "lowercase": "u",
+      "word": "umbrella",
+      "color": "red",
+      "image": "phonics-U-umbrella.png"
+    },
+    {
+      "letter": "V",
+      "lowercase": "v",
+      "word": "violin",
+      "color": "green",
+      "image": "phonics-V-violin.png"
+    },
+    {
+      "letter": "W",
+      "lowercase": "w",
+      "word": "witch",
+      "color": "green",
+      "image": "phonics-W-witch.png"
+    },
+    {
+      "letter": "X",
+      "lowercase": "x",
+      "word": "fox",
+      "color": "yellow",
+      "image": "phonics-X-fox.png"
+    },
+    {
+      "letter": "Y",
+      "lowercase": "y",
+      "word": "yard",
+      "color": "green",
+      "image": "phonics-Y-yard.png"
+    },
+    {
+      "letter": "Z",
+      "lowercase": "z",
+      "word": "zebra",
+      "color": "green",
+      "image": "phonics-Z-zebra.png"
+    }
+  ]
+}
