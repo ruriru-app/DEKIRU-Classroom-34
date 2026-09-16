@@ -37,10 +37,10 @@ window.BombGame = (() => {
       stage.innerHTML=`<div class="bomb-grid" style="--columns:${grid.columns};--rows:${grid.rows}">${deck.map((item,i)=>{
         const gone=phase==='ended'&&i!==bomb&&!safe.has(i),disabled=phase!=='playing'||safe.has(i);
         const card=host.card(item).replace(' tabindex="-1"','').replace('<button ',`<button data-bomb-pick="${i}" ${disabled?'disabled':''} `);
-        let mark=safe.has(i)?`<span class="bomb-safe-mark${i===animateSafe?' bomb-safe-new':''}" aria-label="SAFE">○</span>`:'';
+        let mark=safe.has(i)?`<svg class="bomb-safe-mark${i===animateSafe?' bomb-safe-new':''}" aria-label="SAFE" role="img" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="14"/><circle cx="50" cy="50" r="40" fill="none" stroke="#d83c49" stroke-width="8"/></svg>`:'';
         if(i===bomb&&phase==='fuse')mark=`<img class="bomb-fuse" src="${assets}fuse.svg?round=${generation}" alt="爆弾">`;
         if(i===bomb&&phase==='ended')mark=`<img src="${assets}answer.svg" alt="爆弾のカード">`;
-        return `<div class="bomb-cell ${gone?'bomb-gone':''}">${card}<div class="bomb-mark">${mark}</div></div>`;
+        return `<div class="bomb-cell ${safe.has(i)?'bomb-safe':''} ${gone?'bomb-gone':''}">${card}<div class="bomb-mark">${mark}</div></div>`;
       }).join('')}</div>${phase==='explosion'?`<div class="bomb-overlay"><img src="${assets}explosion.svg" alt="爆発"></div>`:''}`;
     }
     fitLabels(stage);
