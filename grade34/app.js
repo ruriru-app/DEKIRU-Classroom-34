@@ -141,11 +141,17 @@
       <section class="unit-grid">
         ${units.map(([number, title]) => {
           const [subtitle, ...expressions] = window.DEKIRU_BOOK_OVERVIEWS?.[bookKey]?.[Number(number)-1] || [];
+          const artId = window.DEKIRU_BOOK_ART?.[bookKey]?.[Number(number)-1];
+          const art = cardById.get(artId) || expressionById.get(artId);
+          const artSource = art ? globalThis.CardSet?.source(art) : '';
           return `
           <button class="unit-tile ${book.color}" data-route="#/unit/${bookKey}/${number}">
+            <span class="book-unit-copy">
             <strong class="book-unit-heading"><span class="book-unit-number">Unit ${escapeHtml(number)}</span><span>${escapeHtml(title)}</span></strong>
             <span class="book-subtitle">${escapeHtml(subtitle)}</span>
             <span class="book-expressions">${expressions.map(text=>`<span>${escapeHtml(text)}</span>`).join('')}</span>
+            </span>
+            ${artSource ? `<img class="book-unit-art" src="${escapeHtml(artSource)}" alt="">` : ''}
           </button>`; }).join("")}
       </section>
       </div>`;

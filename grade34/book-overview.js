@@ -23,3 +23,8 @@ window.DEKIRU_BOOK_OVERVIEWS = {
     ['ぼく・わたしの一日', 'I wake up at 6:00. / I have breakfast at 7:00.', 'I go to school. / I go home.']
   ]
 };
+// Reuse the picture dictionary, including linked custom expression artwork.
+window.DEKIRU_BOOK_ART = {
+  lt1: ['feeling_001','feeling_004','fruit_vegetable_001','color_010','sport_006','expr_039','shape_007','fruit_vegetable_016','animal_014'],
+  lt2: ['lt2_expr_2','activity_014','day_002','item_036','stationery_003','lt2_lower_a','fruit_vegetable_023','school_006','daily_002']
+};
