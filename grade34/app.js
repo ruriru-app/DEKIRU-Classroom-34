@@ -318,6 +318,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
         card: item => mainCard(item).replace(/ data-speak="[^"]*"/, ' tabindex="-1"') });
     }
     if (previousSidebar) app.querySelector('.unit-sidebar').scrollTop = sidebarScroll;
+    if (state.activeFeature === 'sentences') SentencePlayer.attach({unitKey:`${bookKey}-${unit}`,items:selectedItems(vocabulary,selection),cards:DATA.cards,source:pictureSource,labels:DATA.categoryLabels});
   }
 
   function displaySettings() {
@@ -381,7 +382,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
       ${sectionBlock("Words &amp; Phrases", "言葉と文を確認する", `
         <div class="feature-grid">
           ${featureTile("pronunciation", "発音練習", "絵・英語・音声で言葉を確認")}
-          ${featureTile("sentences", "文で言ってみよう", "カードを並べて文で話す")}
+          ${featureTile("sentences", "文で話そう", "カードを並べて文で話す")}
         </div>`)}
       ${sectionBlock("Games（みんなで）", "大型提示画面で学級全体で遊ぶ", `
         <div class="feature-grid">
@@ -421,6 +422,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   }
 
   function renderFeature(feature, bookKey, unit, unitTitle, vocabulary, selection) {
+    if (feature === "sentences") return SentencePlayer.markup(`${bookKey}-${unit}`);
     if (feature === "look-say") return LookSay.markup();
     if (feature === "whats-missing") return WhatsMissing.markup();
     if (feature === "bomb-game") return BombGame.markup();
@@ -445,7 +447,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
       today: ["Today is...", "日付と天気を確認"],
       "unit-activities": ["Activities", "このUnitで使える活動"],
       pronunciation: ["発音練習", "選んだ言葉を見て・聞いて確認"],
-      sentences: ["文で言ってみよう", "選んだ言葉を文で使う"],
+      sentences: ["文で話そう", "選んだ言葉を文で使う"],
       "look-say": ["Look & Say", "短時間見えたカードを答える"],
       "whats-missing": ["What’s Missing?", "消えたカードを見つける"],
       "bomb-game": ["Bomb Game", "選んだ言葉で遊ぶ"],
@@ -464,7 +466,6 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
         : `<div class="empty-state"><h2>Activityは準備中です</h2><p>このUnitに合う活動を、今後ここへ追加します。</p></div>`;
     }
     if (feature === "pronunciation") return practiceCards(chosen);
-    if (feature === "sentences") return sentenceView(chosen);
     if (feature === "alphabet-touch") {
       return externalGameTile('ALPHABET TOUCH',GamesLinks.alphabet());
     }
@@ -483,7 +484,6 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     const meta = featureMeta(feature);
     const settings = {
       pronunciation: "一覧表示・1枚表示・自動再生などの設定をここへまとめます。",
-      sentences: "文型や入れ替える部分の設定をここへまとめます。",
       "look-say": "表示枚数・回数・時間を設定します。",
       "whats-missing": "表示枚数・難易度・表示時間を設定します。",
       "bomb-game": "出題数など、ゲーム専用の設定をここへまとめます。",
@@ -521,17 +521,6 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
         <h2 class="today-choices-title">${config.title}</h2>
         <div class="today-choices">${cards.map(card => `<button class="today-choice ${state.todaySelections[state.todayField] === card.id ? "selected" : ""}" data-today-choice="${escapeHtml(card.id)}" aria-pressed="${state.todaySelections[state.todayField] === card.id}"><span class="today-choice-picture"><img src="${escapeHtml(ASSET_BASE + card.image)}" alt=""></span><span class="today-choice-word">${escapeHtml(card.english)}</span></button>`).join("")}</div>
       </section>
-    </div>`;
-  }
-
-  function sentenceView(chosen) {
-    const words = chosen.slice(0, 3);
-    if (!words.length) return emptyVocabulary();
-    const phrase = words.map((item) => item.english).join(" ");
-    return `<div class="sentence-stage">
-      <button class="speech-button" data-speak="${escapeHtml(phrase)}" aria-label="文章を読み上げ">🔊</button>
-      <div class="sentence-cards">${words.map((item) => mainCard(item)).join("")}</div>
-      <span class="sentence-mark">.</span>
     </div>`;
   }
 
@@ -709,6 +698,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     }
     const routeTarget = event.target.closest("[data-route]");
     if (routeTarget) {
+      globalThis.SentencePlayer?.stop();
       LookSay.stop(true); WhatsMissing.stop(true); BombGame.stop(true);
       state.activeFeature = null;
       navigate(routeTarget.dataset.route);
@@ -742,6 +732,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
       }
       LookSay.stop(true); WhatsMissing.stop(true); BombGame.stop(true);
       state.activeFeature = featureTarget.dataset.feature === "close" ? null : featureTarget.dataset.feature;
+      globalThis.SentencePlayer?.stop();
       if (state.activeFeature === "today") state.todayField = "day";
       renderUnit(state.activeUnit.bookKey, state.activeUnit.unit);
       return;
@@ -820,6 +811,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   });
 
   function render() {
+    globalThis.SentencePlayer?.stop();
     document.body.classList.remove("today-player-mode");
     const current = route();
     if (current.page === "book") renderBook(current.book);
