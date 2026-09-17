@@ -4,7 +4,7 @@ globalThis.CardPractice=(()=>{
     layout:'list',order:'ordered',
     configure(key,value){if(key==='layout'&&layouts[value])this.layout=value;if(key==='order'&&['ordered','random'].includes(value)){this.order=value;ranks=new Map();}},
     arrange(items){if(this.order==='ordered')return [...items];for(const item of items){const key=item.id||item.letter||item.ref;if(!ranks.has(key))ranks.set(key,Math.random());}return [...items].sort((a,b)=>ranks.get(a.id||a.letter||a.ref)-ranks.get(b.id||b.letter||b.ref));},
-    settings(){return `<h2>発音練習の設定</h2><label class="practice-setting">表示枚数<select data-practice-setting="layout">${Object.entries(layouts).map(([v,label])=>`<option value="${v}" ${this.layout===v?'selected':''}>${label}</option>`).join('')}</select></label><label class="practice-setting">表示方法<select data-practice-setting="order"><option value="ordered" ${this.order==='ordered'?'selected':''}>順番通り</option><option value="random" ${this.order==='random'?'selected':''}>ランダム</option></select></label>`;}
+    settings(standard=false){return `<h2>発音練習の設定</h2><label class="practice-setting">表示枚数<select data-practice-setting="layout">${Object.entries(layouts).map(([v,label])=>`<option value="${v}" ${this.layout===v?'selected':''}>${standard?label.replace('横カード','縦カード'):label}</option>`).join('')}</select></label><label class="practice-setting">表示方法<select data-practice-setting="order"><option value="ordered" ${this.order==='ordered'?'selected':''}>順番通り</option><option value="random" ${this.order==='random'?'selected':''}>ランダム</option></select></label>`;}
   };}
   return {create};
 })();

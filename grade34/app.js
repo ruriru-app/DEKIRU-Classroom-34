@@ -479,7 +479,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   function renderSpecificSettings(feature) {
     const container = document.getElementById("specific-settings");
     if (!container) return;
-    if(feature==='pronunciation'){container.innerHTML=practice.settings();return;}
+    if(feature==='pronunciation'){container.innerHTML=practice.settings(true);return;}
     const meta = featureMeta(feature);
     const settings = {
       pronunciation: "一覧表示・1枚表示・自動再生などの設定をここへまとめます。",
