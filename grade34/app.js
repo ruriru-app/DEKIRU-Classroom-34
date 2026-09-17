@@ -149,9 +149,9 @@
             <span class="book-unit-copy">
             <strong class="book-unit-heading"><span class="book-unit-number">Unit ${escapeHtml(number)}</span><span>${escapeHtml(title)}</span></strong>
             <span class="book-subtitle">${escapeHtml(subtitle)}</span>
-            <span class="book-expressions">${expressions.map(text=>`<span>${escapeHtml(text)}</span>`).join('')}</span>
             </span>
             ${artSource ? `<img class="book-unit-art" src="${escapeHtml(artSource)}" alt="">` : ''}
+            <span class="book-expressions">${expressions.map(text=>`<span>${escapeHtml(text)}</span>`).join('')}</span>
           </button>`; }).join("")}
       </section>
       </div>`;
