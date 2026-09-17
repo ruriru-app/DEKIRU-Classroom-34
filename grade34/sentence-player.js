@@ -295,6 +295,9 @@ function bindTalkStageEvents(stage){
       if(card.dataset.talkSelectionKey){
         talkChoiceTarget=card.dataset.talkSelectionKey;
         talkChoiceRole=card.dataset.talkSelectionRole||talkChoiceRole;
+        if(definition.quantities&&/^(object|negativeObject)(Count|Color)$/.test(talkChoiceTarget)){
+          talkChoiceTarget=talkChoiceTarget.replace(/(Count|Color)$/,'');talkChoiceRole='object';
+        }
         renderTalkChoiceControls();
         renderTalkChoices();
       }

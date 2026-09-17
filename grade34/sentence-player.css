@@ -58,3 +58,4 @@
 .talk-stage-zoom{right:62px}
 .talk-stage>div{flex:none;min-width:max-content}
 @media(max-width:1100px){.talk-activity-list{grid-template-columns:repeat(2,minmax(0,1fr))}.talk-rules{grid-template-columns:repeat(4,minmax(0,1fr))}.talk-rule{min-height:28px}.talk-stage{justify-content:safe center}.talk-topbar{gap:4px}}
+.talk-sequence-layout.talk-possession-sequence{align-items:flex-start}

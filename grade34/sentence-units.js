@@ -6,13 +6,20 @@ window.SentenceUnits={
   defaults(activity){return {subject:'person_001',questionSubject:'person_002',responseSubject:'person_001',verb:'action5_015',object:'stationery_003',negativeObject:activity==='dont'?'stationery_003':'stationery_007',objectCount:1,negativeObjectCount:1};},
   target(activity){return activity==='dont'?'negativeObject':'object';},
   render({cards,selected,activity,token,row}){
-   const pick=(key,role)=>{const source=cards.get(selected[key]);const form=role==='object'?window.SentenceForms.possession(source,selected[key+'Count'],selected[key+'Color']):source;return token(form.english,role,source.id,'',form.speech||form.english,key);};
-   const subject=pick('subject','subject'),verb=pick('verb','verb'),object=pick('object','object'),negative=pick('negativeObject','object');
-   const have=()=>row([subject,verb,object],'.','talk-statement-row',activity==='have_dont'?[1]:[]);
-   const dont=()=>row([subject,token("don't",'negative','','×',"don't"),verb,negative],'.','talk-statement-row');
+   const pick=(key,role)=>{const source=cards.get(selected[key]);return token(source.english,role,source.id,'',source.speech||source.english,key);};
+   const objectTokens=key=>{
+    const source=cards.get(selected[key]),form=window.SentenceForms.possession(source,selected[key+'Count'],selected[key+'Color']);
+    const result=[token(form.quantity,'adjective','number_'+String(form.count).padStart(3,'0'),'',form.quantity,key+'Count')];
+    if(form.measure)result.push(token(form.measure,'neutral','','',form.measure));
+    if(form.color){const colorCard=[...cards.values()].find(c=>c.category==='colors'&&c.english===form.color);result.push(token(form.color,'adjective',colorCard?.id||'','',form.color,key+'Color'));}
+    result.push(token(form.noun,'object',source.id,'',form.noun,key));return result;
+   };
+   const subject=pick('subject','subject'),verb=pick('verb','verb'),object=objectTokens('object'),negative=objectTokens('negativeObject');
+   const have=()=>row([subject,verb,...object],'.','talk-statement-row',activity==='have_dont'?[1]:[]);
+   const dont=()=>row([subject,token("don't",'negative','','×',"don't"),verb,...negative],'.','talk-statement-row');
    if(activity==='dont')return dont();
-   if(activity==='have_dont')return '<div class="talk-sequence-layout">'+have()+dont()+'</div>';
-   if(activity==='question')return '<div class="talk-question-layout"><div class="talk-question-prompts">'+row([token('Do','neutral','','?','Do'),pick('questionSubject','subject'),verb,object],'?','talk-question-row')+'</div><div class="talk-responses">'+row([token('Yes,','neutral','','〇','Yes'),pick('responseSubject','subject'),token('do','verb','','〇','do')],'.','talk-response-row')+row([token('No,','neutral','','×','No'),pick('responseSubject','subject'),token("don't",'negative','','×',"don't")],'.','talk-response-row')+'</div></div>';
+   if(activity==='have_dont')return '<div class="talk-sequence-layout talk-possession-sequence">'+have()+dont()+'</div>';
+   if(activity==='question')return '<div class="talk-question-layout"><div class="talk-question-prompts">'+row([token('Do','neutral','','?','Do'),pick('questionSubject','subject'),verb,...object],'?','talk-question-row')+'</div><div class="talk-responses">'+row([token('Yes,','neutral','','〇','Yes'),pick('responseSubject','subject'),token('do','verb','','〇','do')],'.','talk-response-row')+row([token('No,','neutral','','×','No'),pick('responseSubject','subject'),token("don't",'negative','','×',"don't")],'.','talk-response-row')+'</div></div>';
    return have();
   }
  },

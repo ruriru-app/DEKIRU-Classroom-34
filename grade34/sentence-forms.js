@@ -24,7 +24,10 @@ window.SentenceForms=(()=>{
   if(card.english==='scissors'){word='pair of '+word;plural='pairs of '+prefix+'scissors';article='a';}
   else if(['glue','ink'].includes(card.english)){plural='bottles of '+word;word='bottle of '+word;article='a';}
   const english=n===1?article+' '+word:n+' '+plural;
-  return {english,speech:english};
+  const quantity=n===1?article:String(n);
+  const measure=card.english==='scissors'?(n===1?'pair of':'pairs of'):['glue','ink'].includes(card.english)?(n===1?'bottle of':'bottles of'):'';
+  const noun=measure?card.english:n===1?card.english:card.english+(card.english==='brush'?'es':'s');
+  return {english,speech:english,quantity,measure,color,noun,count:n};
  }
  return {preference,possession};
 })();
