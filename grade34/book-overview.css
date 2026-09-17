@@ -5,7 +5,8 @@
 .book-overview .page-heading > div { display: flex; align-items: baseline; gap: 14px; }
 .book-overview .page-heading h1 { font-size: 26px; }
 .book-overview .eyebrow { margin: 0; font-size: 14px; }
-.book-overview .back-button { width: 44px; height: 44px; }
+.book-overview .back-button { width: 44px; height: 44px; padding: 0; border: 0; background: transparent; display: block; }
+.book-overview .back-button img { width: 100%; height: 100%; display: block; pointer-events: none; }
 .book-overview .unit-grid { width: 100%; max-width: none; grid-template-columns: repeat(3,minmax(0,1fr)); grid-template-rows: repeat(3,minmax(0,1fr)); grid-auto-flow: row; gap: 10px; flex: 1; min-height: 0; }
 .book-overview .unit-tile { min-height: 0; padding: 10px 14px; display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 5px; text-align: left; border-radius: 16px; box-shadow: 0 3px 10px #584e4510; }
 .book-unit-number { font-size: 13px; font-weight: 700; color: #76675e; }
@@ -17,6 +18,7 @@
 .book-phonics strong { font-size: 18px; }
 .book-phonics span { font-size: 12px; }
 @media (min-width: 900px) and (min-height: 580px) {
+  .book-overview .unit-grid { grid-auto-flow: column; }
   .book-page .app-header { height: 80px; min-height: 80px; padding-top: 5px; padding-bottom: 5px; }
   .book-page .brand img { height: 62px; }
   .book-page .app-main { min-height: 0; height: calc(100dvh - 80px); }

@@ -134,7 +134,7 @@
     app.innerHTML = `
       <div class="book-overview">
       <section class="page-heading">
-        <button class="back-button" data-route="#/" aria-label="トップへ戻る">◀</button>
+        <button class="back-button" data-route="#/" aria-label="トップへ戻る"><img src="assets/ui/originals/戻る.svg" alt=""></button>
         <div><p class="eyebrow">${escapeHtml(book.subtitle)}</p><h1>${escapeHtml(book.title)}</h1></div>
       </section>
       <section class="unit-grid">
