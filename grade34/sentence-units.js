@@ -6,7 +6,7 @@ window.SentenceUnits={
   defaults(activity){return {subject:'person_001',questionSubject:'person_002',responseSubject:'person_001',verb:'action5_015',object:'stationery_003',negativeObject:activity==='dont'?'stationery_003':'stationery_007',objectCount:1,negativeObjectCount:1};},
   target(activity){return activity==='dont'?'negativeObject':'object';},
   render({cards,selected,activity,token,row}){
-   const pick=(key,role)=>{const source=cards.get(selected[key]);const form=role==='object'?window.SentenceForms.possession(source,selected[key+'Count']):source;return token(form.english,role,source.id,'',form.speech||form.english,key);};
+   const pick=(key,role)=>{const source=cards.get(selected[key]);const form=role==='object'?window.SentenceForms.possession(source,selected[key+'Count'],selected[key+'Color']):source;return token(form.english,role,source.id,'',form.speech||form.english,key);};
    const subject=pick('subject','subject'),verb=pick('verb','verb'),object=pick('object','object'),negative=pick('negativeObject','object');
    const have=()=>row([subject,verb,object],'.','talk-statement-row',activity==='have_dont'?[1]:[]);
    const dont=()=>row([subject,token("don't",'negative','','×',"don't"),verb,negative],'.','talk-statement-row');

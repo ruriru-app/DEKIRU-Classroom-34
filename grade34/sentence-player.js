@@ -197,6 +197,10 @@ function renderTalkChoiceControls(){
     const count=talkSelected[talkChoiceTarget+'Count']||1;
     target.insertAdjacentHTML('beforeend','<label class="talk-quantity">数 <select id="talkQuantity" aria-label="選んだ文房具の数">'+Array.from({length:10},(_,i)=>'<option value="'+(i+1)+'"'+(count===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label>');
     document.getElementById('talkQuantity').addEventListener('change',event=>{talkSelected[talkChoiceTarget+'Count']=Number(event.target.value);renderTalkStage();});
+    const color=talkSelected[talkChoiceTarget+'Color']||'';
+    const colors=[...new Set(context.cards.filter(card=>card.category==='colors'&&card.displayGroup!=='category').map(card=>card.english))];
+    target.insertAdjacentHTML('beforeend','<label class="talk-color">色 <select id="talkColor" aria-label="選んだ文房具の色"><option value="">色なし</option>'+colors.map(value=>'<option value="'+escapeHtml(value)+'"'+(value===color?' selected':'')+'>'+escapeHtml(value)+'</option>').join('')+'</select></label>');
+    document.getElementById('talkColor').addEventListener('change',event=>{talkSelected[talkChoiceTarget+'Color']=event.target.value;renderTalkStage();});
   }
   target.querySelectorAll('[data-talk-category]').forEach(button=>button.addEventListener('click',()=>{
     const category=button.dataset.talkCategory;
