@@ -10,7 +10,8 @@ window.SentenceUnits={
   render({cards,selected,activity,token,row}){
   const selectableToken=(selectionKey,role,fallbackId,fallbackWord)=>{
     const source=cards.get(selected[selectionKey])||cards.get(fallbackId);
-    return token(source?.english||fallbackWord,role,source?.id||fallbackId,'',source?.speech||source?.english||fallbackWord,selectionKey);
+    const form=source&&role==='object'?window.SentenceForms.preference(source):source;
+    return token(form?.english||fallbackWord,role,source?.id||fallbackId,'',form?.speech||form?.english||fallbackWord,selectionKey);
   };
   const subjectToken=selectableToken('subject','subject','person_001','I');
   const questionSubjectToken=selectableToken('questionSubject','subject','person_002','you');
@@ -27,7 +28,7 @@ window.SentenceUnits={
     return '<div class="talk-question-layout"><div class="talk-question-prompts">'+leadRow+question+'</div><div class="talk-responses">'+yes+no+'</div></div>';
   };
   if(activity==='dont')return dontRow();
-  else if(activity==='like_dont')return '<div class="talk-sequence-layout">'+likeRow()+dontRow()+'</div>';
+  else if(activity==='like_dont')return '<div class="talk-sequence-layout">'+likeRow([1])+dontRow()+'</div>';
   else if(activity==='question')return questionBlock(objectToken);
   else if(activity==='like_question')return questionBlock(objectToken,likeRow(true));
   else if(activity==='dont_question')return questionBlock(negativeObjectToken,dontRow([0]),[2]);
@@ -36,4 +37,3 @@ window.SentenceUnits={
   }
  }
 };
-
