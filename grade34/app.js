@@ -136,18 +136,18 @@
       <section class="page-heading">
         <button class="back-button" data-route="#/" aria-label="トップへ戻る"><img src="assets/ui/originals/戻る.svg" alt=""></button>
         <div><p class="eyebrow">${escapeHtml(book.subtitle)}</p><h1>${escapeHtml(book.title)}</h1></div>
+        <button class="book-phonics" data-route="#/phonics/${bookKey}"><strong>Phonics</strong><span>一文字一音</span></button>
       </section>
       <section class="unit-grid">
         ${units.map(([number, title]) => {
           const [subtitle, ...expressions] = window.DEKIRU_BOOK_OVERVIEWS?.[bookKey]?.[Number(number)-1] || [];
           return `
           <button class="unit-tile ${book.color}" data-route="#/unit/${bookKey}/${number}">
-            <span class="book-unit-number">Unit ${escapeHtml(number)}</span>
-            <span class="book-unit-heading"><strong>${escapeHtml(title)}</strong><span class="book-subtitle">${escapeHtml(subtitle)}</span></span>
+            <strong class="book-unit-heading"><span class="book-unit-number">Unit ${escapeHtml(number)}</span><span>${escapeHtml(title)}</span></strong>
+            <span class="book-subtitle">${escapeHtml(subtitle)}</span>
             <span class="book-expressions">${expressions.map(text=>`<span>${escapeHtml(text)}</span>`).join('')}</span>
           </button>`; }).join("")}
       </section>
-      <button class="book-phonics" data-route="#/phonics/${bookKey}"><strong>Phonics</strong><span>一文字一音</span></button>
       </div>`;
   }
 

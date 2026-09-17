@@ -12,7 +12,7 @@ window.DEKIRU_BOOK_OVERVIEWS = {
     ['きみはだれ？', 'Who are you? - I’m a dog.', 'Are you a dog? - Yes, I am. / No, I’m not.']
   ],
   lt2: [
-    ['世界のいろいろなことばであいさつをしよう', 'Hello. / Good morning.', 'I like strawberries. / Goodbye. / See you.'],
+    ['世界のいろいろなことばであいさつをしよう', 'Hello. / Good morning. / Goodbye. / See you.', 'I like strawberries.'],
     ['すきな遊びをつたえよう', "How's the weather? - It's sunny.", "Let's play cards."],
     ['すきな曜日は何かな？', 'What day is it? - It’s Monday.', 'Do you like Mondays? / I like Mondays.'],
     ['今、何時？', 'What time is it? - It’s 8:30.', 'It’s “Homework Time”. / How about you?'],
