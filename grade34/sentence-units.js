@@ -1,5 +1,21 @@
 /* Unit-specific content. Add definitions here; keep the common player independent. */
 window.SentenceUnits={
+ 'lt2-5':{
+  activities:[{id:'have',title:'持っているものを伝える',example:'I have a pen.'},{id:'dont',title:'持っていないものを伝える',example:"I don't have a pen."},{id:'have_dont',title:'持っているものと持っていないものを伝える',example:"I have a pen. / I don't have a ruler."},{id:'question',title:'質問し、Yes / No で答える',example:'Do you have a pen?'}],
+  subjects:['person_001','person_002'],verbCategories:['actions_5'],verbIds:['action5_015'],objectCategories:['stationery'],quantities:true,
+  defaults(activity){return {subject:'person_001',questionSubject:'person_002',responseSubject:'person_001',verb:'action5_015',object:'stationery_003',negativeObject:activity==='dont'?'stationery_003':'stationery_007',objectCount:1,negativeObjectCount:1};},
+  target(activity){return activity==='dont'?'negativeObject':'object';},
+  render({cards,selected,activity,token,row}){
+   const pick=(key,role)=>{const source=cards.get(selected[key]);const form=role==='object'?window.SentenceForms.possession(source,selected[key+'Count']):source;return token(form.english,role,source.id,'',form.speech||form.english,key);};
+   const subject=pick('subject','subject'),verb=pick('verb','verb'),object=pick('object','object'),negative=pick('negativeObject','object');
+   const have=()=>row([subject,verb,object],'.','talk-statement-row',activity==='have_dont'?[1]:[]);
+   const dont=()=>row([subject,token("don't",'negative','','×',"don't"),verb,negative],'.','talk-statement-row');
+   if(activity==='dont')return dont();
+   if(activity==='have_dont')return '<div class="talk-sequence-layout">'+have()+dont()+'</div>';
+   if(activity==='question')return '<div class="talk-question-layout"><div class="talk-question-prompts">'+row([token('Do','neutral','','?','Do'),pick('questionSubject','subject'),verb,object],'?','talk-question-row')+'</div><div class="talk-responses">'+row([token('Yes,','neutral','','〇','Yes'),pick('responseSubject','subject'),token('do','verb','','〇','do')],'.','talk-response-row')+row([token('No,','neutral','','×','No'),pick('responseSubject','subject'),token("don't",'negative','','×',"don't")],'.','talk-response-row')+'</div></div>';
+   return have();
+  }
+ },
  'lt1-4':{
   activities:[{"id":"like","title":"好きな色を伝える","example":"I like red."},{"id":"dont","title":"好きではない色を伝える","example":"I don't like red."},{"id":"like_dont","title":"好きな色と好きではない色を伝える","example":"I like red. / I don't like black."},{"id":"question","title":"質問し、Yes / No で答える","example":"Do you like red?"},{"id":"like_question","title":"自分の好みを伝えてから質問する","example":"I like red. / Do you like red?"},{"id":"dont_question","title":"好きではない色を伝えてから質問する","example":"I don't like black. / Do you like black?"}],
   subjects:['person_001','person_002'],

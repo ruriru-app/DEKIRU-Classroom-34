@@ -172,6 +172,8 @@ function talkChoiceItems(role,includeHidden){
   }
   return cards.filter(card=>{
     if(!card||seen.has(card.id))return false;
+    if(role==='verb'&&definition.verbIds&&!definition.verbIds.includes(card.id))return false;
+    if(role==='object'&&definition.quantities&&card.displayGroup==='category')return false;
     seen.add(card.id);
     return true;
   });
@@ -191,6 +193,11 @@ function renderTalkChoiceControls(){
     const visible=!talkHiddenCategories.has(category);
     return '<button class="talk-category-filter role-object '+(visible?'':'excluded')+'" type="button" data-talk-category="'+escapeHtml(category)+'" aria-pressed="'+String(visible)+'">'+escapeHtml(categoryLabel(category))+'</button>';
   }).join('');
+  if(definition.quantities){
+    const count=talkSelected[talkChoiceTarget+'Count']||1;
+    target.insertAdjacentHTML('beforeend','<label class="talk-quantity">数 <select id="talkQuantity" aria-label="選んだ文房具の数">'+Array.from({length:10},(_,i)=>'<option value="'+(i+1)+'"'+(count===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label>');
+    document.getElementById('talkQuantity').addEventListener('change',event=>{talkSelected[talkChoiceTarget+'Count']=Number(event.target.value);renderTalkStage();});
+  }
   target.querySelectorAll('[data-talk-category]').forEach(button=>button.addEventListener('click',()=>{
     const category=button.dataset.talkCategory;
     if(talkHiddenCategories.has(category))talkHiddenCategories.delete(category);else talkHiddenCategories.add(category);

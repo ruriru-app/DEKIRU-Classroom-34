@@ -17,5 +17,14 @@ window.SentenceForms=(()=>{
   const plural=Object.hasOwn(preferencePlurals,card.id)?preferencePlurals[card.id]:null;
   return {english:plural||card.english,speech:plural||card.speech||card.english};
  }
- return {preference};
+ function possession(card,count=1){
+  const n=Math.min(10,Math.max(1,Math.trunc(Number(count))||1));
+  let word=card.english,plural=word+'s',article=/^[aeiou]/i.test(word)?'an':'a';
+  if(word==='scissors'){word='pair of scissors';plural='pairs of scissors';article='a';}
+  else if(['glue','ink'].includes(word)){plural='bottles of '+word;word='bottle of '+word;article='a';}
+  else if(word==='brush')plural='brushes';
+  const english=n===1?article+' '+word:n+' '+plural;
+  return {english,speech:english};
+ }
+ return {preference,possession};
 })();
