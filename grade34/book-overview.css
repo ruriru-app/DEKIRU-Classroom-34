@@ -1,14 +1,16 @@
 /* Scope compact teacher-facing navigation to textbook selection only. */
-.book-page .app-main { padding: 12px 3vw; }
-.book-overview { max-width: 1700px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
+.book-page .app-main { padding: 12px 3vw clamp(28px,4vh,48px); }
+.book-overview { max-width: 1700px; margin: auto; display: flex; flex-direction: column; gap: 18px; }
 .book-overview .page-heading { margin: 0; gap: 12px; width: 100%; }
 .book-overview .page-heading > div { display: flex; align-items: baseline; gap: 14px; }
 .book-overview .page-heading h1 { font-size: 26px; }
 .book-overview .eyebrow { margin: 0; font-size: 14px; }
 .book-overview .back-button { width: 44px; height: 44px; padding: 0; border: 0; background: transparent; display: block; }
 .book-overview .back-button img { width: 100%; height: 100%; display: block; pointer-events: none; }
-.book-overview .unit-grid { width: 100%; max-width: none; grid-template-columns: repeat(3,minmax(0,1fr)); grid-template-rows: repeat(3,minmax(0,1fr)); grid-auto-flow: row; gap: 10px; flex: 1; min-height: 0; }
-.book-overview .unit-tile { min-height: 0; padding: 10px 14px; display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 5px; text-align: left; border-radius: 16px; box-shadow: 0 3px 10px #584e4510; }
+.book-overview .unit-grid { width: 100%; max-width: none; grid-template-columns: repeat(3,minmax(0,1fr)); grid-template-rows: repeat(3,minmax(0,1fr)); grid-auto-flow: row; gap: 20px; flex: 1; min-height: 0; }
+.book-overview .unit-tile { position: relative; overflow: hidden; min-height: 0; padding: 10px 14px 10px 22px; display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 5px; text-align: left; border-radius: 16px; background: #fff; border-color: #e7e0da; box-shadow: 0 3px 10px #584e4510; }
+.book-overview .unit-tile::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 8px; background: #f48ba8; border-radius: 0; pointer-events: none; }
+.book-overview .unit-tile.blue::before { background: #a8d08d; }
 .book-unit-number { white-space: nowrap; }
 .book-unit-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; line-height: 1.3; font-size: clamp(16px,1.35vw,22px); font-weight: 700; }
 .book-subtitle { font-size: 12px; }
@@ -17,7 +19,7 @@
 .book-phonics strong { font-size: 18px; }
 .book-phonics span { font-size: 12px; }
 @media (min-width: 900px) and (min-height: 580px) {
-  .book-overview .unit-grid { grid-auto-flow: column; }
+  .book-overview .unit-grid { grid-auto-flow: column; max-height: 720px; }
   .book-page .app-header { height: 80px; min-height: 80px; padding-top: 5px; padding-bottom: 5px; }
   .book-page .brand img { height: 62px; }
   .book-page .app-main { min-height: 0; height: calc(100dvh - 80px); }
@@ -28,7 +30,7 @@
   .book-overview .unit-tile { min-height: 140px; }
 }
 @media (min-width: 900px) and (max-height: 650px) {
-  .book-overview .unit-tile { padding: 6px 10px; gap: 2px; }
+  .book-overview .unit-tile { padding: 6px 10px 6px 18px; gap: 2px; }
   .book-unit-heading { font-size: 16px; }
   .book-expressions { line-height: 1.3; }
 }
