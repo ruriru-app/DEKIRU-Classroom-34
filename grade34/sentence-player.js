@@ -70,7 +70,7 @@ function mount(){
 function open(activity){
  if(!definition?.activities.some(a=>a.id===activity))return;
  stop();talkActivity=activity;talkChoiceRole='object';talkChoiceTarget=definition.target(activity);
- talkHiddenCategories.clear();talkSelected=definition.defaults(activity);talkStageEnlarged=false;
+ talkHiddenCategories.clear();if(definition.quantities){talkHiddenCategories.add('Count');talkHiddenCategories.add('Color');}talkSelected=definition.defaults(activity);talkStageEnlarged=false;
  const verbs=talkChoiceItems('verb',false),objects=talkChoiceItems('object',false);
  for(const [key,pool] of [['verb',verbs],['object',objects],['negativeObject',objects]]){
   if(pool.length&&!pool.some(c=>c.id===talkSelected[key]))talkSelected[key]=pool[0].id;
@@ -194,19 +194,14 @@ function renderTalkChoiceControls(){
     return '<button class="talk-category-filter role-object '+(visible?'':'excluded')+'" type="button" data-talk-category="'+escapeHtml(category)+'" aria-pressed="'+String(visible)+'">'+escapeHtml(categoryLabel(category))+'</button>';
   }).join('');
   if(definition.quantities){
-    const count=talkSelected[talkChoiceTarget+'Count']||1;
-    target.insertAdjacentHTML('beforeend','<label class="talk-quantity">数 <select id="talkQuantity" aria-label="選んだ文房具の数">'+Array.from({length:10},(_,i)=>'<option value="'+(i+1)+'"'+(count===i+1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label>');
-    document.getElementById('talkQuantity').addEventListener('change',event=>{talkSelected[talkChoiceTarget+'Count']=Number(event.target.value);renderTalkStage();});
-    const color=talkSelected[talkChoiceTarget+'Color']||'';
-    const colors=[...new Set(context.cards.filter(card=>card.category==='colors'&&card.displayGroup!=='category').map(card=>card.english))];
-    target.insertAdjacentHTML('beforeend','<label class="talk-color">色 <select id="talkColor" aria-label="選んだ文房具の色"><option value="">色なし</option>'+colors.map(value=>'<option value="'+escapeHtml(value)+'"'+(value===color?' selected':'')+'>'+escapeHtml(value)+'</option>').join('')+'</select></label>');
-    document.getElementById('talkColor').addEventListener('change',event=>{talkSelected[talkChoiceTarget+'Color']=event.target.value;renderTalkStage();});
+    target.insertAdjacentHTML('beforeend',[['Count','数'],['Color','色']].map(([key,label])=>'<label class="talk-category-filter talk-group-capsule role-adjective"><input type="checkbox" data-talk-group="'+key+'" '+(talkHiddenCategories.has(key)?'':'checked')+'>'+label+'</label>').join(''));
+    target.querySelectorAll('[data-talk-group]').forEach(input=>input.addEventListener('change',()=>{if(input.checked)talkHiddenCategories.delete(input.dataset.talkGroup);else talkHiddenCategories.add(input.dataset.talkGroup);renderTalkChoices();}));
   }
   target.querySelectorAll('[data-talk-category]').forEach(button=>button.addEventListener('click',()=>{
     const category=button.dataset.talkCategory;
     if(talkHiddenCategories.has(category))talkHiddenCategories.delete(category);else talkHiddenCategories.add(category);
     const choices=talkChoiceItems('object',false);
-    if(choices.length&&!choices.some(card=>card.id===talkSelected[talkChoiceTarget]))talkSelected[talkChoiceTarget]=choices[0].id;
+    if(!definition.quantities&&choices.length&&!choices.some(card=>card.id===talkSelected[talkChoiceTarget]))talkSelected[talkChoiceTarget]=choices[0].id;
     renderTalkChoiceControls();
     renderTalkStage();
     renderTalkChoices();
@@ -215,15 +210,30 @@ function renderTalkChoiceControls(){
 function renderTalkChoices(){
   const target=document.getElementById('talkChoices');
   const choices=talkChoiceItems(talkChoiceRole,false);
-  if(!choices.length){
+  let extra='';
+  if(definition.quantities&&talkChoiceRole==='object'){
+    const choice=(attribute,value,label,card,active)=>'<button class="talk-choice talk-quick-choice role-adjective '+(active?'active':'')+'" type="button" '+attribute+'="'+escapeHtml(value)+'" aria-pressed="'+active+'"><span class="talk-choice-picture">'+(card?'<img src="'+escapeHtml(context.source(card))+'" alt="">':'<span class="talk-clear-color">―</span>')+'</span><span class="talk-choice-word">'+escapeHtml(label)+'</span></button>';
+    if(!talkHiddenCategories.has('Count'))extra+=Array.from({length:5},(_,i)=>choice('data-talk-count',String(i+1),String(i+1),cardById.get('number_'+String(i+1).padStart(3,'0')),(talkSelected[talkChoiceTarget+'Count']||1)===i+1)).join('');
+    if(!talkHiddenCategories.has('Color')){
+      const color=talkSelected[talkChoiceTarget+'Color']||'';
+      extra+=choice('data-talk-color','','色なし',null,color==='');
+      extra+=context.cards.filter(c=>c.category==='colors'&&c.displayGroup!=='category').map(c=>choice('data-talk-color',c.english,c.english,c,color===c.english)).join('');
+    }
+  }
+  if(!choices.length&&!extra){
     target.innerHTML='<div class="talk-no-choices">表示できるカードがありません。Unit画面に戻って、使う単語を選んでください。</div>';
     return;
   }
-  target.innerHTML=choices.map(card=>{
+  target.innerHTML=extra+choices.map(card=>{
     const id=card.id;
     const active=id===talkSelected[talkChoiceTarget];
     return '<button class="talk-choice role-'+escapeHtml(talkChoiceRole)+' '+(active?'active':'')+'" type="button" data-talk-choice="'+escapeHtml(id)+'" aria-pressed="'+String(active)+'"><span class="talk-choice-picture"><img src="'+escapeHtml(context.source(card))+'" alt=""></span><span class="talk-choice-word'+talkWordSizeClass(card.english)+'">'+escapeHtml(card.english)+'</span></button>';
   }).join('');
+  target.querySelectorAll('[data-talk-count],[data-talk-color]').forEach(button=>button.addEventListener('click',()=>{
+    if(button.hasAttribute('data-talk-count'))talkSelected[talkChoiceTarget+'Count']=Number(button.dataset.talkCount);
+    else talkSelected[talkChoiceTarget+'Color']=button.dataset.talkColor;
+    renderTalkStage();renderTalkChoices();
+  }));
   target.querySelectorAll('[data-talk-choice]').forEach(button=>button.addEventListener('click',()=>{
     talkSelected[talkChoiceTarget]=button.dataset.talkChoice;
     renderTalkStage();
@@ -296,6 +306,7 @@ function bindTalkStageEvents(stage){
         talkChoiceTarget=card.dataset.talkSelectionKey;
         talkChoiceRole=card.dataset.talkSelectionRole||talkChoiceRole;
         if(definition.quantities&&/^(object|negativeObject)(Count|Color)$/.test(talkChoiceTarget)){
+          talkHiddenCategories.delete(talkChoiceTarget.endsWith('Count')?'Count':'Color');
           talkChoiceTarget=talkChoiceTarget.replace(/(Count|Color)$/,'');talkChoiceRole='object';
         }
         renderTalkChoiceControls();
