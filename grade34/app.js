@@ -35,6 +35,13 @@
 
   const ACTIVITIES = [
     {
+      id: "dekiru-clock",
+      title: "DEKIRU CLOCK",
+      subtitle: "時計と窓の景色で時刻を読み、英語で話そう",
+      units: ["lt2-4"],
+      href: "clock.html",
+    },
+    {
       id: "alphabet-bingo",
       title: "ALPHABET BINGO",
       subtitle: "大文字・小文字のカードでビンゴの準備と抽選",
