@@ -29,6 +29,22 @@
     return {version:1,type:'interview',id:id(v.id),name:text(v.name,'プリセット名',80),title:text(v.title,'タイトル',80),description:text(v.description??'','説明',500,true),assignedUnits,question:{template,slots},cardIds,answerAreas,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
   }
   function completeQuestion(p,card){if(!p.question.slots.length)return p.question.template;check(card&&p.question.slots[0].cardIds.includes(card.id),'カードを選んでください');return p.question.template.replace('(P)',()=>text(card.english,'カードの英語',200));}
-  const api={validatePreset,completeQuestion,newId,knownCards,check,text,id,date,array,unique};
+  function validateRoster(v){
+    check(v?.version===1,'未対応の名簿です');
+    const students=array(v.students,100,'名簿',1).map(s=>({id:id(s.id),name:text(s.name,'名前',80),...(s.number!==undefined&&s.number!==''?{number:text(String(s.number),'番号',12)}:{})}));
+    unique(students.map(s=>s.id),'児童ID');
+    return {version:1,id:id(v.id),className:text(v.className,'クラス名',80),students,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
+  }
+  function parseRoster(input,previousStudents=[]){
+    check(typeof input==='string'&&input.length<=20000,'名簿の入力が長すぎます');
+    const rows=input.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);array(rows,100,'名簿',1);
+    const warnings=[],key=s=>JSON.stringify([s.number||'',s.name]);
+    const students=rows.map(row=>{const m=row.match(/^(\d{1,12})[\t　]+(.+)$/);return {id:newId('student'),name:text(m?m[2]:row,'名前',80),...(m?{number:m[1]}:{})};});
+    for(const s of students){const prior=previousStudents.filter(p=>key(p)===key(s));const count=students.filter(p=>key(p)===key(s)).length;if(prior.length===1&&count===1)s.id=prior[0].id;else if(prior.length)warnings.push('同名・同番号の行は区別のため新しいIDにしました。');}
+    const nums=students.filter(s=>s.number).map(s=>s.number);
+    if(new Set(nums).size!==nums.length)warnings.push('番号が重複しています。名簿をご確認ください。');
+    return {students,warnings:[...new Set(warnings)]};
+  }
+  const api={validatePreset,completeQuestion,validateRoster,parseRoster,newId,knownCards,check,text,id,date,array,unique};
   root.InterviewModel=api;if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);
