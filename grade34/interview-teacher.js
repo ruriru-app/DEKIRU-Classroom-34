@@ -40,6 +40,9 @@
   M.check($('rosterConsent').checked&&valid,'名簿と共有の注意を確認してください');
   const latest=store().listRosters().find(r=>r.id===selected);
   if(!latest||JSON.stringify(latest)!==reviewed){refresh();$('rosterConsent').checked=false;gate();throw Error('名簿が変更されました。内容を確認してください。');}
-  const current=R.toDeliveryRoster(latest,options()),delivery=InterviewShare.snapshot(preset,current),url=InterviewShare.buildUrl(delivery,new URL('interview-receive.html',location.href));CardShare.openUrl(url,preset.title,current.students.length+'人の名簿を含む配信URLです。クラス内だけで共有してください。');
+  const current=R.toDeliveryRoster(latest,options()),delivery=InterviewShare.snapshot(preset,current,Number($('linkDuration').value)),url=InterviewShare.buildUrl(delivery,new URL('interview-receive.html',location.href));
+  const deadline=new Date(delivery.expiresAt).toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  $('deliveryDeadline').textContent='直前に作成したリンクの終了：'+deadline;$('deliveryDeadline').hidden=false;
+  CardShare.openUrl(url,preset.title,current.students.length+'人・終了：'+deadline+'。クラス内だけで共有してください。');
  }catch(e){status(e.message);}};
 })();

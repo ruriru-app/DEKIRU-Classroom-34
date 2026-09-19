@@ -1,11 +1,41 @@
 (()=>{
- 'use strict';
- const summary=document.getElementById('receiveSummary'),error=document.getElementById('receiveError');
- function render(){summary.replaceChildren();error.textContent='';try{
-  const match=location.hash.match(/^#interview=([A-Za-z0-9_-]+)$/);if(!match)throw Error();
-  const delivery=InterviewShare.decode(match[1]);
-  for(const [label,value] of [['タイトル',delivery.preset.title],['質問文',delivery.preset.question.template],['Picture Cards',delivery.preset.cardIds.length+'枚'],['回答エリア',delivery.preset.answerAreas.map(a=>a.label).join(' / ')],['名簿',delivery.roster.students.length+'人']]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;summary.append(dt,dd);}
- }catch{error.textContent='配信内容を読み込めませんでした。先生にもう一度配信してもらってください。';}}
- document.getElementById('interviewReceiveBack').onclick=async()=>{if(document.fullscreenElement)await document.exitFullscreen();else location.href='index.html#/';};
- window.addEventListener('hashchange',render);render();
+ 'use strict';const $=id=>document.getElementById(id),S=InterviewSession,cards=window.DEKIRU_DATA.cards;
+ let delivery=null,state=null,selectedStudent=null,timer=null,store=null,corrupt=false,saveError='';
+ const audio=InterviewAudio.create({onUnavailable:()=>{$('studentStatus').textContent='この端末では読み上げを利用できません';},onSpeaking:on=>$('questionSpeak').classList.toggle('speaking',on)});
+ const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
+ const now=()=>new Date().toISOString();
+ function stop(){clearTimeout(timer);timer=null;audio.stop();}
+ function hide(message){stop();$('receiveContent').hidden=true;$('studentAudio').hidden=true;$('studentRestart').hidden=true;$('composeQuestion').replaceChildren();$('studentChoices').replaceChildren();$('questionCards').replaceChildren();$('answerAreas').replaceChildren();$('unassignedNames').replaceChildren();$('studentStatus').textContent='';$('receiveError').textContent=message;if($('restartDialog').open)$('restartDialog').close();}
+ function checkExpiry(){clearTimeout(timer);if(!delivery)return false;if(InterviewShare.isExpired(delivery)){hide('活動時間が終了しました');return false;}if(delivery.expiresAt)timer=setTimeout(checkExpiry,Math.min(60000,Date.parse(delivery.expiresAt)-Date.now()));return true;}
+ function image(card){const img=el('img');img.alt='';img.src=card.pictureUrl||('../'+card.image);img.onerror=()=>{img.hidden=true;};return img;}
+ function question(target){target.replaceChildren();const card=cards.find(c=>c.id===state.selectedCardId);for(const token of S.tokens(delivery,card)){const e=el('div',undefined,'student-token '+token.kind);if(token.kind==='picture'){if(card)e.append(image(card));else e.classList.add('waiting');}e.append(el('span',token.text));target.append(e);}}
+ function persist(){const saved=store.save(delivery,state);saveError=saved.ok?'':saved.error;}
+ function selection(){document.querySelectorAll('[data-student-id]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.studentId===selectedStudent)));status();}
+ function status(){const kid=delivery?.roster.students.find(k=>k.id===selectedStudent);$('studentStatus').textContent=saveError||(kid?`${kid.number||''} ${kid.name}：回答先をタップ`:(state?.phase==='sheet'?'名前をタップ → 回答先をタップ':'同じ端末では続きから再開できます。'));}
+ function move(areaId){if(!checkExpiry()||!selectedStudent||corrupt)return;const movedId=selectedStudent;state=S.move(delivery,state,movedId,areaId,now());selectedStudent=null;persist();render();Array.from(document.querySelectorAll('[data-student-id]')).find(b=>b.dataset.studentId===movedId)?.focus({preventScroll:true});}
+ function bindArea(area,id){area.onclick=()=>move(id);area.onkeydown=e=>{if(e.target===area&&['Enter',' '].includes(e.key)){e.preventDefault();move(id);}};}
+ function names(target,areaId){for(const kid of delivery.roster.students.filter(k=>state.assignments[k.id]===areaId)){const b=el('button',(kid.number?kid.number+' ':'')+kid.name,'student-name');b.type='button';b.dataset.studentId=kid.id;b.setAttribute('aria-pressed',String(selectedStudent===kid.id));b.onclick=e=>{e.stopPropagation();if(checkExpiry()){selectedStudent=selectedStudent===kid.id?null:kid.id;selection();}};target.append(b);}}
+ function render(){
+  if(!checkExpiry()||!state)return;const sheet=state.phase==='sheet';$('receiveError').textContent='';$('receiveContent').hidden=false;$('studentTitle').textContent=delivery.preset.title;$('composeScreen').hidden=sheet;$('sheetScreen').hidden=!sheet;$('studentAudio').hidden=!sheet;$('studentRestart').hidden=false;status();
+  if(!sheet){question($('composeQuestion'));$('studentChoices').replaceChildren();for(const id of delivery.preset.question.slots.length?delivery.preset.cardIds:[]){const card=cards.find(c=>c.id===id),b=el('button',undefined,'student-choice');b.type='button';b.dataset.pictureId=id;b.setAttribute('aria-pressed',String(state.selectedCardId===id));b.append(image(card),el('span',card.english));b.onclick=()=>{if(!checkExpiry())return;state=S.choose(delivery,state,card,now());persist();render();};$('studentChoices').append(b);}$('startInterview').disabled=!state.completedQuestion;return;}
+  question($('questionCards'));$('answerAreas').replaceChildren();$('answerAreas').style.setProperty('--areas',Math.min(4,delivery.preset.answerAreas.length));$('answerAreas').classList.toggle('many',delivery.preset.answerAreas.length>4);
+  for(const a of delivery.preset.answerAreas){const area=el('section',undefined,'student-area');area.dataset.areaId=a.id;area.tabIndex=0;area.setAttribute('role','group');area.setAttribute('aria-label',a.label+'へ移す');const h=el('h2');h.append(el('span',a.label),el('span','＋'));const list=el('div',undefined,'student-names');names(list,a.id);area.append(h,list);bindArea(area,a.id);$('answerAreas').append(area);}
+  $('unassignedNames').replaceChildren();names($('unassignedNames'),null);$('unassignedTitle').textContent='未実施 '+Object.values(state.assignments).filter(v=>v===null).length+'人';bindArea($('unassignedArea'),null);
+ }
+ function load(){stop();delivery=null;state=null;selectedStudent=null;saveError='';corrupt=false;hide('');try{const token=location.hash.match(/^#interview=([A-Za-z0-9_-]+)$/)?.[1];if(!token)throw Error();delivery=InterviewShare.decode(token);if(!checkExpiry())return;
+  try{store=InterviewProgress.create(localStorage);}catch{store=InterviewProgress.create({getItem(){throw Error()},setItem(){throw Error()},removeItem(){throw Error()}});}
+  const saved=store.read(delivery,cards);if(saved.status==='corrupt'){corrupt=true;hide('保存した活動を再開できません。「はじめから」でやり直してください。');$('studentRestart').hidden=false;return;}
+  state=saved.status==='saved'?saved.state:S.create(delivery,now());if(saved.status==='empty')persist();render();
+ }catch{delivery=null;hide('配信内容を読み込めませんでした。先生にもう一度配信してもらってください。');}}
+ function requestReset(){if(!checkExpiry())return;audio.stop();$('restartDialog').showModal();}
+ $('restartCancel').onclick=()=>$('restartDialog').close();$('restartConfirm').onclick=()=>{if(!checkExpiry())return;$('restartDialog').close();state=S.reset(delivery,now());selectedStudent=null;corrupt=false;persist();render();};
+ $('studentRestart').onclick=requestReset;
+ $('startInterview').onclick=()=>{if(checkExpiry()){state=S.start(delivery,state,now());persist();render();}};
+ $('interviewReceiveBack').onclick=async()=>{audio.stop();if(document.fullscreenElement){await document.exitFullscreen();return;}if(state?.phase==='sheet'){if(Object.values(state.assignments).some(v=>v!==null)){requestReset();return;}state=S.reset(delivery,now());persist();render();}else location.href='index.html#/';};
+ $('studentFullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('studentShell').requestFullscreen();}catch{$('studentStatus').textContent='この端末では全画面表示を利用できません';}};
+ $('questionSpeak').onclick=()=>{if(checkExpiry())audio.speak(state.completedQuestion,state.completedQuestion.split(/\s+/));};
+ for(const [id,key] of [['soundToggle','enabled'],['wordToggle','wordByWord']])$(id).onclick=()=>{if(!checkExpiry())return;const value=!audio.getOptions()[key];audio.setOptions({[key]:value});$(id).setAttribute('aria-pressed',String(value));};
+ $('speechRate').onchange=()=>{if(checkExpiry())audio.setOptions({rate:Number($('speechRate').value)});};
+ window.addEventListener('hashchange',load);window.addEventListener('focus',checkExpiry);window.addEventListener('pageshow',checkExpiry);window.addEventListener('pagehide',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.stop();checkExpiry();});
+ load();
 })();

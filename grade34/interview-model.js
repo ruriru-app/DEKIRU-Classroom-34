@@ -46,9 +46,13 @@
   }
   function rosterWarnings(students){const nums=students.map(s=>String(s.number??'').trim()).filter(Boolean);return new Set(nums).size!==nums.length?['番号が重複しています。名簿をご確認ください。']:[];}
   function validateDelivery(v,validCardIds=knownCards()){
-    check(v?.version===1&&v.type==='interview-delivery','未対応の配信データです');
+    check((v?.version===1||v?.version===2)&&v.type==='interview-delivery','未対応の配信データです');
     const preset=validatePreset(v.preset,validCardIds);check(v.presetId===preset.id,'プリセットIDが一致しません');
-    return {version:1,type:'interview-delivery',deliveryId:id(v.deliveryId),issuedAt:date(v.issuedAt),presetId:preset.id,preset,roster:validateRoster(v.roster)};
+    const issuedAt=date(v.issuedAt);
+    let expiry={};
+    if(v.version===2){const expiresAt=date(v.expiresAt);check([1,4,12,24].includes((Date.parse(expiresAt)-Date.parse(issuedAt))/3600000),'有効期間が不正です');expiry={expiresAt};}
+    else check(v.expiresAt===undefined,'期限付き配信の形式が不正です');
+    return {version:v.version,type:'interview-delivery',deliveryId:id(v.deliveryId),issuedAt,...expiry,presetId:preset.id,preset,roster:validateRoster(v.roster)};
   }
   const api={validatePreset,completeQuestion,validateRoster,parseRoster,rosterWarnings,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
   root.InterviewModel=api;if(typeof module==='object')module.exports=api;

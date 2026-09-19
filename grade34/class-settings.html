@@ -4,6 +4,8 @@
 <header class="app-header"><a class="brand" href="index.html#/" aria-label="トップへ戻る"><img src="assets/ui/branding/logo-grade34.svg" alt="DEKIRU Classroom"></a><nav class="header-actions"><a class="icon-button" href="index.html#/" aria-label="ホーム"><img src="assets/ui/originals/ホームアイコン.svg" alt=""></a></nav></header>
 <main class="interview-main class-settings"><div class="interview-heading"><button id="classSettingsBack" aria-label="戻る" type="button">戻る</button><h1>クラス設定</h1></div>
 <section class="interview-panel"><p>名簿はこの端末・ブラウザに保存します。別端末へは自動同期されません。</p>
+<p><a href="templates/class-roster-template.xlsx" download>名簿入力用の空のExcelをダウンロード</a></p>
+<p>出席番号と、使う名前の表記だけ入力できます。入力後は空欄も含めてA〜G列をコピーし、下に貼り付けてください。</p>
 <div class="class-controls"><label class="interview-field">保存したクラス<select id="rosterSelect"><option value="">新しい名簿</option></select></label><button id="rosterNew" type="button">新しい名簿を作る</button><label class="interview-field">クラス名<input id="rosterClass" maxlength="80"></label></div>
 <label class="interview-field">名簿を貼り付け<textarea id="rosterPaste" rows="3" maxlength="150000" aria-describedby="pasteHelp" placeholder="Excelなどから７列をコピーして貼り付けます。"></textarea></label>
 <p id="pasteHelp">出席番号・苗字（漢字）・名前（漢字）・苗字（ひらがな）・名前（ひらがな）・苗字（英語）・名前（英語）の７列です。出席番号は必須です。使わない表記の列は空欄にできます。</p>
@@ -13,4 +15,4 @@
 <p id="rosterDirty" aria-live="polite"></p><p id="rosterStatus" role="status" aria-live="polite"></p>
 <div class="interview-actions"><button id="rosterSave" type="button">名簿を保存</button><button id="rosterDelete" type="button" disabled>名簿を削除</button></div>
 </section></main>
-<script src="interview-model.js?v=7682b16159e6"></script><script src="class-roster.js?v=11f84ff6e1d8"></script><script src="interview-store.js?v=0edb30b3e0a2"></script><script src="class-settings-links.js?v=86bb289939d1"></script><script src="class-settings.js?v=e087b0f2254d"></script><script src="common-ui.js?v=d3c6024c4356"></script></body></html>
+<script src="interview-model.js?v=51604d3db029"></script><script src="class-roster.js?v=11f84ff6e1d8"></script><script src="interview-store.js?v=0edb30b3e0a2"></script><script src="class-settings-links.js?v=86bb289939d1"></script><script src="class-settings.js?v=e087b0f2254d"></script><script src="common-ui.js?v=d3c6024c4356"></script></body></html>
