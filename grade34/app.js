@@ -110,8 +110,8 @@
   function renderHome() {
     document.title = "DEKIRU Classroom for Grade 3 & 4";
     app.innerHTML = `
+      <img class="home-background" src="assets/ui/home/background.svg" alt="">
       <nav class="home-scene" aria-label="教科書とActivitiesを選ぶ">
-        <img src="assets/ui/home/background.svg" alt="">
         <img src="assets/ui/home/grade34.svg" alt="">
         <svg viewBox="0 0 1920 1080" aria-label="トップメニュー">
           ${window.DEKIRU_HOME_CLOUDS.map(({label,href,d})=>`<a class="home-cloud" href="${href}" aria-label="${label}"><path d="${d}"/></a>`).join('')}
