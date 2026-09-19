@@ -10,14 +10,18 @@
   $('rosterSettings').href=ClassSettingsLinks.url(location.href,selected);
   if(!roster){status('クラス設定で名簿を登録し、使うクラスを選んでください。');gate();return;}
   try{const delivery=R.toDeliveryRoster(roster,options());delivery.students.forEach(s=>{const tile=document.createElement('div');tile.className='roster-name';tile.textContent=s.number+' '+s.name;$('rosterRows').append(tile);});
-   const names=delivery.students.map(s=>s.name);if(new Set(names).size<names.length)$('rosterWarnings').textContent='同じ名前があります。出席番号で区別します。';valid=true;
+   const names=delivery.students.map(s=>s.name).filter(Boolean);if(new Set(names).size<names.length)$('rosterWarnings').textContent='同じ名前があります。出席番号で区別します。';valid=true;
   }catch(e){status(e.message);}gate();
  }
  function configureScript(){
   const old=$('rosterScript').value;$('rosterScript').replaceChildren();
   const choices=roster?.version===1?[['legacy','登録済みの氏名（旧形式）']]:[['kanji','漢字'],['hiragana','ひらがな'],['english','英語']];
   choices.forEach(([v,n])=>$('rosterScript').add(new Option(n,v)));$('rosterScript').value=choices.some(c=>c[0]===old)?old:choices[0][0];
-  $('rosterScope').disabled=roster?.version===1;if(roster?.version===1)$('rosterScope').value='full';
+  $('rosterScope').disabled=false;
+  $('rosterScope').querySelector('option[value="given"]').disabled=roster?.version===1;
+  if(roster?.version===1&&$('rosterScope').value==='given')$('rosterScope').value='full';
+  if(roster?.version===2&&roster.students.every(s=>Object.values(s.names).every(n=>!n.family&&!n.given)))$('rosterScope').value='number';
+  $('rosterScript').disabled=$('rosterScope').value==='number';
  }
  function refresh(){
   try{const rows=store().listRosters(),next=rows.find(r=>r.id===selected)||null,changed=JSON.stringify(next)!==JSON.stringify(roster);
@@ -33,7 +37,7 @@
   $('interviewTeacher').hidden=false;refresh();
  }catch(e){$('interviewError').textContent=e.message;return;}
  $('rosterSelect').onchange=()=>{selected=$('rosterSelect').value;$('rosterConsent').checked=false;reviewed='';const u=new URL(location.href);if(selected)u.searchParams.set('classId',selected);else u.searchParams.delete('classId');history.replaceState(null,'',u);refresh();};
- for(const id of ['rosterScript','rosterScope'])$(id).onchange=()=>{$('rosterConsent').checked=false;reviewed='';preview();};
+ for(const id of ['rosterScript','rosterScope'])$(id).onchange=()=>{$('rosterConsent').checked=false;reviewed='';$('rosterScript').disabled=$('rosterScope').value==='number';preview();};
  $('rosterConsent').onchange=()=>{refresh();reviewed=$('rosterConsent').checked&&valid?JSON.stringify(roster):'';gate();};
  addEventListener('storage',refresh);addEventListener('focus',refresh);
  $('interviewSend').onclick=()=>{try{

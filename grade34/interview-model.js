@@ -31,7 +31,7 @@
   function completeQuestion(p,card){if(!p.question.slots.length)return p.question.template;check(card&&p.question.slots[0].cardIds.includes(card.id),'カードを選んでください');return p.question.template.replace('(P)',()=>text(card.english,'カードの英語',200));}
   function validateRoster(v){
     check(v?.version===1,'未対応の名簿です');
-    const students=array(v.students,100,'名簿',1).map(s=>({id:id(s.id),name:text(s.name,'名前',161),...(s.number!==undefined&&s.number!==''?{number:text(String(s.number),'番号',12)}:{})}));
+    const students=array(v.students,100,'名簿',1).map(s=>{const name=text(s.name,'名前',161,true),number=s.number!==undefined&&s.number!==''?text(String(s.number),'番号',12):'';check(name||(/^\d{1,12}$/.test(number)&&Number(number)>0),'名前または出席番号を入力してください');return {id:id(s.id),name,...(number?{number}:{})};});
     unique(students.map(s=>s.id),'児童ID');
     return {version:1,id:id(v.id),className:text(v.className,'クラス名',80),students,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
   }
