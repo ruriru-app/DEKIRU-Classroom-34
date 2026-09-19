@@ -3,14 +3,17 @@
   <p class="create-games-note">作りたいゲームを選んで設定し、必要なUnitへ割り当てます。同じゲームを複数のUnitで使うこともできます。保存内容は、この端末のブラウザー内に保存されます。</p>
   <section class="create-game-types">
     <h2>ゲームを作る</h2>
+    <button class="create-game-type-card" id="openInterviewCreator" type="button">Interviewを作る</button>
     <button class="create-game-type-card" id="openRouletteCreator" type="button"><strong>ROULETTE RACE</strong><span>ルーレットで選ばれた人が、カードのコースを1マス進むゲーム</span><small>＋ 新しく作る</small></button>
   </section>
   <section class="created-games-panel created-games-library">
     <div class="created-games-head"><h2>保存したゲーム</h2></div>
     <div class="created-games-list" id="createdGamesList"></div>
+    <h2>保存したInterview（Activities）</h2><div id="interviewLibrary" class="created-games-list"></div>
   </section>
 </section>
 
+<section id="createInterview" class="page create-games-page"></section>
 <section id="createRouletteGame" class="page create-games-page">
   <div class="head"><button class="back" id="creatorBackToGames" data-back="createGames" type="button">← 戻る</button><h1>ROULETTE RACEを作る</h1></div>
   <p class="create-games-note">カードやキーフレーズを設定し、使いたいUnitを選んで保存します。右側でゲームの仕上がりを確認できます。</p>
@@ -123,4 +126,4 @@
     </div>
   </div>
 </section>
-</main><script src="../assets/ui/qrcode.js"></script><script src="catalog.js?v=ee7c4ddb14e2"></script><script src="state.js?v=2ee0300ceba1"></script><script src="shell.js?v=aa55986310f5"></script><script src="share.js?v=8c2c67dd9885"></script><script src="alphabet.js?v=289fa3a30dad"></script><script src="creator.js?v=a56f261b050d"></script><script src="roulette.js?v=824c9a2063a4"></script><script src="boot.js?v=d5b02869d3b8"></script><script src="../grade34/common-ui.js"></script></body></html>
+</main><link rel="stylesheet" href="interview-creator.css?v=3484006fa3d2"><script src="../assets/ui/qrcode.js"></script><script src="catalog.js?v=ee7c4ddb14e2"></script><script src="../grade34/interview-model.js"></script><script src="../grade34/interview-store.js"></script><script src="state.js?v=2ee0300ceba1"></script><script src="shell.js?v=3ac0029a4710"></script><script src="share.js?v=8c2c67dd9885"></script><script src="alphabet.js?v=289fa3a30dad"></script><script src="creator.js?v=a56f261b050d"></script><script src="roulette.js?v=824c9a2063a4"></script><script src="interview-creator.js?v=1d5979ddca7b"></script><script src="boot.js?v=d5b02869d3b8"></script><script src="../grade34/common-ui.js"></script></body></html>
