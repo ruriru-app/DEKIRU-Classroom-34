@@ -3,17 +3,18 @@
  const M=InterviewModel,R=ClassRoster,$=id=>document.getElementById(id),params=new URLSearchParams(location.search),store=()=>InterviewStore.create(localStorage);
  let preset,roster=null,reviewed='',valid=false,selected=params.get('classId')||'';
  function showPreset(){
-  $('presetTitle').textContent=preset.title;$('presetName').textContent='保存用の名前：'+preset.name;$('presetDescription').textContent=preset.description;$('presetQuestion').textContent=preset.question.template;
+  $('presetTitle').textContent=preset.title;$('presetName').hidden=true;$('presetDescription').textContent=preset.description;$('presetQuestion').textContent=preset.question.template;
   let instructions=$('presetStudentInstructions');if(!instructions){instructions=document.createElement('p');instructions.id='presetStudentInstructions';$('presetDescription').after(instructions);}instructions.textContent=preset.studentInstructions?'児童への説明：'+preset.studentInstructions:'';
   $('presetCards').replaceChildren();$('presetAreas').replaceChildren();
   const cards=new Map(window.DEKIRU_DATA.cards.map(c=>[c.id,c]));preset.cardIds.forEach(id=>{const card=cards.get(id),tile=document.createElement('div');tile.className='interview-picture';const img=document.createElement('img');img.alt='';img.src=card.pictureUrl||('../'+card.image);const label=document.createElement('span');label.textContent=card.english;tile.append(img,label);$('presetCards').append(tile);});
   preset.answerAreas.forEach(a=>{const e=document.createElement('span');e.textContent=a.label;$('presetAreas').append(e);});$('interviewTeacher').hidden=false;
  }
  if(params.get('authorPreview')==='1'&&parent!==window){
+  document.querySelector('.app-header').hidden=true;document.querySelector('.app-header').style.display='none';document.querySelector('.interview-main').style.paddingTop='12px';
   document.querySelectorAll('a').forEach(a=>a.removeAttribute('href'));document.querySelectorAll('button,input,select').forEach(e=>e.disabled=true);
   $('rosterStatus').textContent='プレビュー用の仮の番号です。配信はできません。';$('rosterCount').textContent='35人';
   for(let n=1;n<=35;n++){const e=document.createElement('div');e.className='roster-name';e.textContent=n;$('rosterRows').append(e);}
-  addEventListener('message',event=>{if(event.source!==parent||event.origin!==location.origin||event.data?.type!=='interview-author-preview')return;try{preset=M.validatePreset(event.data.preset);showPreset();$('interviewError').textContent='';}catch(e){$('interviewError').textContent=e.message;}});return;
+  addEventListener('message',event=>{if(event.source!==parent||!(event.origin===location.origin||(location.protocol==='file:'&&event.origin==='null'))||event.data?.type!=='interview-author-preview')return;try{preset=M.validatePreset(event.data.preset);showPreset();$('interviewError').textContent='';}catch(e){$('interviewError').textContent=e.message;}});return;
  }
  const status=s=>$('rosterStatus').textContent=s;
  const options=()=>({script:$('rosterScript').value,scope:$('rosterScope').value});

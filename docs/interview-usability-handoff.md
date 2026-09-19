@@ -48,3 +48,27 @@ Requested features are recorded in [interview-future-requirements.md](interview-
 - Incomplete drafts display a validation note instead of an inaccurate preview. Editing the draft resets the trial interaction; changing orientation does not. Preview scale fits the available display area.
 - Regression `test-interview-live-preview.cjs` covers live audience-specific text, direct sheet tab, interactive movement, orientation preservation, bulk refresh, persistence/reopen, and storage isolation. Existing author tests use the clearer field labels.
 - Recovery point: `2102b01`, tag `backup-before-interview-preview-20260919`. Preserve the worktree and unrelated phonics logs.
+
+## Follow-up: compact activity layouts
+
+- Editor and Create Activities headings include their storage notes on one compact row. Narrow screens retain the note in a horizontally scrollable area rather than enlarging the heading.
+- Teacher preview hides its own app-brand header; the real teacher page retains it. Pupil instructions now sit immediately below the student title in a 48px maximum-height block; long title/instruction text remains scrollable. The compose-screen resume hint is removed, but progress saving remains unchanged.
+- Unit assignments use four textbook accordions without changing the stored Unit identifiers.
+- The creator tile is named INTERVIEW Yes/No. Creation and saved Activities tiles share a white, 16:9 landscape shape with a straight-edged blue left stripe. Saved tiles show assigned Unit/title, activity title, question sentences, slot categories/words and the fixed right action stack. Long metadata scrolls within the tile.
+- Grade34/56 Interview activity links show the activity title (not the saved-item name), sentences and teacher memo. The entire tile is a link; there is no preparation button. Desktop activity grids accommodate three columns and reduce columns on smaller screens.
+- New browser regression: `test-interview-layout.cjs`; updated existing link tests to verify whole-tile navigation rather than removed preparation-button text.
+- Recovery point: `acd0056`, tag `backup-before-interview-layout-20260919`.
+
+## Follow-up: four-column tiles and file-opened preview
+
+- Creation and saved tiles now use four desktop columns with 24px gaps, retaining the 16:9 landscape ratio. Smaller viewports use three, two or one column; the action stack remains inside each saved tile.
+- Direct `file:` opening produced an opaque message origin, so the preview rejected its draft. Only file-opened editors now send with a wildcard target; embedded receivers still require their exact parent, validated preset and message type, permitting the opaque `null` origin only when the receiver itself is a local file. HTTP(S) same-origin restrictions remain unchanged.
+- `test-interview-local-preview.cjs` reproduces the original failures and covers local-file teacher/compose/sheet previews plus saved button containment at desktop and mobile sizes. Regular HTTP preview tests remain in the full suite.
+
+## Follow-up: compact menus and simpler activity identity
+
+- Category bulk controls are checkboxes before category labels; partial selection is indeterminate, and toggling selection does not expand/collapse the group. Individual words retain capsules and Standard/Plus groups.
+- Sidebar labels, controls, headings and category spacing are smaller. The Unit assignment heading fits on one line.
+- Saved tiles use a full-width Unit/title heading above smaller detail text and a narrow right action stack. Four-column landscape sizing is retained.
+- Removed the separate saved-name field and all teacher/library displays of that name. New saves derive the legacy `name` property from the activity title to retain model/export compatibility; existing presets remain readable and are not migrated in bulk. Stable IDs still identify presets.
+- Added `test-interview-compact-menu.cjs`; adapted existing tests for title-based identification and category versus tier checkboxes.

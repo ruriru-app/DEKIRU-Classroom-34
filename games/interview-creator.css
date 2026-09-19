@@ -45,3 +45,57 @@ body:has(#createInterview.active) main{padding-top:12px}
 #interviewLibrary .interview-saved-actions [data-delete]{background:#fff2f6;border-color:#edced9}
 .interview-saved-actions a,.interview-saved-actions [data-download]{grid-column:1/-1}
 @media(max-width:700px){#interviewLibrary .interview-saved-card{grid-template-columns:1fr}.interview-saved-actions{width:200px;justify-self:end}}
+/* Activity authoring uses compact headings and a shared landscape tile. */
+.activity-compact-heading{display:flex;align-items:center;gap:14px!important;margin:0 0 14px!important;min-width:0}
+#createInterview .activity-compact-heading h1,#createActivities .activity-compact-heading h1{font-size:24px;white-space:nowrap;margin:0}
+.activity-compact-heading p,#createActivities .activity-compact-heading .create-games-note{margin:0!important;padding:0!important;font-size:13px;line-height:1.4;min-width:0;white-space:nowrap;overflow:auto;flex:1}
+body:has(#createActivities.active) main,body:has(#createInterview.active) main{padding-top:16px;padding-bottom:16px}
+#createInterview .interview-units{display:block}
+.interview-units details{border:1px solid #e5ddd7;border-radius:12px;margin:8px 0;padding:10px}
+.interview-units summary{font-weight:bold;cursor:pointer}
+#createInterview .interview-units label{font-size:14px;margin:10px 0;align-items:flex-start}
+#createActivities .create-game-types,#interviewLibrary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+#createActivities .create-game-types>h2{grid-column:1/-1;font-size:21px;margin:0}
+#createActivities .created-games-panel{padding:0;border:0;background:transparent;box-shadow:none;margin-top:22px}
+#createActivities .created-games-panel>h2{font-size:21px;margin-bottom:12px}
+#createActivities .activity-blue-tile{position:relative;box-sizing:border-box;aspect-ratio:16/9;min-height:0;width:100%;border:1px solid #dfd9d3;border-radius:18px;background:#fff;overflow:hidden;padding:14px 12px 14px 24px;box-shadow:0 4px 14px #544e4910}
+#createActivities .activity-blue-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:#91c8ed}
+#createActivities .create-game-type-card{justify-content:space-between;align-items:flex-start;gap:10px;text-align:left}
+#createActivities .create-game-type-card strong{font-size:21px}
+#createActivities .create-game-type-card span{font-size:14px;line-height:1.4}
+#interviewLibrary .interview-saved-card{grid-template-columns:minmax(0,1fr) 118px;gap:10px;align-items:center}
+#interviewLibrary .interview-saved-info{display:flex;flex-direction:column;gap:7px;max-height:100%;overflow:auto;font-size:15px;line-height:1.45;align-self:stretch}
+.interview-saved-info p{margin:0;white-space:pre-wrap}.interview-saved-info small{font-size:12px}
+#interviewLibrary .interview-saved-actions{width:auto}
+#interviewLibrary .interview-saved-actions button,#interviewLibrary .interview-saved-actions a{font-size:12px;padding:5px;min-height:32px}
+@media(max-width:1199px){#createActivities .create-game-types,#interviewLibrary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){#createActivities .create-game-types,#interviewLibrary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#createActivities .create-game-types,#interviewLibrary{grid-template-columns:1fr}}
+@media(max-width:600px){#createActivities .activity-blue-tile{padding:14px 12px 14px 24px}#interviewLibrary .interview-saved-card{grid-template-columns:minmax(0,1fr) 125px;gap:10px}#interviewLibrary .interview-saved-info{font-size:12px}.activity-compact-heading p{font-size:11px}#createActivities .create-game-type-card strong{font-size:21px}#createActivities .create-game-type-card span{font-size:14px}}
+/* Match the compact word-selection sidebar used in Unit pages. */
+#createInterview .interview-form{font-size:13px;gap:12px;padding:14px}
+#createInterview .interview-form h2{font-size:15px;line-height:1.4;margin:2px 0 8px}
+#createInterview .interview-field{font-size:13px;gap:4px}
+#createInterview .interview-form small{font-size:11px;line-height:1.4}
+#createInterview .interview-form input:not([type=checkbox]){padding:7px;font-size:13px}
+#createInterview .interview-form button{font-size:13px;min-height:30px}
+#interviewCardCount{font-size:12px;margin:5px 0 8px}
+#interviewCards details{margin:5px 0;padding:5px 8px;border-radius:12px}
+#interviewCards summary{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:13px;line-height:1.4;list-style:none}
+#interviewCards summary::-webkit-details-marker{display:none}
+#interviewCards summary::after{content:'◀';margin-left:auto;font-size:11px;color:#8a827a}
+#interviewCards details[open]>summary::after{content:'▼'}
+#interviewCards input.interview-category-toggle{appearance:auto;width:14px;height:14px;min-height:0;padding:0;margin:0;flex:none;border:initial;border-radius:0;background:initial}
+#interviewCards .interview-tier{margin:6px 0}
+#interviewCards .interview-tier>label{font-size:12px;gap:6px}
+#interviewCards .interview-tier-chips{gap:4px;margin-top:5px}
+#interviewCards .interview-chip{font-size:12px;min-height:26px;padding:3px 9px}
+#createInterview .interview-units details{margin:5px 0;padding:8px;font-size:13px}
+#createInterview .interview-units label{font-size:12px;margin:7px 0;gap:6px}
+#interviewLibrary .interview-saved-card{grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:auto minmax(0,1fr);gap:7px 6px;padding:10px 8px 10px 22px}
+#interviewLibrary .interview-saved-heading{grid-column:1/-1;min-width:0;max-height:34px;overflow:auto;font-size:12px;line-height:1.35}
+#interviewLibrary .interview-saved-heading strong{font-size:inherit}
+.interview-saved-heading strong,.interview-saved-heading span{display:block;overflow-wrap:anywhere}
+#interviewLibrary .interview-saved-info{font-size:11px;line-height:1.35;gap:5px;min-height:0}
+#interviewLibrary .interview-saved-actions{gap:5px;justify-self:end;width:104px}
+#interviewLibrary .interview-saved-actions button,#interviewLibrary .interview-saved-actions a{padding:3px 2px;min-height:27px;font-size:11px;border-radius:9px;white-space:nowrap}
