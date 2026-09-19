@@ -72,3 +72,10 @@ Requested features are recorded in [interview-future-requirements.md](interview-
 - Saved tiles use a full-width Unit/title heading above smaller detail text and a narrow right action stack. Four-column landscape sizing is retained.
 - Removed the separate saved-name field and all teacher/library displays of that name. New saves derive the legacy `name` property from the activity title to retain model/export compatibility; existing presets remain readable and are not migrated in bulk. Stable IDs still identify presets.
 - Added `test-interview-compact-menu.cjs`; adapted existing tests for title-based identification and category versus tier checkboxes.
+
+## Follow-up: Games library consistency (2026-09-20)
+
+- Removed the redundant Create Activities edit-location note from teacher preparation. Added number-only registration guidance alongside the roster introduction.
+- Create Games now shares the compact heading, four-column white/blue-stripe landscape tiles and responsive sizing with Create Activities. Saved games show Unit/title above details and the narrow edit/delete, try, distribute action stack. Existing delegated action identifiers and game data remain unchanged.
+- Added browser coverage `test-games-layout.cjs` for the guidance, desktop/mobile tile sizing, action containment and saved-game editing.
+- Recovery point before this release: `05b61e7`, tag `backup-before-games-layout-20260920`.

@@ -1,4 +1,4 @@
-#createInterview{max-width:1200px;margin:auto}#createInterview .interview-form{background:white;border:1px solid #e5ddd7;border-radius:22px;padding:24px;display:grid;gap:20px}#createInterview label{display:flex;gap:10px;align-items:center}#createInterview .interview-field{display:grid;gap:6px}#createInterview input:not([type=checkbox]),#createInterview textarea{width:100%;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #cbc5bf;border-radius:10px}#createInterview button,#interviewLibrary button,#interviewLibrary a{min-height:44px;font:inherit;cursor:pointer}#createInterview .interview-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}#createInterview .interview-row label{flex:1}#createInterview .interview-units{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}#interviewCards{max-height:350px;overflow:auto;border:1px solid #ddd;padding:12px;border-radius:12px}#interviewCards details{margin:8px 0}#interviewCards .interview-options{display:flex;flex-wrap:wrap;gap:12px;padding:12px}#createInterview [role=status],#interviewLibrary [role=status]{color:#84442a;white-space:pre-wrap}#createInterview .interview-actions{display:flex;gap:14px;flex-wrap:wrap}#createInterview small{display:block}#interviewLibrary .created-game-card-actions{flex-wrap:wrap}
+#createInterview{max-width:1200px;margin:auto}#createInterview .interview-form{background:white;border:1px solid #e5ddd7;border-radius:22px;padding:24px;display:grid;gap:20px}#createInterview label{display:flex;gap:10px;align-items:center}#createInterview .interview-field{display:grid;gap:6px}#createInterview input:not([type=checkbox]),#createInterview textarea{width:100%;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #cbc5bf;border-radius:10px}#createInterview button,:is(#interviewLibrary,#createdGamesList) button,:is(#interviewLibrary,#createdGamesList) a{min-height:44px;font:inherit;cursor:pointer}#createInterview .interview-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}#createInterview .interview-row label{flex:1}#createInterview .interview-units{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}#interviewCards{max-height:350px;overflow:auto;border:1px solid #ddd;padding:12px;border-radius:12px}#interviewCards details{margin:8px 0}#interviewCards .interview-options{display:flex;flex-wrap:wrap;gap:12px;padding:12px}#createInterview [role=status],:is(#interviewLibrary,#createdGamesList) [role=status]{color:#84442a;white-space:pre-wrap}#createInterview .interview-actions{display:flex;gap:14px;flex-wrap:wrap}#createInterview small{display:block}:is(#interviewLibrary,#createdGamesList) .created-game-card-actions{flex-wrap:wrap}
 .create-game-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:stretch}
 #createInterview{max-width:none;padding:12px 20px}
 #createInterview>.head h1{font-size:28px;margin:8px 0}
@@ -38,41 +38,46 @@ body:has(#createInterview.active) main{padding-top:12px}
 #interviewCards .interview-chip{border:1px solid #ddd8d2;border-radius:999px;background:#f2f0ed;color:#847c75;padding:6px 15px;line-height:1.3}
 #interviewCards .interview-chip[aria-pressed=true]{border-color:#8bb7e8;background:#e4f2ff;color:#544e49;box-shadow:inset 0 0 0 1px #8bb7e8}
 #interviewCards button:focus-visible,.interview-saved-actions :focus-visible{outline:3px solid #5189be;outline-offset:2px}
-#interviewLibrary .interview-saved-card{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:center}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-card{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:center}
 .interview-saved-info{display:grid;gap:6px;min-width:0;overflow-wrap:anywhere}
 .interview-saved-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#interviewLibrary .interview-saved-actions button,#interviewLibrary .interview-saved-actions a{display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;width:100%;min-height:44px;padding:8px 10px;border:1px solid #c6ddec;border-radius:12px;background:#edf6ff;color:#544e49;text-decoration:none;text-align:center;font-size:16px;line-height:1.3}
-#interviewLibrary .interview-saved-actions [data-delete]{background:#fff2f6;border-color:#edced9}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-actions button,:is(#interviewLibrary,#createdGamesList) .interview-saved-actions a{display:flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:0;width:100%;min-height:44px;padding:8px 10px;border:1px solid #c6ddec;border-radius:12px;background:#edf6ff;color:#544e49;text-decoration:none;text-align:center;font-size:16px;line-height:1.3}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-actions [data-delete]{background:#fff2f6;border-color:#edced9}
 .interview-saved-actions a,.interview-saved-actions [data-download]{grid-column:1/-1}
-@media(max-width:700px){#interviewLibrary .interview-saved-card{grid-template-columns:1fr}.interview-saved-actions{width:200px;justify-self:end}}
+@media(max-width:700px){:is(#interviewLibrary,#createdGamesList) .interview-saved-card{grid-template-columns:1fr}.interview-saved-actions{width:200px;justify-self:end}}
 /* Activity authoring uses compact headings and a shared landscape tile. */
 .activity-compact-heading{display:flex;align-items:center;gap:14px!important;margin:0 0 14px!important;min-width:0}
-#createInterview .activity-compact-heading h1,#createActivities .activity-compact-heading h1{font-size:24px;white-space:nowrap;margin:0}
-.activity-compact-heading p,#createActivities .activity-compact-heading .create-games-note{margin:0!important;padding:0!important;font-size:13px;line-height:1.4;min-width:0;white-space:nowrap;overflow:auto;flex:1}
-body:has(#createActivities.active) main,body:has(#createInterview.active) main{padding-top:16px;padding-bottom:16px}
+#createInterview .activity-compact-heading h1,:is(#createActivities,#createGames) .activity-compact-heading h1{font-size:24px;white-space:nowrap;margin:0}
+.activity-compact-heading p,:is(#createActivities,#createGames) .activity-compact-heading .create-games-note{margin:0!important;padding:0!important;font-size:13px;line-height:1.4;min-width:0;white-space:nowrap;overflow:auto;flex:1}
+body:has(:is(#createActivities,#createGames).active) main,body:has(#createInterview.active) main{padding-top:16px;padding-bottom:16px}
 #createInterview .interview-units{display:block}
 .interview-units details{border:1px solid #e5ddd7;border-radius:12px;margin:8px 0;padding:10px}
 .interview-units summary{font-weight:bold;cursor:pointer}
 #createInterview .interview-units label{font-size:14px;margin:10px 0;align-items:flex-start}
-#createActivities .create-game-types,#interviewLibrary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
-#createActivities .create-game-types>h2{grid-column:1/-1;font-size:21px;margin:0}
-#createActivities .created-games-panel{padding:0;border:0;background:transparent;box-shadow:none;margin-top:22px}
-#createActivities .created-games-panel>h2{font-size:21px;margin-bottom:12px}
-#createActivities .activity-blue-tile{position:relative;box-sizing:border-box;aspect-ratio:16/9;min-height:0;width:100%;border:1px solid #dfd9d3;border-radius:18px;background:#fff;overflow:hidden;padding:14px 12px 14px 24px;box-shadow:0 4px 14px #544e4910}
-#createActivities .activity-blue-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:#91c8ed}
-#createActivities .create-game-type-card{justify-content:space-between;align-items:flex-start;gap:10px;text-align:left}
-#createActivities .create-game-type-card strong{font-size:21px}
-#createActivities .create-game-type-card span{font-size:14px;line-height:1.4}
-#interviewLibrary .interview-saved-card{grid-template-columns:minmax(0,1fr) 118px;gap:10px;align-items:center}
-#interviewLibrary .interview-saved-info{display:flex;flex-direction:column;gap:7px;max-height:100%;overflow:auto;font-size:15px;line-height:1.45;align-self:stretch}
+:is(#createActivities,#createGames) .create-game-types,:is(#interviewLibrary,#createdGamesList){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+:is(#createActivities,#createGames) .create-game-types>h2{grid-column:1/-1;font-size:21px;margin:0}
+:is(#createActivities,#createGames) .created-games-panel{padding:0;border:0;background:transparent;box-shadow:none;margin-top:22px}
+:is(#createActivities,#createGames) .created-games-panel>h2{font-size:21px;margin-bottom:12px}
+:is(#createActivities,#createGames) .activity-blue-tile{position:relative;box-sizing:border-box;aspect-ratio:16/9;min-height:0;width:100%;border:1px solid #dfd9d3;border-radius:18px;background:#fff;overflow:hidden;padding:14px 12px 14px 24px;box-shadow:0 4px 14px #544e4910}
+:is(#createActivities,#createGames) .activity-blue-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:#91c8ed}
+:is(#createActivities,#createGames) .create-game-type-card{justify-content:space-between;align-items:flex-start;gap:10px;text-align:left}
+:is(#createActivities,#createGames) .create-game-type-card strong{font-size:21px}
+:is(#createActivities,#createGames) .create-game-type-card span{font-size:14px;line-height:1.4}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-card{grid-template-columns:minmax(0,1fr) 118px;gap:10px;align-items:center}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-info{display:flex;flex-direction:column;gap:7px;max-height:100%;overflow:auto;font-size:15px;line-height:1.45;align-self:stretch}
 .interview-saved-info p{margin:0;white-space:pre-wrap}.interview-saved-info small{font-size:12px}
-#interviewLibrary .interview-saved-actions{width:auto}
-#interviewLibrary .interview-saved-actions button,#interviewLibrary .interview-saved-actions a{font-size:12px;padding:5px;min-height:32px}
-@media(max-width:1199px){#createActivities .create-game-types,#interviewLibrary{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:900px){#createActivities .create-game-types,#interviewLibrary{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){#createActivities .create-game-types,#interviewLibrary{grid-template-columns:1fr}}
-@media(max-width:600px){#createActivities .activity-blue-tile{padding:14px 12px 14px 24px}#interviewLibrary .interview-saved-card{grid-template-columns:minmax(0,1fr) 125px;gap:10px}#interviewLibrary .interview-saved-info{font-size:12px}.activity-compact-heading p{font-size:11px}#createActivities .create-game-type-card strong{font-size:21px}#createActivities .create-game-type-card span{font-size:14px}}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-actions{width:auto}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-actions button,:is(#interviewLibrary,#createdGamesList) .interview-saved-actions a{font-size:12px;padding:5px;min-height:32px}
+@media(max-width:1199px){:is(#createActivities,#createGames) .create-game-types,:is(#interviewLibrary,#createdGamesList){grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){:is(#createActivities,#createGames) .create-game-types,:is(#interviewLibrary,#createdGamesList){grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){:is(#createActivities,#createGames) .create-game-types,:is(#interviewLibrary,#createdGamesList){grid-template-columns:1fr}}
+@media(max-width:600px){:is(#createActivities,#createGames) .activity-blue-tile{padding:14px 12px 14px 24px}:is(#interviewLibrary,#createdGamesList) .interview-saved-card{grid-template-columns:minmax(0,1fr) 125px;gap:10px}:is(#interviewLibrary,#createdGamesList) .interview-saved-info{font-size:12px}.activity-compact-heading p{font-size:11px}:is(#createActivities,#createGames) .create-game-type-card strong{font-size:21px}:is(#createActivities,#createGames) .create-game-type-card span{font-size:14px}}
 /* Match the compact word-selection sidebar used in Unit pages. */
+#createGames .created-games-head h2{font-size:21px;margin:0 0 12px}
+:is(#createActivities,#createGames) .create-game-type-card>span,:is(#createActivities,#createGames) .create-game-type-card>small{margin:0}
+#createdGamesList .interview-saved-actions{display:grid}
+#createdGamesList .interview-saved-actions .play,#createdGamesList .interview-saved-actions .share{grid-column:1/-1}
+#createdGamesList .interview-saved-actions .delete{background:#fff2f6;border-color:#edced9}
 #createInterview .interview-form{font-size:13px;gap:12px;padding:14px}
 #createInterview .interview-form h2{font-size:15px;line-height:1.4;margin:2px 0 8px}
 #createInterview .interview-field{font-size:13px;gap:4px}
@@ -92,10 +97,10 @@ body:has(#createActivities.active) main,body:has(#createInterview.active) main{p
 #interviewCards .interview-chip{font-size:12px;min-height:26px;padding:3px 9px}
 #createInterview .interview-units details{margin:5px 0;padding:8px;font-size:13px}
 #createInterview .interview-units label{font-size:12px;margin:7px 0;gap:6px}
-#interviewLibrary .interview-saved-card{grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:auto minmax(0,1fr);gap:7px 6px;padding:10px 8px 10px 22px}
-#interviewLibrary .interview-saved-heading{grid-column:1/-1;min-width:0;max-height:34px;overflow:auto;font-size:12px;line-height:1.35}
-#interviewLibrary .interview-saved-heading strong{font-size:inherit}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-card{grid-template-columns:minmax(0,1fr) 104px;grid-template-rows:auto minmax(0,1fr);gap:7px 6px;padding:10px 8px 10px 22px}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-heading{grid-column:1/-1;min-width:0;max-height:34px;overflow:auto;font-size:12px;line-height:1.35}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-heading strong{font-size:inherit}
 .interview-saved-heading strong,.interview-saved-heading span{display:block;overflow-wrap:anywhere}
-#interviewLibrary .interview-saved-info{font-size:11px;line-height:1.35;gap:5px;min-height:0}
-#interviewLibrary .interview-saved-actions{gap:5px;justify-self:end;width:104px}
-#interviewLibrary .interview-saved-actions button,#interviewLibrary .interview-saved-actions a{padding:3px 2px;min-height:27px;font-size:11px;border-radius:9px;white-space:nowrap}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-info{font-size:11px;line-height:1.35;gap:5px;min-height:0}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-actions{gap:5px;justify-self:end;width:104px}
+:is(#interviewLibrary,#createdGamesList) .interview-saved-actions button,:is(#interviewLibrary,#createdGamesList) .interview-saved-actions a{padding:3px 2px;min-height:27px;font-size:11px;border-radius:9px;white-space:nowrap}

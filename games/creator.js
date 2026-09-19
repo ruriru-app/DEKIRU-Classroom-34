@@ -4,7 +4,7 @@ function renderCreatedGames(){
   if(!createdGames.length){list.innerHTML='<div class="created-game-empty">まだ保存したゲームはありません。<br>上の「ROULETTE RACE」から作れます。</div>';return}
   list.innerHTML=createdGames.map(game=>{
     const units=game.assignedUnits.length?game.assignedUnits.map(assignmentLabel).join('・'):'Unit未設定';
-    return '<article class="created-game-card" data-created-game-card="'+escapeHtml(game.id)+'"><strong>'+escapeHtml(game.name)+'</strong><span>'+game.cardCount+'枚のコース／'+game.selectedCardIds.length+'語から選択</span><span>'+escapeHtml(units)+'</span><span class="placement">'+escapeHtml(audienceLabel(game.audiences))+'</span><div class="created-game-card-actions"><button class="play" type="button" data-play-roulette="'+escapeHtml(game.id)+'">試す</button><button class="edit" type="button" data-edit-roulette="'+escapeHtml(game.id)+'">編集</button><button class="share" type="button" data-share-roulette="'+escapeHtml(game.id)+'">配布</button><button class="delete" type="button" data-delete-roulette="'+escapeHtml(game.id)+'">削除</button></div></article>';
+    return '<article class="created-game-card interview-saved-card activity-blue-tile" data-created-game-card="'+escapeHtml(game.id)+'"><div class="interview-saved-heading"><strong>'+escapeHtml(units)+'</strong><span>'+escapeHtml(game.name)+'</span></div><div class="interview-saved-info"><span>'+game.cardCount+'枚のコース／'+game.selectedCardIds.length+'語から選択</span><span class="placement">'+escapeHtml(audienceLabel(game.audiences))+'</span></div><div class="created-game-card-actions interview-saved-actions"><button class="edit" type="button" data-edit-roulette="'+escapeHtml(game.id)+'">編集</button><button class="delete" type="button" data-delete-roulette="'+escapeHtml(game.id)+'">削除</button><button class="play" type="button" data-play-roulette="'+escapeHtml(game.id)+'">試す</button><button class="share" type="button" data-share-roulette="'+escapeHtml(game.id)+'">配布</button></div></article>';
   }).join('');
 }
 function renderCreatorVocabulary(){
@@ -182,4 +182,3 @@ document.getElementById('lt1unit')?.addEventListener('click',event=>{
   const game=createdGames.find(item=>item.id===button.dataset.unitRoulette);
   if(game)openRouletteRace(game,'lt1unit');
 });
-
