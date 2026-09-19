@@ -2,9 +2,10 @@
  'use strict';
  const M=window.InterviewModel,$=id=>document.getElementById(id),params=new URLSearchParams(location.search);
  let preset,roster=null,students=[],dirty=false,pastePending=false;const store=()=>InterviewStore.create(localStorage);
+ const warning=document.createElement('p');warning.id='rosterWarnings';warning.setAttribute('role','status');warning.setAttribute('aria-live','polite');$('rosterCount').after(warning);
  function status(s){$('rosterStatus').textContent=s;}
  function read(){const now=new Date().toISOString();return M.validateRoster({version:1,id:roster?.id||M.newId('class'),className:$('rosterClass').value,students,createdAt:roster?.createdAt||now,updatedAt:now});}
- function update(){let valid=false;try{read();valid=!pastePending;}catch{}$('interviewSend').disabled=!(valid&&$('rosterConsent').checked);$('rosterDelete').disabled=!roster;$('rosterDirty').textContent=dirty?'未保存の変更があります。配信には画面上の内容を使用します。':'';}
+ function update(){let valid=false;try{read();valid=!pastePending;}catch{}warning.textContent=M.rosterWarnings(students).join('\n');$('interviewSend').disabled=!(valid&&$('rosterConsent').checked);$('rosterDelete').disabled=!roster;$('rosterDirty').textContent=dirty?'未保存の変更があります。配信には画面上の内容を使用します。':'';}
  function changed(){dirty=true;$('rosterConsent').checked=false;update();}
  function list(selected=''){const rows=store().listRosters();$('rosterSelect').replaceChildren(new Option('新しい名簿',''));rows.forEach(r=>$('rosterSelect').add(new Option(r.className,r.id)));$('rosterSelect').value=selected;}
  function renderRows(){const box=$('rosterRows');box.replaceChildren();students.forEach((s,i)=>{const row=document.createElement('div');row.className='interview-roster-row';for(const [key,label,max] of [['number','番号',12],['name','名前',80]]){const wrapper=document.createElement('label');wrapper.textContent=label+' '+(i+1);const input=document.createElement('input');input.value=s[key]||'';input.maxLength=max;input.oninput=()=>{s[key]=input.value;changed();};wrapper.append(input);row.append(wrapper);}box.append(row);});$('rosterCount').textContent=students.length+'人';update();}
@@ -19,7 +20,7 @@
  }catch(e){$('interviewError').textContent=e.message;return;}
  $('rosterClass').oninput=changed;$('rosterConsent').onchange=update;
  $('rosterPaste').oninput=()=>{pastePending=true;changed();};
- $('rosterConfirm').onclick=()=>{try{const parsed=M.parseRoster($('rosterPaste').value,students);students=parsed.students;pastePending=false;changed();renderRows();status(parsed.warnings.join('\n')||'名簿を確認してください。行ごとに修正できます。');}catch(e){status(e.message);}};
+ $('rosterConfirm').onclick=()=>{try{const parsed=M.parseRoster($('rosterPaste').value,students);students=parsed.students;pastePending=false;changed();renderRows();status(parsed.warnings.filter(w=>!M.rosterWarnings(students).includes(w)).join('\n')||'名簿を確認してください。行ごとに修正できます。');}catch(e){status(e.message);}};
  $('rosterSelect').onchange=()=>{try{const selected=$('rosterSelect').value;if(!discard()){$('rosterSelect').value=roster?.id||'';return;}load(selected?store().listRosters().find(r=>r.id===selected):null);}catch(e){status(e.message);}};
  $('rosterNew').onclick=()=>{if(!discard())return;load(null);$('rosterSelect').value='';};
  $('rosterSave').onclick=()=>{try{M.check(!pastePending,'貼り付けた名簿を先に確認してください');const saved=store().saveRoster(read());roster=saved;dirty=false;list(saved.id);update();status('名簿をこのブラウザに保存しました。');}catch(e){status(e.message);}};

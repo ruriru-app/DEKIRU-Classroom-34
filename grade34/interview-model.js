@@ -41,15 +41,15 @@
     const warnings=[],key=s=>JSON.stringify([s.number||'',s.name]);
     const students=rows.map(row=>{const m=row.match(/^(\d{1,12})[\t　]+(.+)$/);return {id:newId('student'),name:text(m?m[2]:row,'名前',80),...(m?{number:m[1]}:{})};});
     for(const s of students){const prior=previousStudents.filter(p=>key(p)===key(s));const count=students.filter(p=>key(p)===key(s)).length;if(prior.length===1&&count===1)s.id=prior[0].id;else if(prior.length)warnings.push('同名・同番号の行は区別のため新しいIDにしました。');}
-    const nums=students.filter(s=>s.number).map(s=>s.number);
-    if(new Set(nums).size!==nums.length)warnings.push('番号が重複しています。名簿をご確認ください。');
+    warnings.push(...rosterWarnings(students));
     return {students,warnings:[...new Set(warnings)]};
   }
+  function rosterWarnings(students){const nums=students.map(s=>String(s.number??'').trim()).filter(Boolean);return new Set(nums).size!==nums.length?['番号が重複しています。名簿をご確認ください。']:[];}
   function validateDelivery(v,validCardIds=knownCards()){
     check(v?.version===1&&v.type==='interview-delivery','未対応の配信データです');
     const preset=validatePreset(v.preset,validCardIds);check(v.presetId===preset.id,'プリセットIDが一致しません');
     return {version:1,type:'interview-delivery',deliveryId:id(v.deliveryId),issuedAt:date(v.issuedAt),presetId:preset.id,preset,roster:validateRoster(v.roster)};
   }
-  const api={validatePreset,completeQuestion,validateRoster,parseRoster,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
+  const api={validatePreset,completeQuestion,validateRoster,parseRoster,rosterWarnings,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
   root.InterviewModel=api;if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);
