@@ -798,9 +798,6 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     state.activeFeature = null;
     navigate("#/");
   });
-  document.querySelector("[data-settings]")?.addEventListener("click", () => {
-    showToast("設定画面は今後追加します");
-  });
   window.addEventListener("hashchange", () => {
     LookSay.stop(true); WhatsMissing.stop(true); BombGame.stop(true);
     state.activeFeature = null;
