@@ -110,20 +110,13 @@
   function renderHome() {
     document.title = "DEKIRU Classroom for Grade 3 & 4";
     app.innerHTML = `
-      <section class="hero">
-        <p class="eyebrow">授業をもっと楽しく、準備はもっと手軽に</p>
-        <h1>DEKIRU Classroom<br><span>for Grade 3 &amp; 4</span></h1>
-        <p>教科書とUnitを選ぶだけで、授業で使う言葉・ゲーム・活動に進めます。</p>
-      </section>
-      <section class="top-grid" aria-label="入口">
-        ${entryTile("lt1", "Let’s Try! 1", "3年生のUnitへ", "pink")}
-        ${entryTile("lt2", "Let’s Try! 2", "4年生のUnitへ", "blue")}
-        <button class="entry-tile activities" data-route="#/activities">
-          <span class="entry-kicker">Activity Library</span>
-          <strong>Activities</strong>
-          <span>学年をまたいで使える活動</span>
-        </button>
-      </section>`;
+      <nav class="home-scene" aria-label="教科書とActivitiesを選ぶ">
+        <img src="assets/ui/home/background.svg" alt="">
+        <img src="assets/ui/home/grade34.svg" alt="">
+        <svg viewBox="0 0 1920 1080" aria-label="トップメニュー">
+          ${window.DEKIRU_HOME_CLOUDS.map(({label,href,d})=>`<a class="home-cloud" href="${href}" aria-label="${label}"><path d="${d}"/></a>`).join('')}
+        </svg>
+      </nav>`;
   }
 
   function entryTile(book, title, subtitle, color) {
@@ -833,6 +826,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     document.body.classList.remove("today-player-mode");
     const current = route();
     document.body.classList.toggle("book-page", current.page === "book");
+    document.body.classList.toggle("home-page", current.page === "home");
     if (current.page === "book") renderBook(current.book);
     else if (current.page === "phonics") renderPhonics(current.book);
     else if (current.page === "unit") renderUnit(current.book, current.unit);
