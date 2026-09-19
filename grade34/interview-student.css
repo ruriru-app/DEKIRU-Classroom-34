@@ -29,3 +29,5 @@ button.student-token{font-family:inherit;color:inherit;cursor:pointer}
 .student-token small{flex:none}
 .student-speaker:disabled{opacity:.35;cursor:default}
 @media(max-width:800px){#composeQuestion,#questionCards{--sentence-card-width:104px;--sentence-card-height:140px}#composeQuestion .student-token:not(.punctuation),#questionCards .student-token:not(.punctuation){font-size:22px}#composeQuestion .student-token img,#questionCards .student-token img{height:70px}#composeQuestion .student-token.waiting{font-size:12px}}
+#studentInstructions{font-size:16px;text-align:center;white-space:pre-wrap;margin:0 8px 6px;max-height:5em;overflow:auto;flex-shrink:0}
+.student-compose:has(#studentInstructions:not([hidden])){grid-template-rows:auto auto auto minmax(0,1fr) auto}

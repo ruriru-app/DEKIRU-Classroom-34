@@ -29,6 +29,8 @@ The pre-update published commit is `46acea4`, tagged `backup-before-interview-us
 Generated previews and local regression helpers are kept under `interview_work/qa` and `interview_work/grade34_site`; they are not student-facing production assets. Stage only the intended app files, not unrelated phonics generation logs.
 
 ## Follow-up: sentence fields and selection UI
+Requested features are recorded in [interview-future-requirements.md](interview-future-requirements.md). Side-by-side editing/preview is implemented in the following update; configurable answer-card grids with an Other option remain future work.
+
 - Authoring provides one sentence field plus an add/remove control. The existing `question.template` stores explicit newline boundaries, so no new schema or link format is needed. Existing single-field two-sentence templates are displayed as separate sentences; common abbreviations such as Mr. do not create false breaks. Old stored payloads are not rewritten when received.
 - Every sentence renders a separate row and speaker. Speech reads only that sentence; global sound, speed, and word-by-word options are reused. Repeated P references share the selected card across rows.
 - Word, picture, and waiting cards use equal fixed dimensions. Waiting cards display two centered lines. Punctuation remains unboxed.
@@ -36,3 +38,13 @@ Generated previews and local regression helpers are kept under `interview_work/q
 - Saved activity actions are title-independent and use a fixed right column: edit/delete, teacher preview, settings download. Small screens place the same controls below the description.
 - New local regressions: `test-interview-sentences-browser.cjs` and `test-interview-sentence-boundaries.cjs`. Set `INTERVIEW_PUBLIC=1` to run the former on the published site using synthetic data in an isolated browser.
 - Recovery point for this follow-up: `bbb7740`, tag `backup-before-interview-sentences-20260919`.
+
+## Follow-up: live author previews
+
+- Author editor has an independently scrolling left menu and real teacher/student page previews on the right. Tabs cover teacher preparation, student composition and student interview; portrait/landscape changes preserve the interactive preview state.
+- Fields identify their audience. Existing `description` remains the teacher-only displayed memo; optional `studentInstructions` is validated, saved, shared and displayed on student composition. Missing optional fields remain omitted so old payload serialization and progress identities are unchanged. Existing text is not silently reclassified.
+- Categories retain capsule selection and bulk actions, with subgroups from each card's database `displayGroup` (`standard` / `plus`), not grade-specific Basic/Advance mappings. Completed senior cards remain selectable.
+- Preview pages require both `authorPreview=1` and an embedded frame. Messages require the parent source and same origin; presets are validated. Teacher preview does not read real roster storage and disables distribution/settings navigation. Student preview uses a dummy 35-number roster and a no-write progress adapter. Preview instructions/results are not saved as real student progress.
+- Incomplete drafts display a validation note instead of an inaccurate preview. Editing the draft resets the trial interaction; changing orientation does not. Preview scale fits the available display area.
+- Regression `test-interview-live-preview.cjs` covers live audience-specific text, direct sheet tab, interactive movement, orientation preservation, bulk refresh, persistence/reopen, and storage isolation. Existing author tests use the clearer field labels.
+- Recovery point: `2102b01`, tag `backup-before-interview-preview-20260919`. Preserve the worktree and unrelated phonics logs.

@@ -1,5 +1,6 @@
 (()=>{
  'use strict';const $=id=>document.getElementById(id),S=InterviewSession,cards=window.DEKIRU_DATA.cards;
+ const authorPreview=new URLSearchParams(location.search).get('authorPreview')==='1'&&parent!==window;
  let delivery=null,state=null,selectedStudent=null,timer=null,store=null,corrupt=false,saveError='',activeSlot=null,speakingButton=null;
  const audio=InterviewAudio.create({onUnavailable:()=>{$('studentStatus').textContent='この端末では読み上げを利用できません';},onSpeaking:on=>document.querySelectorAll('.student-speaker').forEach(e=>e.classList.toggle('speaking',on&&e===speakingButton))});
  const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
@@ -30,6 +31,7 @@
  function bindArea(area,id){area.onclick=()=>move(id);area.onkeydown=e=>{if(e.target===area&&['Enter',' '].includes(e.key)){e.preventDefault();move(id);}};}
  function names(target,areaId){for(const kid of delivery.roster.students.filter(k=>state.assignments[k.id]===areaId)){const b=el('button',(kid.number?kid.number+' ':'')+kid.name,'student-name');b.type='button';b.dataset.studentId=kid.id;b.classList.toggle('number-only',!kid.name);b.setAttribute('aria-pressed',String(selectedStudent===kid.id));b.onclick=e=>{e.stopPropagation();if(checkExpiry()){selectedStudent=selectedStudent===kid.id?null:kid.id;selection();}};target.append(b);}}
  function render(){
+  let instructions=$('studentInstructions');if(!instructions){instructions=el('p');instructions.id='studentInstructions';$('composeScreen').querySelector('h2').after(instructions);}instructions.textContent=delivery?.preset.studentInstructions||'';instructions.hidden=!instructions.textContent;
   if(!checkExpiry()||!state)return;const sheet=state.phase==='sheet';$('receiveError').textContent='';$('receiveContent').hidden=false;$('studentTitle').textContent=delivery.preset.title;$('composeScreen').hidden=sheet;$('sheetScreen').hidden=!sheet;$('studentAudio').hidden=!sheet;$('studentRestart').hidden=false;status();
   if(!sheet){if(!delivery.preset.question.slots.some(s=>s.id===activeSlot))activeSlot=delivery.preset.question.slots[0]?.id;question($('composeQuestion'));$('studentChoices').replaceChildren();for(const id of delivery.preset.question.slots.length?delivery.preset.cardIds:[]){const card=cards.find(c=>c.id===id),b=el('button',undefined,'student-choice');b.type='button';b.dataset.pictureId=id;b.setAttribute('aria-pressed',String(state.selectedCardIds?.[activeSlot]===id));b.append(image(card),el('span',card.english));b.onclick=()=>{if(!checkExpiry())return;state=S.choose(delivery,state,card,now(),activeSlot);persist();render();[...$('studentChoices').children].find(c=>c.dataset.pictureId===id)?.focus({preventScroll:true});};$('studentChoices').append(b);}$('startInterview').disabled=!state.completedQuestion;return;}
   question($('questionCards'));$('answerAreas').replaceChildren();$('answerAreas').style.setProperty('--areas',Math.min(4,delivery.preset.answerAreas.length));$('answerAreas').classList.toggle('many',delivery.preset.answerAreas.length>4);
@@ -50,5 +52,12 @@
  for(const [id,key] of [['soundToggle','enabled'],['wordToggle','wordByWord']])$(id).onclick=()=>{if(!checkExpiry())return;const value=!audio.getOptions()[key];audio.setOptions({[key]:value});$(id).setAttribute('aria-pressed',String(value));};
  $('speechRate').onchange=()=>{if(checkExpiry())audio.setOptions({rate:Number($('speechRate').value)});};
  window.addEventListener('hashchange',load);window.addEventListener('focus',checkExpiry);window.addEventListener('pageshow',checkExpiry);window.addEventListener('pagehide',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.stop();checkExpiry();});
- load();
+ if(authorPreview){
+  $('interviewReceiveBack').disabled=true;$('studentFullscreen').disabled=true;
+  addEventListener('message',event=>{if(event.source!==parent||event.origin!==location.origin||event.data?.type!=='interview-author-preview')return;try{
+   stop();const preset=InterviewModel.validatePreset(event.data.preset),stamp=now();delivery=InterviewModel.validateDelivery({version:1,type:'interview-delivery',deliveryId:'author-preview',issuedAt:stamp,presetId:preset.id,preset,roster:{version:1,id:'preview-roster',className:'プレビュー',students:Array.from({length:35},(_,i)=>({id:'preview-student-'+(i+1),name:'',number:String(i+1)})),createdAt:stamp,updatedAt:stamp}});
+   store={save:()=>({ok:true})};state=S.create(delivery,stamp);selectedStudent=null;saveError='';corrupt=false;
+   if(event.data.phase==='sheet'){for(const slot of preset.question.slots){const card=cards.find(c=>c.id===slot.cardIds[0]);state=S.choose(delivery,state,card,stamp,slot.id);}state=S.start(delivery,state,stamp);}render();
+  }catch(e){hide('プレビュー：'+e.message);}});
+ }else load();
 })();

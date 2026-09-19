@@ -1,5 +1,33 @@
 #createInterview{max-width:1200px;margin:auto}#createInterview .interview-form{background:white;border:1px solid #e5ddd7;border-radius:22px;padding:24px;display:grid;gap:20px}#createInterview label{display:flex;gap:10px;align-items:center}#createInterview .interview-field{display:grid;gap:6px}#createInterview input:not([type=checkbox]),#createInterview textarea{width:100%;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #cbc5bf;border-radius:10px}#createInterview button,#interviewLibrary button,#interviewLibrary a{min-height:44px;font:inherit;cursor:pointer}#createInterview .interview-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}#createInterview .interview-row label{flex:1}#createInterview .interview-units{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}#interviewCards{max-height:350px;overflow:auto;border:1px solid #ddd;padding:12px;border-radius:12px}#interviewCards details{margin:8px 0}#interviewCards .interview-options{display:flex;flex-wrap:wrap;gap:12px;padding:12px}#createInterview [role=status],#interviewLibrary [role=status]{color:#84442a;white-space:pre-wrap}#createInterview .interview-actions{display:flex;gap:14px;flex-wrap:wrap}#createInterview small{display:block}#interviewLibrary .created-game-card-actions{flex-wrap:wrap}
 .create-game-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:stretch}
+#createInterview{max-width:none;padding:12px 20px}
+#createInterview>.head h1{font-size:28px;margin:8px 0}
+#createInterview>.head{margin:0 0 8px;padding:0;min-height:0}
+#createInterview>p{font-size:13px;margin:3px 0}
+.interview-editor-layout{display:grid;grid-template-columns:350px minmax(0,1fr);gap:18px;margin-top:12px;height:calc(100dvh - 240px);min-height:350px}
+body:has(#createInterview.active) main{padding-top:12px}
+#createInterview .interview-form{overflow:auto;padding:18px;gap:16px;align-content:start}
+#createInterview h2{font-size:20px;margin:4px 0 10px}
+#createInterview .interview-field{font-size:15px}
+#createInterview small{font-size:13px;color:#756d65}
+#interviewCards{max-height:none;overflow:visible;border:0;padding:0}
+#interviewCards details{border:1px solid #e5ddd7;border-radius:16px;background:white;padding:8px}
+#interviewCards summary{font-weight:bold}
+#interviewCards .interview-category-toggle{font-size:12px;margin:4px 0;padding:4px 10px}
+#interviewCards .interview-options{display:block;padding:6px 0}
+.interview-tier{margin:8px 0}.interview-tier>label{font-size:14px;font-weight:bold}
+.interview-tier-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#interviewCards .interview-chip{font-size:14px;min-height:34px;padding:4px 10px}
+.interview-preview-panel{display:flex;flex-direction:column;min-width:0;background:#eef6ff;border:1px solid #c6ddec;border-radius:20px;overflow:hidden}
+.interview-preview-toolbar{padding:12px;background:white;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.interview-preview-toolbar small{flex-basis:100%}
+.interview-preview-toolbar button{border:1px solid #c6ddec;border-radius:10px;padding:6px 10px;background:white;font-size:14px!important;color:#544e49;margin:2px}
+.interview-preview-toolbar button[aria-pressed=true]{background:#dcedff;border-color:#80afd2}
+#interviewPreviewStatus{font-size:14px;margin:0;color:#84442a}
+.interview-preview-viewport{position:relative;flex:1;min-height:0;overflow:hidden;margin:10px}
+.interview-preview-device{position:absolute;left:0;top:0;transform-origin:top left;background:white}
+#interviewPreview{width:100%;height:100%;border:0;background:white}
+@media(max-width:900px){.interview-editor-layout{grid-template-columns:1fr;height:auto;min-height:0}.interview-preview-panel{height:650px}#createInterview .interview-form{max-height:65dvh}}
 .create-game-types>h2{grid-column:1/-1;margin-bottom:0}
 .create-game-types .create-game-type-card{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px;width:100%;max-width:none;min-height:180px;box-sizing:border-box;margin:0}
 #interviewCards summary{cursor:pointer;padding:6px 2px}

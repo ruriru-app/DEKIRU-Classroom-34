@@ -27,7 +27,7 @@
     check(v.version===2?markers.every(m=>slots.some(s=>'('+s.id+')'===m))&&slots.every(s=>markers.includes('('+s.id+')')):slots.length?markers.length===1&&markers[0]==='(P)':markers.length===0,'差し替えは (P)、または (P1)〜(P9) で指定してください');
     const answerAreas=array(v.answerAreas,12,'回答エリア',1).map(a=>{check(Number.isInteger(a?.order)&&a.order>=0&&a.order<12,'回答の順序が不正です');return {id:id(a.id),label:text(a.label,'回答名',40),order:a.order,...(a.speechText!==undefined?{speechText:text(a.speechText,'読み上げ文',200,true)}:{})};});
     unique(answerAreas.map(a=>a.id),'回答ID');unique(answerAreas.map(a=>a.order),'回答の順序');answerAreas.sort((a,b)=>a.order-b.order);
-    return {version:v.version,type:'interview',id:id(v.id),name:text(v.name,'プリセット名',80),title:text(v.title,'タイトル',80),description:text(v.description??'','説明',500,true),assignedUnits,question:{template,slots},cardIds,answerAreas,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
+    return {version:v.version,type:'interview',id:id(v.id),name:text(v.name,'プリセット名',80),title:text(v.title,'タイトル',80),description:text(v.description??'','説明',500,true),...(v.studentInstructions!==undefined?{studentInstructions:text(v.studentInstructions,'児童への説明',500,true)}:{}),assignedUnits,question:{template,slots},cardIds,answerAreas,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
   }
   function slotIds(template){return [...new Set((template.match(/\(P[1-9]?\)/g)||[]).map(m=>m.slice(1,-1)))];}
   // Explicit line breaks are authoritative. Legacy single-field questions can contain two sentences.
