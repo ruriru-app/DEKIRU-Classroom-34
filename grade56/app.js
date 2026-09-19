@@ -20,6 +20,8 @@
       const title=page==='phonics'?'Phonics':`Unit ${number} — ${book.units[Number(number)-1]}`;
       document.title=title+' | '+book.title;
       app.innerHTML=heading(title,book.title,'#/book/'+key)+`<section class="hero"><h2>準備中</h2><p>${page==='phonics'?'カードの収録・表示方法は、これから追加します。':'このUnitの教材は、これから追加します。'}</p></section>`;
+      const interviewTiles=page==='unit'?(window.InterviewLinks?.tiles(key,Number(number))||''):'';
+      if(interviewTiles)app.insertAdjacentHTML('beforeend','<section class="hero"><h2>Activities</h2><div class="feature-grid">'+interviewTiles+'</div></section>');
     } else {
       app.innerHTML=`<section class="hero"><p class="eyebrow">授業をもっと楽しく、準備はもっと手軽に</p><h1>DEKIRU Classroom<br><span>for Grade 5 &amp; 6</span></h1><p>教科書を選んでください。</p></section><section class="top-grid" aria-label="教科書">${Object.entries(books).map(([key,book])=>`<button class="entry-tile ${book.color}" data-route="#/book/${key}"><span class="entry-kicker">${book.grade}</span><strong>${book.title}</strong><span>Unit一覧へ</span></button>`).join('')}</section>`;
     }

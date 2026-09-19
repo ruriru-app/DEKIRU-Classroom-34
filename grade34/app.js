@@ -379,6 +379,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
   }
   function renderUnitSections(bookKey, unit, title) {
     const activities = ACTIVITIES.filter((activity) => activity.units.includes(`${bookKey}-${unit}`));
+    const interviewTiles=window.InterviewLinks?.tiles(bookKey,unit)||'';
     const alphabetTile = bookKey === "lt1" && unit === 6
       ? externalGameTile('ALPHABET TOUCH',GamesLinks.alphabet())
       : "";
@@ -403,7 +404,7 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
           ${linkedGames.filter(g=>g.audiences.includes('class')).map(g=>externalGameTile(g.name,g.url)).join('')}
         </div>`)}
       ${sectionBlock("Games（個人の端末で）", "配布されたゲームを児童が自分で練習する", individualGames?`<div class="feature-grid">${individualGames}</div>`:`<div class="empty-state compact"><p>このUnitの配布用ゲームは、今後追加します。</p></div>`)}
-      ${sectionBlock("Activities", "このUnitで使える活動", activities.length ? `<div class="feature-grid">${activities.map((activity) => activityUnitTile(activity)).join("")}</div>` : `<div class="empty-state compact"><p>このUnitのActivityは、今後追加します。</p></div>`)}
+      ${sectionBlock("Activities", "このUnitで使える活動", activities.length||interviewTiles ? `<div class="feature-grid">${activities.map((activity) => activityUnitTile(activity)).join("")}${interviewTiles}</div>` : `<div class="empty-state compact"><p>このUnitのActivityは、今後追加します。</p></div>`)}
     `;
   }
 
@@ -473,8 +474,9 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
     if (feature === "today") return todayView();
     if (feature === "unit-activities") {
       const activities = ACTIVITIES.filter((activity) => activity.units.includes(`${bookKey}-${unit}`));
-      return activities.length
-        ? `<div class="catalog-grid embedded">${activities.map(activityTile).join("")}</div>`
+      const interviewTiles=window.InterviewLinks?.tiles(bookKey,unit)||'';
+      return activities.length||interviewTiles
+        ? `<div class="catalog-grid embedded">${activities.map(activityTile).join("")}${interviewTiles}</div>`
         : `<div class="empty-state"><h2>Activityは準備中です</h2><p>このUnitに合う活動を、今後ここへ追加します。</p></div>`;
     }
     if (feature === "pronunciation") return practiceCards(chosen);
