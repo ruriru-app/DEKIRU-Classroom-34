@@ -30,6 +30,8 @@
     return {version:v.version,type:'interview',id:id(v.id),name:text(v.name,'プリセット名',80),title:text(v.title,'タイトル',80),description:text(v.description??'','説明',500,true),assignedUnits,question:{template,slots},cardIds,answerAreas,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
   }
   function slotIds(template){return [...new Set((template.match(/\(P[1-9]?\)/g)||[]).map(m=>m.slice(1,-1)))];}
+  // Explicit line breaks are authoritative. Legacy single-field questions can contain two sentences.
+  function sentenceTemplates(template){const lines=template.split(/\r?\n/);if(lines.length>1)return lines.map(s=>s.trim()).filter(Boolean);return template.replace(/([.!?])\s+(?=[A-Z])/g,(match,mark,offset)=>mark==='.'&&/\b(?:Mr|Mrs|Ms|Dr|St|a\.m|p\.m|e\.g|i\.e)$/i.test(template.slice(0,offset))?match:mark+'\n').split('\n').map(s=>s.trim()).filter(Boolean);}
   function completeQuestion(p,selection){if(!p.question.slots.length)return p.question.template;const selected=selection?.id?{[p.question.slots[0].id]:selection}:selection;for(const slot of p.question.slots)check(selected?.[slot.id]&&slot.cardIds.includes(selected[slot.id].id),'カードを選んでください');return p.question.template.replace(/\(P[1-9]?\)/g,marker=>text(selected[marker.slice(1,-1)].english,'カードの英語',200));}
   function validateRoster(v){
     check(v?.version===1,'未対応の名簿です');
@@ -56,6 +58,6 @@
     else check(v.expiresAt===undefined,'期限付き配信の形式が不正です');
     return {version:v.version,type:'interview-delivery',deliveryId:id(v.deliveryId),issuedAt,...expiry,presetId:preset.id,preset,roster:validateRoster(v.roster)};
   }
-  const api={validatePreset,completeQuestion,slotIds,validateRoster,parseRoster,rosterWarnings,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
+  const api={validatePreset,completeQuestion,slotIds,sentenceTemplates,validateRoster,parseRoster,rosterWarnings,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
   root.InterviewModel=api;if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);

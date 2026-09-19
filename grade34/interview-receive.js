@@ -1,7 +1,7 @@
 (()=>{
  'use strict';const $=id=>document.getElementById(id),S=InterviewSession,cards=window.DEKIRU_DATA.cards;
- let delivery=null,state=null,selectedStudent=null,timer=null,store=null,corrupt=false,saveError='',activeSlot=null;
- const audio=InterviewAudio.create({onUnavailable:()=>{$('studentStatus').textContent='この端末では読み上げを利用できません';},onSpeaking:on=>$('questionSpeak').classList.toggle('speaking',on)});
+ let delivery=null,state=null,selectedStudent=null,timer=null,store=null,corrupt=false,saveError='',activeSlot=null,speakingButton=null;
+ const audio=InterviewAudio.create({onUnavailable:()=>{$('studentStatus').textContent='この端末では読み上げを利用できません';},onSpeaking:on=>document.querySelectorAll('.student-speaker').forEach(e=>e.classList.toggle('speaking',on&&e===speakingButton))});
  const el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
  const now=()=>new Date().toISOString();
  function stop(){clearTimeout(timer);timer=null;audio.stop();}
@@ -10,13 +10,18 @@
  function image(card){const img=el('img');img.alt='';img.src=card.pictureUrl||('../'+card.image);img.onerror=()=>{img.hidden=true;};return img;}
  function question(target){
   target.replaceChildren();const map=S.selectedCards(delivery,state,cards),fixed={i:'person_001',you:'person_002',like:'action5_002',have:'action5_015'};
-  for(const token of S.tokens(delivery,map)){
+  InterviewModel.sentenceTemplates(delivery.preset.question.template).forEach((template,index)=>{
+   const row=el('div',undefined,'student-sentence'),line=el('div',undefined,'student-sentence-cards'),speak=el('button',undefined,'student-speaker');speak.type='button';speak.setAttribute('aria-label',(index+1)+'文目を読み上げる');if(state.phase==='sheet'&&index===0)speak.id='questionSpeak';
+   const icon=el('img');icon.alt='';icon.src='assets/ui/originals/読み上げボタン.svg';speak.append(icon);speak.disabled=InterviewModel.slotIds(template).some(id=>!map[id]);
+   speak.onclick=()=>{if(!checkExpiry())return;const text=template.replace(/\(P[1-9]?\)/g,m=>map[m.slice(1,-1)].english);speakingButton=speak;audio.speak(text,text.split(/\s+/));};row.append(speak,line);target.append(row);
+  for(const token of S.tokens(delivery,map,template)){
    const picking=token.kind==='picture'&&state.phase==='compose',e=el(picking?'button':'div',undefined,'student-token '+token.kind);
    const card=token.kind==='picture'?map[token.slotId]:cards.find(c=>c.id===fixed[token.text.toLowerCase()]);
    if(card)e.append(image(card));else if(token.kind==='picture')e.classList.add('waiting');
    if(picking){e.type='button';e.dataset.slotId=token.slotId;e.setAttribute('aria-label',token.slotId+' のカードを選ぶ');e.setAttribute('aria-pressed',String(activeSlot===token.slotId));e.onclick=()=>{activeSlot=token.slotId;const occurrence=[...target.querySelectorAll('[data-slot-id]')].indexOf(e);render();target.querySelectorAll('[data-slot-id]')[occurrence]?.focus({preventScroll:true});};if(delivery.preset.question.slots.length>1)e.append(el('small',token.slotId));}
-   e.append(el('span',token.text));target.append(e);
+   e.append(el('span',e.classList.contains('waiting')?'下のカードから\nえらんでね':token.text));line.append(e);
   }
+  });
  }
  function persist(){const saved=store.save(delivery,state);saveError=saved.ok?'':saved.error;}
  function selection(){document.querySelectorAll('[data-student-id]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.studentId===selectedStudent)));status();}
@@ -42,7 +47,6 @@
  $('startInterview').onclick=()=>{if(checkExpiry()){state=S.start(delivery,state,now());persist();render();}};
  $('interviewReceiveBack').onclick=async()=>{audio.stop();if(document.fullscreenElement){await document.exitFullscreen();return;}if(state?.phase==='sheet'){if(Object.values(state.assignments).some(v=>v!==null)){requestReset();return;}state=S.reset(delivery,now());persist();render();}else location.href='index.html#/';};
  $('studentFullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('studentShell').requestFullscreen();}catch{$('studentStatus').textContent='この端末では全画面表示を利用できません';}};
- $('questionSpeak').onclick=()=>{if(checkExpiry())audio.speak(state.completedQuestion,state.completedQuestion.split(/\s+/));};
  for(const [id,key] of [['soundToggle','enabled'],['wordToggle','wordByWord']])$(id).onclick=()=>{if(!checkExpiry())return;const value=!audio.getOptions()[key];audio.setOptions({[key]:value});$(id).setAttribute('aria-pressed',String(value));};
  $('speechRate').onchange=()=>{if(checkExpiry())audio.setOptions({rate:Number($('speechRate').value)});};
  window.addEventListener('hashchange',load);window.addEventListener('focus',checkExpiry);window.addEventListener('pageshow',checkExpiry);window.addEventListener('pagehide',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.stop();checkExpiry();});

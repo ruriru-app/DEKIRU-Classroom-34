@@ -27,3 +27,12 @@ Then run `node grade34_site/build-preview.cjs`, `node games_site/build.cjs`, and
 The pre-update published commit is `46acea4`, tagged `backup-before-interview-usability-20260919`. Keep this tag and the working directory. To undo this update, revert its application commit and publish the revert; do not force-push or delete teachers' browser data.
 
 Generated previews and local regression helpers are kept under `interview_work/qa` and `interview_work/grade34_site`; they are not student-facing production assets. Stage only the intended app files, not unrelated phonics generation logs.
+
+## Follow-up: sentence fields and selection UI
+- Authoring provides one sentence field plus an add/remove control. The existing `question.template` stores explicit newline boundaries, so no new schema or link format is needed. Existing single-field two-sentence templates are displayed as separate sentences; common abbreviations such as Mr. do not create false breaks. Old stored payloads are not rewritten when received.
+- Every sentence renders a separate row and speaker. Speech reads only that sentence; global sound, speed, and word-by-word options are reused. Repeated P references share the selected card across rows.
+- Word, picture, and waiting cards use equal fixed dimensions. Waiting cards display two centered lines. Punctuation remains unboxed.
+- Categories support select-all / clear-all with mixed state, and individual words use pressed-state capsule buttons. Card data and saved selections remain unchanged.
+- Saved activity actions are title-independent and use a fixed right column: edit/delete, teacher preview, settings download. Small screens place the same controls below the description.
+- New local regressions: `test-interview-sentences-browser.cjs` and `test-interview-sentence-boundaries.cjs`. Set `INTERVIEW_PUBLIC=1` to run the former on the published site using synthetic data in an isolated browser.
+- Recovery point for this follow-up: `bbb7740`, tag `backup-before-interview-sentences-20260919`.
