@@ -29,8 +29,8 @@
 /* Keep the standard picture-card overview dense in both preview and fullscreen. */
 .content-panel .practice-grid[data-layout="list"]{grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:minmax(100px,1fr);height:100%;align-items:stretch;gap:8px}
 .content-panel .practice-grid[data-layout="list"] .practice-card{border-radius:9px;height:100%;aspect-ratio:auto}
-.content-panel .practice-grid[data-layout="list"] .practice-art{padding:3px}
-.content-panel .practice-grid[data-layout="list"] .practice-label{padding:2px;font-size:clamp(10px,10cqw,24px);line-height:1.15}
+.content-panel .practice-grid[data-layout="list"] .practice-art{padding:1px;height:calc(100% - max(20%,30px))}
+.content-panel .practice-grid[data-layout="list"] .practice-label{top:auto;bottom:0;height:max(20%,30px);padding:1px;font-size:clamp(12px,12cqw,30px);line-height:1.1}
 .content-panel:has(.practice-scroll){padding:12px}
 .content-panel:has(.practice-scroll) .feature-heading{gap:10px;padding-bottom:6px;min-height:44px}
 .content-panel:has(.practice-scroll) .feature-heading h1{font-size:20px;line-height:1.2;margin:0}
@@ -38,4 +38,15 @@
 .content-panel:has(.practice-scroll) .feature-heading button{width:40px;height:40px;min-width:40px;min-height:40px;padding:0}
 .content-panel:has(.practice-scroll) .feature-toolbar{font-size:12px;margin-bottom:6px;gap:8px}
 .content-panel:has(.practice-scroll) .practice-scroll{height:calc(100dvh - 270px);min-height:200px}
-.content-panel:fullscreen:has(.practice-scroll) .practice-scroll,.content-panel.fullscreen-content:has(.practice-scroll) .practice-scroll{height:calc(100dvh - 110px);min-height:0}
+.content-panel:fullscreen:has(.practice-scroll) .practice-scroll,.content-panel.fullscreen-content:has(.practice-scroll) .practice-scroll{height:100%;min-height:0}
+/* Let the actual header determine the available height, including browser zoom. */
+.app-main:has(>.workspace){padding-top:12px;padding-bottom:12px}
+.workspace:has(.practice-scroll){min-height:0;align-items:start}
+.workspace:has(.practice-scroll) .unit-sidebar{max-height:calc(100dvh - var(--home-header-height,92px) - 24px);top:calc(var(--home-header-height,92px) + 12px)}
+.content-panel:has(.practice-scroll){height:calc(100dvh - var(--home-header-height,92px) - 24px);min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.content-panel:has(.practice-scroll) .feature-heading{flex:none}
+.content-panel:has(.practice-scroll) .feature-heading .feature-toolbar{margin:0 0 0 auto;font-size:14px;justify-content:flex-end}
+.content-panel:has(.practice-scroll) .feature-heading .fullscreen-button{margin-left:0}
+.content-panel:has(.practice-scroll) .feature-view{flex:1;min-height:0;display:flex;padding-top:4px}
+.content-panel:has(.practice-scroll) .practice-scroll{width:100%;height:100%;min-height:0}
+.content-panel:fullscreen:has(.practice-scroll),.content-panel.fullscreen-content:has(.practice-scroll){height:100dvh}

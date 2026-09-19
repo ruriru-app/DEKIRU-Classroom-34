@@ -44,7 +44,7 @@ function markup(key){
     </div>
     <div class="talk-stage-wrap">
       <button class="talk-stage-zoom" id="talkStageZoom" type="button" aria-expanded="false" aria-controls="talkZoomControls" aria-label="文カードの大きさを調整" title="文カードの大きさを調整">＋</button><button class="sentence-fullscreen fullscreen-button" data-fullscreen aria-label="全画面表示">⛶</button>
-      <div class="talk-zoom-controls" id="talkZoomControls" hidden><label for="talkZoomRange">大きさ <output id="talkZoomValue">100%</output></label><input id="talkZoomRange" aria-label="文カードの拡大率" type="range" min="10" max="400" step="1" value="100"><button id="talkZoomFit" type="button">画面に合わせる</button></div>
+      <div class="talk-zoom-controls" id="talkZoomControls" hidden><label for="talkZoomRange">大きさ <output id="talkZoomValue">100%</output></label><input id="talkZoomRange" aria-label="文カードの拡大率" type="range" min="10" max="400" step="1" value="100"><button id="talkZoomFit" type="button">元のサイズに戻す</button></div>
       <div class="talk-stage" id="talkStage"></div>
     </div>
     <div class="talk-choice-panel">

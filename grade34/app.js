@@ -445,10 +445,11 @@ return `<h2>保存したカードセット</h2>${sets.length?sets.map(s=>`<div c
       <section class="content-heading feature-heading">
         <button class="back-button" data-feature="close" aria-label="Unitページへ戻る">◀</button>
         <div><p>${escapeHtml(BOOKS[bookKey].title)} Unit ${unit}</p><h1>${escapeHtml(meta.title)}</h1></div>
+        ${feature === 'pronunciation' ? `<div class="feature-toolbar"><span>${escapeHtml(unitTitle)}</span><b>使用 ${chosen.length}語</b></div>` : ''}
         <button class="fullscreen-button" data-fullscreen aria-label="全画面表示">⛶</button>
       </section>
       <section class="feature-view">
-        <div class="feature-toolbar"><span>${escapeHtml(unitTitle)}</span><b>使用 ${chosen.length}語</b></div>
+        ${feature === 'pronunciation' ? '' : `<div class="feature-toolbar"><span>${escapeHtml(unitTitle)}</span><b>使用 ${chosen.length}語</b></div>`}
         ${content}
       </section>`;
   }
