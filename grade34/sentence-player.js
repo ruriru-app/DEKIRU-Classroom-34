@@ -3,7 +3,7 @@ window.SentencePlayer=(()=>{
 'use strict';
 let context={},definition=null,unitKey='',cardById=new Map(),talkActivity=null;
 let talkChoiceRole='object',talkChoiceTarget='object',talkSelected={},talkHiddenCategories=new Set();
-let talkSoundEnabled=true,talkSpeechRate=.55,talkClearSpeech=false,talkStageEnlarged=false;
+let talkSoundEnabled=true,talkSpeechRate=.55,talkClearSpeech=false,talkZoom=null;
 let talkSpeechSequenceId=0,talkSpeechPauseTimer=null,speakingElement=null;
 const timers=new Set();
 let stageObserver=null;
@@ -12,7 +12,12 @@ function fitStage(){
  if(!content)return;
  content.style.zoom='1';
  const width=content.getBoundingClientRect().width,height=content.getBoundingClientRect().height;
- content.style.zoom=String(Math.min(1,(stage.clientWidth-24)/Math.max(1,width),(stage.clientHeight-24)/Math.max(1,height)));
+ const fitted=Math.min(1,(stage.clientWidth-24)/Math.max(1,width),(stage.clientHeight-24)/Math.max(1,height));
+ const scale=talkZoom===null?fitted:talkZoom/100;
+ content.style.zoom=String(scale);
+ const range=document.getElementById('talkZoomRange'),label=document.getElementById('talkZoomValue');
+ if(range)range.value=String(Math.round(scale*100));
+ if(label)label.textContent=Math.round(scale*100)+'%';
 }
 const CONTRACTION_PARTS={"don't":['do','not'],"i'm":['I','am'],"you're":['you','are'],"it's":['it','is'],"that's":['that','is'],"what's":['what','is'],"who's":['who','is'],"can't":['can','not'],"won't":['will','not']};
 const escapeHtml=value=>String(value??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;");
@@ -38,7 +43,8 @@ function markup(key){
       </div>
     </div>
     <div class="talk-stage-wrap">
-      <button class="talk-stage-zoom" id="talkStageZoom" type="button" aria-pressed="false" aria-label="文カードを拡大する" title="文カードを拡大する">＋</button><button class="sentence-fullscreen fullscreen-button" data-fullscreen aria-label="全画面表示">⛶</button>
+      <button class="talk-stage-zoom" id="talkStageZoom" type="button" aria-expanded="false" aria-controls="talkZoomControls" aria-label="文カードの大きさを調整" title="文カードの大きさを調整">＋</button><button class="sentence-fullscreen fullscreen-button" data-fullscreen aria-label="全画面表示">⛶</button>
+      <div class="talk-zoom-controls" id="talkZoomControls" hidden><label for="talkZoomRange">大きさ <output id="talkZoomValue">100%</output></label><input id="talkZoomRange" aria-label="文カードの拡大率" type="range" min="10" max="400" step="1" value="100"><button id="talkZoomFit" type="button">画面に合わせる</button></div>
       <div class="talk-stage" id="talkStage"></div>
     </div>
     <div class="talk-choice-panel">
@@ -70,7 +76,7 @@ function mount(){
 function open(activity){
  if(!definition?.activities.some(a=>a.id===activity))return;
  stop();talkActivity=activity;talkChoiceRole='object';talkChoiceTarget=definition.target(activity);
- talkHiddenCategories.clear();if(definition.quantities){talkHiddenCategories.add('Count');talkHiddenCategories.add('Color');}talkSelected=definition.defaults(activity);talkStageEnlarged=false;
+ talkHiddenCategories.clear();if(definition.quantities){talkHiddenCategories.add('Count');talkHiddenCategories.add('Color');}talkSelected=definition.defaults(activity);talkZoom=null;
  const verbs=talkChoiceItems('verb',false),objects=talkChoiceItems('object',false);
  for(const [key,pool] of [['verb',verbs],['object',objects],['negativeObject',objects]]){
   if(pool.length&&!pool.some(c=>c.id===talkSelected[key]))talkSelected[key]=pool[0].id;
@@ -91,12 +97,14 @@ document.addEventListener('click',event=>{
  if(event.target.closest('#talkSoundToggle')){talkSoundEnabled=!talkSoundEnabled;if(!talkSoundEnabled)stopTalkSpeechSequence();updateTalkSoundButton();}
  if(event.target.closest('#talkClarityToggle')){talkClearSpeech=!talkClearSpeech;stopTalkSpeechSequence();updateTalkClarityButton();}
  if(event.target.closest('#talkStageZoom')){
-  talkStageEnlarged=!talkStageEnlarged;document.getElementById('talkStage').classList.toggle('enlarged',talkStageEnlarged);
-  const b=document.getElementById('talkStageZoom');b.setAttribute('aria-pressed',String(talkStageEnlarged));b.setAttribute('aria-label',talkStageEnlarged?'文カードを元の大きさに戻す':'文カードを拡大する');fitTalkWordLabels(document.getElementById('talkStage'));
+  const panel=document.getElementById('talkZoomControls');panel.hidden=!panel.hidden;
+  document.getElementById('talkStageZoom').setAttribute('aria-expanded',String(!panel.hidden));
  }
+ if(event.target.closest('#talkZoomFit')){talkZoom=null;fitStage();}
  const role=event.target.closest('[data-talk-role]');
  if(role){talkChoiceRole=role.dataset.talkRole;talkChoiceTarget=talkChoiceRole==='object'?definition.target(talkActivity):talkChoiceRole;renderTalkChoiceControls();renderTalkChoices();}
 });
+document.addEventListener('input',event=>{if(event.target.id==='talkZoomRange'){talkZoom=Math.max(10,Math.min(400,Number(event.target.value)||100));fitStage();}});
 document.addEventListener('change',event=>{if(event.target.id==='talkSpeechRate'){talkSpeechRate=Number(event.target.value)||.55;stopTalkSpeechSequence();}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopTalkSpeechSequence();});
 window.addEventListener('pagehide',stop);
@@ -114,6 +122,8 @@ function talkWordSizeClass(word){
 function fitTalkWordLabels(root){
   const apply=()=>{
     if(!root?.isConnected)return;
+    const content=document.getElementById('talkStage')?.firstElementChild;
+    if(content)content.style.zoom='1';
     root.querySelectorAll('.talk-card-word,.talk-choice-word').forEach(label=>{
       label.style.fontSize='';
       label.style.paddingInline='1px';
@@ -320,7 +330,6 @@ function renderTalkStage(){
   stopTalkSpeechSequence();
   const stage=document.getElementById('talkStage');
   stage.innerHTML=definition.render({cards:cardById,selected:talkSelected,activity:talkActivity,token:talkToken,row:talkRowMarkup});
-  stage.classList.toggle('enlarged',talkStageEnlarged);
   bindTalkStageEvents(stage);
   fitTalkWordLabels(stage);
 }
