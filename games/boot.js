@@ -7,5 +7,11 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){if(alphabe
 loadCreatedGames();renderCreatedGames();setCreatorForm(null);
 if(!openSharedGameFromHash()){
   if(location.hash==='#/alphabetTouch')openAlphabetTouch({returnPage:'home'});
-  else show(location.hash==='#/createGames'?'createGames':'home');
+  else if(location.hash==='#/createInterview')window.InterviewCreator.open();
+  else show(['#/createGames','#/createActivities'].includes(location.hash)?location.hash.slice(2):'home');
 }
+// Keep direct links and browser hash navigation in sync with the visible page.
+window.addEventListener('hashchange',()=>{
+  if(location.hash==='#/createInterview')window.InterviewCreator.open();
+  else if(['#/createGames','#/createActivities','#/'].includes(location.hash))show(location.hash.slice(2)||'home');
+});

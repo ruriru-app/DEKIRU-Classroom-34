@@ -1,18 +1,26 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEKIRU Games</title><link rel="stylesheet" href="legacy.css?v=21934dd121c0"><link rel="stylesheet" href="games.css?v=8f9f5163ff6b"></head><body><header><img src="../grade34/assets/ui/branding/logo-games.svg" alt="DEKIRU Games"><button class="back" id="homeBtn">ホーム</button></header><main><section id="home" class="page active"><h1>DEKIRU Games</h1><p>英語で遊ぶ・ゲームを作る</p><div class="homegrid"><button class="blue" data-launch-alphabet>ALPHABET TOUCH<br><small>大文字・Easy〜Legend</small></button><button class="green nav" data-to="createGames">Create Games<br><small>作者用ゲーム作成</small></button></div><p>作成したゲームは、このブラウザに保存されます。</p><a href="../grade34/">DEKIRU Classroom for Grade 3 &amp; 4</a></section><section id="createGames" class="page create-games-page">
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEKIRU Games</title><link rel="stylesheet" href="legacy.css?v=21934dd121c0"><link rel="stylesheet" href="games.css?v=8f9f5163ff6b"></head><body><header><img src="../grade34/assets/ui/branding/logo-games.svg" alt="DEKIRU Games"><button class="back" id="homeBtn">ホーム</button></header><main><section id="home" class="page active"><h1>DEKIRU Games</h1><p>英語で遊ぶ・ゲームを作る</p><div class="homegrid"><button class="blue" data-launch-alphabet>ALPHABET TOUCH<br><small>大文字・Easy〜Legend</small></button><button class="green nav" data-to="createGames">Create Games<br><small>作者用ゲーム作成</small></button><button class="green nav" data-to="createActivities">Create Activities<br><small>作者用アクティビティ作成</small></button></div><p>作成したゲームは、このブラウザに保存されます。</p><a href="../grade34/">DEKIRU Classroom for Grade 3 &amp; 4</a></section><section id="createGames" class="page create-games-page">
   <div class="head"><button class="back" data-back="home">← 戻る</button><h1>Create Games</h1></div>
   <p class="create-games-note">作りたいゲームを選んで設定し、必要なUnitへ割り当てます。同じゲームを複数のUnitで使うこともできます。保存内容は、この端末のブラウザー内に保存されます。</p>
   <section class="create-game-types">
     <h2>ゲームを作る</h2>
-    <button class="create-game-type-card" id="openInterviewCreator" type="button">Interviewを作る</button>
+
     <button class="create-game-type-card" id="openRouletteCreator" type="button"><strong>ROULETTE RACE</strong><span>ルーレットで選ばれた人が、カードのコースを1マス進むゲーム</span><small>＋ 新しく作る</small></button>
   </section>
   <section class="created-games-panel created-games-library">
     <div class="created-games-head"><h2>保存したゲーム</h2></div>
     <div class="created-games-list" id="createdGamesList"></div>
-    <h2>保存したInterview（Activities）</h2><div id="interviewLibrary" class="created-games-list"></div>
+
   </section>
 </section>
 
+<section id="createActivities" class="page create-games-page">
+  <div class="head"><button class="back" data-back="home">戻る</button><h1>Create Activities</h1></div>
+  <p class="create-games-note">授業の活動を作成し、Unitへ割り当てます。保存内容はこの端末のブラウザー内に保存されます。</p>
+  <section class="create-game-types"><h2>アクティビティを作る</h2>
+    <button class="create-game-type-card" id="openInterviewCreator" type="button" aria-label="Interviewを作る"><strong>INTERVIEW</strong><span>質問のカードと回答欄を設定して、友達へのインタビューを作る</span><small>＋ 新しく作る</small></button>
+  </section>
+  <section class="created-games-panel created-games-library"><h2>保存したInterview（Activities）</h2><div id="interviewLibrary" class="created-games-list"></div></section>
+</section>
 <section id="createInterview" class="page create-games-page"></section>
 <section id="createRouletteGame" class="page create-games-page">
   <div class="head"><button class="back" id="creatorBackToGames" data-back="createGames" type="button">← 戻る</button><h1>ROULETTE RACEを作る</h1></div>
@@ -126,4 +134,4 @@
     </div>
   </div>
 </section>
-</main><link rel="stylesheet" href="interview-creator.css?v=3484006fa3d2"><script src="../assets/ui/qrcode.js"></script><script src="catalog.js?v=ee7c4ddb14e2"></script><script src="../grade34/share-codec.js?v=81991ea3d776"></script><script src="../grade34/interview-model.js?v=59fd0d57a900"></script><script src="../grade34/class-roster.js?v=6f311b7ec296"></script><script src="../grade34/interview-store.js?v=0edb30b3e0a2"></script><script src="state.js?v=2ee0300ceba1"></script><script src="shell.js?v=3ac0029a4710"></script><script src="share.js?v=fe734fd26025"></script><script src="alphabet.js?v=289fa3a30dad"></script><script src="creator.js?v=a56f261b050d"></script><script src="roulette.js?v=824c9a2063a4"></script><script src="interview-creator.js?v=ba3b5b8758a7"></script><script src="boot.js?v=d5b02869d3b8"></script><script src="../grade34/common-ui.js?v=d3c6024c4356"></script></body></html>
+</main><link rel="stylesheet" href="interview-creator.css?v=5be1b569cd02"><script src="../assets/ui/qrcode.js"></script><script src="catalog.js?v=ee7c4ddb14e2"></script><script src="../grade34/share-codec.js?v=81991ea3d776"></script><script src="../grade34/interview-model.js?v=c6c12da9e95d"></script><script src="../grade34/class-roster.js?v=6f311b7ec296"></script><script src="../grade34/interview-store.js?v=0edb30b3e0a2"></script><script src="state.js?v=2ee0300ceba1"></script><script src="shell.js?v=d2a66296f61d"></script><script src="share.js?v=fe734fd26025"></script><script src="alphabet.js?v=289fa3a30dad"></script><script src="creator.js?v=a56f261b050d"></script><script src="roulette.js?v=824c9a2063a4"></script><script src="interview-creator.js?v=1c9569731bcf"></script><script src="boot.js?v=c064adeda258"></script><script src="../grade34/common-ui.js?v=5b3d99baf5a9"></script></body></html>

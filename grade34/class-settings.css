@@ -1,1 +1,27 @@
 .class-settings{max-width:1600px}.class-controls{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.class-controls .interview-field{flex:1;min-width:200px}.class-example{font-size:14px;color:#665d56}.class-table-wrap{max-width:100%;max-height:44vh;overflow:auto;border:1px solid #ddd3cc;border-radius:12px}.class-table{border-collapse:collapse;width:100%;min-width:920px;table-layout:fixed}.class-table th{position:sticky;top:0;background:#edf6ff;z-index:1;font-size:14px;padding:10px 4px}.class-table th:first-child{width:80px}.class-table td{padding:5px;border-bottom:1px solid #e7e1dc;vertical-align:top}.class-table td small{display:block;overflow-wrap:anywhere}.class-table input{font-size:17px!important}.class-settings #rosterWarnings,.class-settings #rosterStatus{white-space:pre-wrap}.class-settings #rosterDirty{color:#874323}.class-settings .interview-panel{overflow:hidden}.class-settings .interview-heading button{flex-shrink:0}
+/* Compact registration panel, with detailed help kept out of the main flow. */
+.class-settings{max-width:1000px;box-sizing:border-box;padding:18px 24px 32px}
+.class-settings .interview-panel{padding:24px 28px;display:flex;flex-direction:column;gap:10px}
+.class-settings .interview-panel>p{margin:0}
+.class-settings .class-storage-note{font-size:13px;color:#756d66}
+.class-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;order:-2}
+.class-controls .interview-field{min-width:0;margin:0;grid-template-columns:135px minmax(0,1fr);align-items:center}
+.class-controls .interview-field:last-child{grid-column:1/-1}
+.class-controls #rosterNew{font-size:14px}
+.class-settings .class-template{margin-top:8px}
+.class-template a{display:inline-block;text-decoration:none;background:#edf6ff;border:1px solid #c5dfea;border-radius:10px;padding:9px 14px;font-size:14px}
+.class-short-help{font-size:14px}
+.class-settings .interview-field{margin:4px 0}
+.class-settings textarea{min-height:140px;resize:vertical;line-height:1.7}
+.class-help{font-size:13px;color:#756d66}
+.class-help summary{cursor:pointer}
+.class-help p{margin:6px 0}
+.class-confirm{display:flex;align-items:center;gap:16px}
+.class-confirm p{margin:0;font-weight:bold}
+.class-table-wrap{max-height:28vh}
+.class-table-wrap:has(tbody:empty){display:none}
+.class-settings .interview-actions{justify-content:flex-end;margin-top:4px}
+.class-settings #rosterSave{background:#64bdb3;border-color:#64bdb3;color:white;font-weight:bold;order:2}
+.class-settings #rosterDelete{background:#fff;border-color:#e5c7ca;color:#98616b}
+.class-settings #rosterDirty:empty,.class-settings #rosterStatus:empty,.class-settings #rosterWarnings:empty{display:none}
+@media(max-width:650px){.class-settings{padding:12px}.class-settings .interview-panel{padding:18px}.class-controls{grid-template-columns:1fr}.class-controls .interview-field{grid-template-columns:1fr}.class-controls .interview-field:last-child{grid-column:auto}}

@@ -10,25 +10,27 @@
   function newId(prefix='interview'){return prefix+'-'+(root.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));}
   function knownCards(){const data=root.DEKIRU_DATA||root.GAMES_DATA;return data?new Set(data.cards.map(c=>c.id)):undefined;}
   function validatePreset(v,validCardIds=knownCards()){
-    check(v?.version===1&&v.type==='interview','未対応のInterviewプリセットです');
+    check([1,2].includes(v?.version)&&v.type==='interview','未対応のInterviewプリセットです');
     const cardIds=array(v.cardIds,100,'カード').map(id);unique(cardIds,'カード');
     if(validCardIds)check(cardIds.every(c=>validCardIds.has(c)),'使用できないカードが含まれています');
     const assignedUnits=array(v.assignedUnits,34,'Unit').map(u=>{check(u&&Object.hasOwn(books,u.bookId)&&Number.isInteger(u.unit)&&u.unit>=1&&u.unit<=books[u.bookId],'Unitが不正です');return {bookId:u.bookId,unit:u.unit};});
     unique(assignedUnits.map(u=>u.bookId+':'+u.unit),'Unit');
     const template=text(v.question?.template,'質問文',200);
-    const slots=array(v.question?.slots,1,'差し替え部分').map(s=>{
-      check(s?.id==='P'&&s.type==='picture-card','未対応の差し替え部分です');
+    const slots=array(v.question?.slots,v.version===2?9:1,'差し替え部分').map(s=>{
+      check((v.version===2?/^P[1-9]?$/.test(s?.id):s?.id==='P')&&s.type==='picture-card','未対応の差し替え部分です');
       const ids=array(s.cardIds,100,'差し替えカード',1).map(id);unique(ids,'差し替えカード');
       check(ids.length===cardIds.length&&ids.every(c=>cardIds.includes(c)),'差し替えカードが一致しません');
-      return {id:'P',type:'picture-card',cardIds:ids};
+      return {id:s.id,type:'picture-card',cardIds:ids};
     });
     const markers=template.match(/\([A-Z][A-Z0-9_]*\)/g)||[];
-    check(slots.length?markers.length===1&&markers[0]==='(P)':markers.length===0,'質問文の差し替えは (P) を1か所だけ指定してください');
+    unique(slots.map(s=>s.id),'差し替え部分');
+    check(v.version===2?markers.every(m=>slots.some(s=>'('+s.id+')'===m))&&slots.every(s=>markers.includes('('+s.id+')')):slots.length?markers.length===1&&markers[0]==='(P)':markers.length===0,'差し替えは (P)、または (P1)〜(P9) で指定してください');
     const answerAreas=array(v.answerAreas,12,'回答エリア',1).map(a=>{check(Number.isInteger(a?.order)&&a.order>=0&&a.order<12,'回答の順序が不正です');return {id:id(a.id),label:text(a.label,'回答名',40),order:a.order,...(a.speechText!==undefined?{speechText:text(a.speechText,'読み上げ文',200,true)}:{})};});
     unique(answerAreas.map(a=>a.id),'回答ID');unique(answerAreas.map(a=>a.order),'回答の順序');answerAreas.sort((a,b)=>a.order-b.order);
-    return {version:1,type:'interview',id:id(v.id),name:text(v.name,'プリセット名',80),title:text(v.title,'タイトル',80),description:text(v.description??'','説明',500,true),assignedUnits,question:{template,slots},cardIds,answerAreas,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
+    return {version:v.version,type:'interview',id:id(v.id),name:text(v.name,'プリセット名',80),title:text(v.title,'タイトル',80),description:text(v.description??'','説明',500,true),assignedUnits,question:{template,slots},cardIds,answerAreas,createdAt:date(v.createdAt),updatedAt:date(v.updatedAt)};
   }
-  function completeQuestion(p,card){if(!p.question.slots.length)return p.question.template;check(card&&p.question.slots[0].cardIds.includes(card.id),'カードを選んでください');return p.question.template.replace('(P)',()=>text(card.english,'カードの英語',200));}
+  function slotIds(template){return [...new Set((template.match(/\(P[1-9]?\)/g)||[]).map(m=>m.slice(1,-1)))];}
+  function completeQuestion(p,selection){if(!p.question.slots.length)return p.question.template;const selected=selection?.id?{[p.question.slots[0].id]:selection}:selection;for(const slot of p.question.slots)check(selected?.[slot.id]&&slot.cardIds.includes(selected[slot.id].id),'カードを選んでください');return p.question.template.replace(/\(P[1-9]?\)/g,marker=>text(selected[marker.slice(1,-1)].english,'カードの英語',200));}
   function validateRoster(v){
     check(v?.version===1,'未対応の名簿です');
     const students=array(v.students,100,'名簿',1).map(s=>{const name=text(s.name,'名前',161,true),number=s.number!==undefined&&s.number!==''?text(String(s.number),'番号',12):'';check(name||(/^\d{1,12}$/.test(number)&&Number(number)>0),'名前または出席番号を入力してください');return {id:id(s.id),name,...(number?{number}:{})};});
@@ -54,6 +56,6 @@
     else check(v.expiresAt===undefined,'期限付き配信の形式が不正です');
     return {version:v.version,type:'interview-delivery',deliveryId:id(v.deliveryId),issuedAt,...expiry,presetId:preset.id,preset,roster:validateRoster(v.roster)};
   }
-  const api={validatePreset,completeQuestion,validateRoster,parseRoster,rosterWarnings,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
+  const api={validatePreset,completeQuestion,slotIds,validateRoster,parseRoster,rosterWarnings,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
   root.InterviewModel=api;if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);
