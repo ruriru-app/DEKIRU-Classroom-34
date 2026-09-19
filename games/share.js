@@ -55,16 +55,10 @@ function audienceLabel(audiences){
   return values.includes('class')?'みんなで':'個別の端末で';
 }
 function bytesToBase64Url(bytes){
-  let binary='';
-  const chunk=8192;
-  for(let index=0;index<bytes.length;index+=chunk)binary+=String.fromCharCode(...bytes.subarray(index,index+chunk));
-  return btoa(binary).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
+  return window.ShareCodec.bytesToBase64Url(bytes);
 }
 function base64UrlToBytes(value){
-  const base64=String(value||'').replaceAll('-','+').replaceAll('_','/');
-  const padded=base64+'='.repeat((4-base64.length%4)%4);
-  const binary=atob(padded);
-  return Uint8Array.from(binary,char=>char.charCodeAt(0));
+  return window.ShareCodec.base64UrlToBytes(value);
 }
 function encodeRouletteCardSelection(cardIds){
   const cards=rouletteAvailableCards();

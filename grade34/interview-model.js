@@ -45,6 +45,11 @@
     if(new Set(nums).size!==nums.length)warnings.push('番号が重複しています。名簿をご確認ください。');
     return {students,warnings:[...new Set(warnings)]};
   }
-  const api={validatePreset,completeQuestion,validateRoster,parseRoster,newId,knownCards,check,text,id,date,array,unique};
+  function validateDelivery(v,validCardIds=knownCards()){
+    check(v?.version===1&&v.type==='interview-delivery','未対応の配信データです');
+    const preset=validatePreset(v.preset,validCardIds);check(v.presetId===preset.id,'プリセットIDが一致しません');
+    return {version:1,type:'interview-delivery',deliveryId:id(v.deliveryId),issuedAt:date(v.issuedAt),presetId:preset.id,preset,roster:validateRoster(v.roster)};
+  }
+  const api={validatePreset,completeQuestion,validateRoster,parseRoster,validateDelivery,newId,knownCards,check,text,id,date,array,unique};
   root.InterviewModel=api;if(typeof module==='object')module.exports=api;
 })(typeof window==='object'?window:globalThis);
